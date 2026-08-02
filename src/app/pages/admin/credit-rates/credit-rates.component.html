@@ -1,0 +1,146 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-gear-fill"></i> Administration
+    </div>
+    <h1 class="cb-hero__title">Taux de crédit</h1>
+    <p class="cb-hero__subtitle">Gérez les taux d'intérêt appliqués à chaque catégorie socio-professionnelle.</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+
+    <app-loading-spinner [loading]="loadingList()" message="Chargement des taux..." />
+    <app-error-message [message]="errorMessage()" />
+
+    @if (!loadingList() && rates().length > 0) {
+      <div class="cb-card mb-4">
+        <div class="cb-card__header cb-card__header--indigo">
+          <div class="cb-card__header-icon cb-card__header-icon--indigo">
+            <i class="bi bi-table"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">Taux existants</p>
+            <p class="cb-card__header-sub">Sélectionnez un enregistrement pour le modifier</p>
+          </div>
+        </div>
+        <div class="cb-card__body cb-card__body--flush">
+          <div class="table-responsive">
+            <table class="cb-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>CSP</th>
+                  <th>Taux min (%)</th>
+                  <th>Taux max (%)</th>
+                  <th>Durée min (mois)</th>
+                  <th>Durée max (mois)</th>
+                  <th>Statut</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (rate of rates(); track rate.id) {
+                  <tr [class.cb-table__row--active]="selectedId() === rate.id">
+                    <td><span class="fw-semibold">#{{ rate.id }}</span></td>
+                    <td><span class="cb-badge cb-badge--gray">{{ rate.cspCode }}</span></td>
+                    <td>{{ rate.rateMin }}</td>
+                    <td>{{ rate.rateMax }}</td>
+                    <td>{{ rate.minDurationMonths }}</td>
+                    <td>{{ rate.maxDurationMonths }}</td>
+                    <td>
+                      @if (rate.active) {
+                        <span class="cb-badge cb-badge--green"><i class="bi bi-check-circle-fill"></i>Actif</span>
+                      } @else {
+                        <span class="cb-badge cb-badge--gray"><i class="bi bi-dash-circle"></i>Inactif</span>
+                      }
+                    </td>
+                    <td>
+                      <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button" (click)="selectRecord(rate)">
+                        <i class="bi bi-pencil"></i>Modifier
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (selectedId() !== null) {
+      <div class="cb-card cb-animate">
+        <div class="cb-card__header cb-card__header--amber">
+          <div class="cb-card__header-icon cb-card__header-icon--amber">
+            <i class="bi bi-pencil-square"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">Modifier l'enregistrement #{{ selectedId() }}</p>
+            <p class="cb-card__header-sub">Les modifications s'appliquent immédiatement aux nouvelles simulations</p>
+          </div>
+        </div>
+        <div class="cb-card__body">
+          <app-loading-spinner [loading]="loading()" message="Mise à jour en cours..." />
+
+          @if (successMessage()) {
+            <div class="cb-alert cb-alert--success">
+              <i class="bi bi-check-circle-fill"></i>
+              <span>{{ successMessage() }}</span>
+            </div>
+          }
+
+          @if (form.errors?.['durationRangeMismatch']) {
+            <div class="cb-alert cb-alert--danger">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              <span>Durée min et durée max doivent être renseignées ensemble.</span>
+            </div>
+          }
+
+          <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="cb-label" for="rateMin"><i class="bi bi-arrow-down-circle"></i>Taux minimum (%)</label>
+                <input id="rateMin" type="number" class="form-control" formControlName="rateMin" step="0.01"/>
+              </div>
+              <div class="col-md-6">
+                <label class="cb-label" for="rateMax"><i class="bi bi-arrow-up-circle"></i>Taux maximum (%)</label>
+                <input id="rateMax" type="number" class="form-control" formControlName="rateMax" step="0.01"/>
+              </div>
+              <div class="col-md-6">
+                <label class="cb-label" for="minDurationMonths"><i class="bi bi-calendar-minus"></i>Durée minimum (mois)</label>
+                <input id="minDurationMonths" type="number" class="form-control" formControlName="minDurationMonths" step="1"/>
+              </div>
+              <div class="col-md-6">
+                <label class="cb-label" for="maxDurationMonths"><i class="bi bi-calendar-plus"></i>Durée maximum (mois)</label>
+                <input id="maxDurationMonths" type="number" class="form-control" formControlName="maxDurationMonths" step="1"/>
+              </div>
+              <div class="col-12">
+                <div class="cb-toggle-row">
+                  <div class="form-check form-switch mb-0">
+                    <input id="active" type="checkbox" class="form-check-input cb-toggle-switch" role="switch"
+                      formControlName="active"/>
+                  </div>
+                  <label for="active" class="mb-0">
+                    <i class="bi bi-lightning-charge-fill me-1"></i>Définir comme taux actif pour cette CSP
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+              <button type="submit" class="cb-btn cb-btn--amber" [disabled]="loading()">
+                <i class="bi bi-floppy"></i>Mettre à jour
+              </button>
+              <button type="button" class="cb-btn cb-btn--ghost" (click)="clearSelection()">
+                <i class="bi bi-x-lg"></i>Annuler
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

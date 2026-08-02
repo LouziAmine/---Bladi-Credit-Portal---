@@ -1,0 +1,138 @@
+<div class="min-vh-100 d-flex cb-auth-page">
+
+  <picture>
+    <source srcset="logo.webp" type="image/webp">
+    <img src="logo.png" alt="" class="cb-auth-watermark">
+  </picture>
+
+  <div class="d-none d-lg-flex flex-column justify-content-between p-5 text-white cb-auth-hero">
+
+    <div class="cb-auth-hero-blob-1"></div>
+    <div class="cb-auth-hero-blob-2"></div>
+
+    <picture>
+      <source srcset="logo.webp" type="image/webp">
+      <img src="logo.png" alt="" class="cb-auth-hero-watermark">
+    </picture>
+
+    <div class="cb-auth-hero-content">
+      <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill cb-auth-hero-badge">
+        <picture>
+          <source srcset="logo-sm.webp" type="image/webp">
+          <img src="logo-sm.png" alt="Credit Bladi" width="37" height="32" class="cb-auth-hero-logo">
+        </picture>
+        <span class="fw-bold cb-auth-hero-brand">CREDIT BLADI</span>
+      </div>
+    </div>
+
+    <div class="cb-auth-hero-content">
+      <h1 class="fw-black mb-3 lh-sm cb-auth-hero-title">
+        Votre crédit<br>
+        <span class="cb-auth-hero-accent">immobilier</span><br>
+        au meilleur taux.
+      </h1>
+      <p class="mb-5 cb-auth-hero-subtitle">
+        Simulez en quelques secondes, 100% conforme aux règlements BAM.
+      </p>
+      <div class="d-flex flex-column gap-3">
+        <div class="d-flex align-items-center gap-3 p-3 rounded-3 cb-auth-feature">
+          <div class="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0 cb-auth-feature-icon-wrap">
+            <i class="bi bi-shield-check cb-auth-feature-icon"></i>
+          </div>
+          <div>
+            <div class="fw-semibold cb-auth-feature-title">100% sécurisé</div>
+            <div class="cb-auth-feature-subtitle">Données chiffrées SSL</div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-3 p-3 rounded-3 cb-auth-feature">
+          <div class="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0 cb-auth-feature-icon-wrap">
+            <i class="bi bi-lightning-charge cb-auth-feature-icon"></i>
+          </div>
+          <div>
+            <div class="fw-semibold cb-auth-feature-title">Résultat instantané</div>
+            <div class="cb-auth-feature-subtitle">Simulation en 1 clic</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="mb-0 cb-auth-hero-footer">
+      &copy; 2026 Credit Bladi - Simulation de branding
+    </p>
+  </div>
+
+  <div class="flex-grow-1 d-flex align-items-center justify-content-center p-4 cb-auth-form-panel">
+
+    <div class="cb-auth-form-wrap">
+
+      <div class="text-center mb-4 d-lg-none">
+        <picture>
+          <source media="(min-width: 992px)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+          <source srcset="logo-md.webp" type="image/webp">
+          <img src="logo-md.png" alt="Credit Bladi" width="184" height="160" class="cb-auth-mobile-logo">
+        </picture>
+      </div>
+
+      <div class="mb-4">
+        <h2 class="fw-bold mb-1 cb-auth-heading">Bon retour !</h2>
+        <p class="cb-auth-muted">Connectez-vous à votre espace personnel.</p>
+      </div>
+
+      <app-error-message [message]="errorMessage()" />
+      <app-loading-spinner [loading]="loading()" message="Connexion en cours..." />
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div class="mb-3">
+          <label for="username" class="form-label fw-semibold small cb-auth-label">Nom d'utilisateur</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <input
+              id="username"
+              type="text"
+              class="form-control"
+              [class.is-invalid]="form.controls.username.invalid && form.controls.username.touched"
+              formControlName="username"
+              placeholder="john.doe"
+              autocomplete="username"
+            />
+          </div>
+          @if (form.controls.username.errors?.['required'] && form.controls.username.touched) {
+            <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>Le nom d'utilisateur est requis.</div>
+          } @else if (form.controls.username.errors?.['minlength'] && form.controls.username.touched) {
+            <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>Minimum 3 caractères.</div>
+          }
+        </div>
+
+        <div class="mb-4">
+          <label for="password" class="form-label fw-semibold small cb-auth-label">Mot de passe</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+            <input
+              id="password"
+              type="password"
+              class="form-control"
+              [class.is-invalid]="form.controls.password.invalid && form.controls.password.touched"
+              formControlName="password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+            />
+          </div>
+          @if (form.controls.password.errors?.['required'] && form.controls.password.touched) {
+            <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>Le mot de passe est requis.</div>
+          } @else if (form.controls.password.errors?.['minlength'] && form.controls.password.touched) {
+            <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>Minimum 6 caractères.</div>
+          }
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold rounded-pill" [disabled]="loading()">
+          <i class="bi bi-arrow-right-circle me-2"></i>Se connecter
+        </button>
+      </form>
+
+      <p class="text-center mt-4 small cb-auth-muted">
+        Pas encore de compte ?
+        <a routerLink="/register" class="fw-semibold text-decoration-none cb-auth-link">S'inscrire gratuitement</a>
+      </p>
+    </div>
+  </div>
+</div>

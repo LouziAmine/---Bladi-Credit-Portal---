@@ -1,0 +1,57 @@
+.navbar-brand {
+  font-size: 1.4rem;
+}
+
+.cb-header-navbar {
+  background-color: var(--cb-green);
+}
+
+.cb-header-logo-wrap {
+  background: #fff;
+  padding: 4px 8px;
+}
+
+.cb-header-logo-img {
+  height: 36px;
+  width: auto;
+}
+
+.cb-header-toggler {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.cb-header-username {
+  font-size: 0.85rem;
+}
+
+.cb-header-badge {
+  font-size: 0.7rem;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.cb-header-btn-outline {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50px;
+}
+
+.cb-header-btn-solid {
+  background: #fff;
+  color: var(--cb-green);
+  border-radius: 50px;
+  border: none;
+}
+
+.nav-link.text-white-75 {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+.nav-link.text-white-75:hover,
+.nav-link.active {
+  color: #fff !important;
+}
+.dropdown-item:hover {
+  background-color: var(--cb-green-light);
+  color: var(--cb-green);
+}

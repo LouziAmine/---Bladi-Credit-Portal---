@@ -1,0 +1,125 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-moon-stars-fill"></i> Administration
+    </div>
+    <h1 class="cb-hero__title">Paramètres Mourabaha</h1>
+    <p class="cb-hero__subtitle">Gérez le taux de profit et la TVA appliqués au financement participatif.</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+
+    <app-loading-spinner [loading]="loadingList()" message="Chargement des paramètres..." />
+    <app-error-message [message]="errorMessage()" />
+
+    @if (!loadingList() && parameters().length > 0) {
+      <div class="cb-card mb-4">
+        <div class="cb-card__header cb-card__header--indigo">
+          <div class="cb-card__header-icon cb-card__header-icon--indigo">
+            <i class="bi bi-table"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">Configurations existantes</p>
+            <p class="cb-card__header-sub">Sélectionnez un enregistrement pour le modifier</p>
+          </div>
+        </div>
+        <div class="cb-card__body cb-card__body--flush">
+          <div class="table-responsive">
+            <table class="cb-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Taux de profit (%)</th>
+                  <th>TVA sur marge</th>
+                  <th>Statut</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (param of parameters(); track param.id) {
+                  <tr [class.cb-table__row--active]="selectedId() === param.id">
+                    <td><span class="fw-semibold">#{{ param.id }}</span></td>
+                    <td>{{ param.profitRate }}</td>
+                    <td>{{ param.vatRate }}</td>
+                    <td>
+                      @if (param.active) {
+                        <span class="cb-badge cb-badge--green"><i class="bi bi-check-circle-fill"></i>Actif</span>
+                      } @else {
+                        <span class="cb-badge cb-badge--gray"><i class="bi bi-dash-circle"></i>Inactif</span>
+                      }
+                    </td>
+                    <td>
+                      <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button" (click)="selectRecord(param)">
+                        <i class="bi bi-pencil"></i>Modifier
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (selectedId() !== null) {
+      <div class="cb-card cb-animate">
+        <div class="cb-card__header cb-card__header--amber">
+          <div class="cb-card__header-icon cb-card__header-icon--amber">
+            <i class="bi bi-pencil-square"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">Modifier l'enregistrement #{{ selectedId() }}</p>
+            <p class="cb-card__header-sub">Les modifications s'appliquent aux nouvelles simulations Mourabaha</p>
+          </div>
+        </div>
+        <div class="cb-card__body">
+          <app-loading-spinner [loading]="loading()" message="Mise à jour en cours..." />
+
+          @if (successMessage()) {
+            <div class="cb-alert cb-alert--success">
+              <i class="bi bi-check-circle-fill"></i>
+              <span>{{ successMessage() }}</span>
+            </div>
+          }
+
+          <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="cb-label" for="profitRate"><i class="bi bi-percent"></i>Taux de profit annuel (%)</label>
+                <input id="profitRate" type="number" class="form-control" formControlName="profitRate" step="0.01"/>
+              </div>
+              <div class="col-md-6">
+                <label class="cb-label" for="vatRate"><i class="bi bi-receipt-cutoff"></i>TVA sur marge</label>
+                <input id="vatRate" type="number" class="form-control" formControlName="vatRate" step="0.001"/>
+              </div>
+              <div class="col-12">
+                <div class="cb-toggle-row">
+                  <div class="form-check form-switch mb-0">
+                    <input id="active" type="checkbox" class="form-check-input cb-toggle-switch" role="switch"
+                      formControlName="active"/>
+                  </div>
+                  <label for="active" class="mb-0">
+                    <i class="bi bi-lightning-charge-fill me-1"></i>Définir comme configuration active
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+              <button type="submit" class="cb-btn cb-btn--amber" [disabled]="loading()">
+                <i class="bi bi-floppy"></i>Mettre à jour
+              </button>
+              <button type="button" class="cb-btn cb-btn--ghost" (click)="clearSelection()">
+                <i class="bi bi-x-lg"></i>Annuler
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

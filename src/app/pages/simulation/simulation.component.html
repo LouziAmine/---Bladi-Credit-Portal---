@@ -1,0 +1,535 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-house-heart-fill"></i> Crédit Immobilier
+    </div>
+    <h1 class="cb-hero__title">Simulateur de crédit immobilier</h1>
+    <p class="cb-hero__subtitle">Estimez votre mensualité en temps réel - conforme aux règlements BAM.</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+    <div class="row g-4">
+
+      <div class="col-lg-6">
+        <div class="cb-card">
+          <div class="cb-card__header cb-card__header--green">
+            <div class="cb-card__header-icon cb-card__header-icon--green">
+              <i class="bi bi-sliders2"></i>
+            </div>
+            <div>
+              <p class="cb-card__header-title">Paramètres du crédit</p>
+              <p class="cb-card__header-sub">Remplissez les champs ci-dessous</p>
+            </div>
+          </div>
+          <div class="cb-card__body">
+            <app-error-message [message]="errorMessage()" />
+            <app-loading-spinner [loading]="loading()" message="Calcul en cours..." />
+
+            <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+              <div class="row g-3">
+
+                <fieldset class="col-12 border-0 p-0 m-0">
+                  <legend class="cb-label h6">
+                    <i class="bi bi-bank2"></i>Type de financement
+                  </legend>
+                  <div class="btn-group w-100" role="group">
+                    <input type="radio" class="btn-check" id="productConventional" formControlName="productType" value="CONVENTIONAL"/>
+                    <label class="btn btn-outline-success" for="productConventional">
+                      <i class="bi bi-percent me-1"></i>Conventionnel
+                    </label>
+                    <input type="radio" class="btn-check" id="productMourabaha" formControlName="productType" value="MOURABAHA"/>
+                    <label class="btn btn-outline-success" for="productMourabaha">
+                      <i class="bi bi-moon-stars me-1"></i>Mourabaha
+                    </label>
+                  </div>
+                  <p class="small mt-1 mb-0 cb-muted-text">
+                    @if (form.controls.productType.value === 'MOURABAHA') {
+                      Financement participatif conforme à la Charia - marge bénéficiaire + TVA, sans intérêt.
+                    } @else {
+                      Crédit classique à taux d'intérêt.
+                    }
+                  </p>
+                </fieldset>
+
+                <div class="col-12">
+                  <label class="cb-label" for="amount">
+                    <i class="bi bi-cash-coin"></i>Montant du crédit
+                  </label>
+                  <div class="cb-slider-wrap">
+                    <div class="cb-slider-display">
+                      <span class="cb-slider-val">{{ formatAmount(form.controls.amount.value) }}</span>
+                    </div>
+                    <input id="amount" type="range" class="cb-slider"
+                      [value]="form.controls.amount.value"
+                      (input)="onAmountChange($event)"
+                      [style.--fill]="amountFill()"
+                      min="70000" max="30000000" step="10000" />
+                    <div class="cb-slider-labels">
+                      <span>70 000 MAD</span>
+                      <span>30 000 000 MAD</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label class="cb-label" for="duration">
+                    <i class="bi bi-calendar3"></i>Durée du remboursement
+                  </label>
+                  <div class="cb-slider-wrap">
+                    <div class="cb-slider-display">
+                      <span class="cb-slider-val">{{ form.controls.duration.value }} mois</span>
+                      <span class="cb-slider-sub">{{ formatDuration(form.controls.duration.value) }}</span>
+                    </div>
+                    <input id="duration" type="range" class="cb-slider"
+                      [value]="form.controls.duration.value"
+                      (input)="onDurationChange($event)"
+                      [style.--fill]="durationFill()"
+                      min="12" max="300" step="1" />
+                    <div class="cb-slider-labels">
+                      <span>12 mois (1 an)</span>
+                      <span>300 mois (25 ans)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="cspCode" class="cb-label">
+                    <i class="bi bi-briefcase"></i>Catégorie socio-professionnelle
+                  </label>
+                  <select id="cspCode" class="form-select"
+                    [class.is-invalid]="form.controls.cspCode.invalid && form.controls.cspCode.touched"
+                    formControlName="cspCode">
+                    <option value="" disabled>Sélectionnez...</option>
+                    @for (opt of cspOptions; track opt.value) {
+                      <option [value]="opt.value">{{ opt.label }}</option>
+                    }
+                  </select>
+                  @if (form.controls.cspCode.errors?.['required'] && form.controls.cspCode.touched) {
+                    <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>La CSP est requise.</div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="age" class="cb-label">
+                    <i class="bi bi-person-badge"></i>Âge de l'emprunteur
+                  </label>
+                  <div class="input-group">
+                    <input id="age" type="number" class="form-control"
+                      [class.is-invalid]="form.controls.age.invalid && form.controls.age.touched"
+                      formControlName="age" min="18" max="74"/>
+                    <span class="input-group-text">ans</span>
+                  </div>
+                  @if (form.controls.age.errors?.['required'] && form.controls.age.touched) {
+                    <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>L'âge est requis.</div>
+                  } @else if ((form.controls.age.errors?.['min'] || form.controls.age.errors?.['max']) && form.controls.age.touched) {
+                    <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>Doit être entre 18 et 74 ans.</div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="propertyValue" class="cb-label">
+                    <i class="bi bi-house-door"></i>Valeur du bien
+                  </label>
+                  <div class="input-group">
+                    <input id="propertyValue" type="number" class="form-control"
+                      [class.is-invalid]="form.controls.propertyValue.invalid && form.controls.propertyValue.touched"
+                      formControlName="propertyValue" min="80000" max="50000000" step="10000"/>
+                    <span class="input-group-text">MAD</span>
+                  </div>
+                  @if (form.controls.propertyValue.errors?.['required'] && form.controls.propertyValue.touched) {
+                    <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>La valeur du bien est requise.</div>
+                  } @else if ((form.controls.propertyValue.errors?.['min'] || form.controls.propertyValue.errors?.['max']) && form.controls.propertyValue.touched) {
+                    <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>Entre 80 000 et 50 000 000 MAD.</div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="monthlyIncome" class="cb-label">
+                    <i class="bi bi-wallet2"></i>Revenu mensuel net
+                  </label>
+                  <div class="input-group">
+                    <input id="monthlyIncome" type="number" class="form-control"
+                      [class.is-invalid]="form.controls.monthlyIncome.invalid && form.controls.monthlyIncome.touched"
+                      formControlName="monthlyIncome" min="1000" max="5000000" step="500"/>
+                    <span class="input-group-text">MAD</span>
+                  </div>
+                  @if (form.controls.monthlyIncome.errors?.['required'] && form.controls.monthlyIncome.touched) {
+                    <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>Le revenu mensuel est requis.</div>
+                  } @else if ((form.controls.monthlyIncome.errors?.['min'] || form.controls.monthlyIncome.errors?.['max']) && form.controls.monthlyIncome.touched) {
+                    <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>Entre 1 000 et 5 000 000 MAD.</div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="nationalityCode" class="cb-label">
+                    <i class="bi bi-globe2"></i>Nationalité (code ISO)
+                  </label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-flag"></i></span>
+                    <input id="nationalityCode" type="text" class="form-control text-uppercase"
+                      formControlName="nationalityCode" placeholder="MA" maxlength="2"/>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="cb-toggle-row">
+                    <div class="form-check form-switch mb-0">
+                      <input id="moroccanResident" type="checkbox" class="form-check-input cb-toggle-switch" role="switch"
+                        formControlName="moroccanResident"/>
+                    </div>
+                    <label for="moroccanResident" class="mb-0">
+                      <i class="bi bi-geo-alt-fill me-1"></i>Résident marocain
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="cb-toggle-row">
+                    <div class="form-check form-switch mb-0">
+                      <input id="coBorrower" type="checkbox" class="form-check-input cb-toggle-switch" role="switch"
+                        formControlName="coBorrower"/>
+                    </div>
+                    <label for="coBorrower" class="mb-0">
+                      <i class="bi bi-people-fill me-1"></i>Prêt avec co-emprunteur
+                    </label>
+                  </div>
+                </div>
+
+                @if (form.controls.coBorrower.value) {
+                  <div class="col-12 cb-animate">
+                    <label for="coBorrowerMonthlyIncome" class="cb-label">
+                      <i class="bi bi-wallet2"></i>Revenu mensuel du co-emprunteur
+                    </label>
+                    <div class="input-group">
+                      <input id="coBorrowerMonthlyIncome" type="number" class="form-control"
+                        formControlName="coBorrowerMonthlyIncome" min="1000" max="5000000" step="500"/>
+                      <span class="input-group-text">MAD</span>
+                    </div>
+                    <p class="small mt-1 mb-0 cb-muted-text">
+                      Ajouté à votre revenu pour le calcul du taux d'endettement (double l'assurance ADI obligatoire).
+                    </p>
+                  </div>
+                }
+
+              </div>
+
+              <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="cb-btn cb-btn--primary flex-grow-1" [disabled]="loading()">
+                  <i class="bi bi-calculator"></i>Simuler
+                </button>
+                <button type="button" class="cb-btn cb-btn--ghost" (click)="reset()" aria-label="Réinitialiser le formulaire">
+                  <i class="bi bi-arrow-counterclockwise"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        @if (result()) {
+          <div class="cb-animate">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <p class="cb-section-title mb-0"><span class="cb-step">2</span>Résultats</p>
+              <span class="cb-badge cb-badge--green ms-auto">
+                <i class="bi bi-shield-check"></i>BAM conforme
+              </span>
+            </div>
+            <p class="small mb-3 cb-muted-text">
+              <i class="bi bi-info-circle me-1"></i>TAEG estimé (coût annuel effectif global) : <strong>{{ formatPercent(result()!.taeg) }}</strong>
+            </p>
+
+            @if (result()!.productType === 'CONVENTIONAL') {
+              <div class="row g-3 mb-3">
+                <div class="col-6">
+                  <div class="cb-stat cb-stat--green">
+                    <div class="cb-stat__icon"><i class="bi bi-percent"></i></div>
+                    <div class="cb-stat__label">Taux annuel</div>
+                    <div class="cb-stat__value">{{ formatPercent(result()!.rateMin!) }}</div>
+                    <div class="cb-stat__sub">à {{ formatPercent(result()!.rateMax!) }}</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="cb-stat cb-stat--amber">
+                    <div class="cb-stat__icon"><i class="bi bi-calendar-check"></i></div>
+                    <div class="cb-stat__label">Mensualité tout compris</div>
+                    <div class="cb-stat__value">{{ formatAmount(result()!.allInMonthlyPaymentMin!) }}</div>
+                    <div class="cb-stat__sub">à {{ formatAmount(result()!.allInMonthlyPaymentMax!) }}</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="cb-stat cb-stat--red">
+                    <div class="cb-stat__icon"><i class="bi bi-graph-up-arrow"></i></div>
+                    <div class="cb-stat__label">Intérêts totaux</div>
+                    <div class="cb-stat__value">{{ formatAmount(result()!.totalInterestMin!) }}</div>
+                    <div class="cb-stat__sub">à {{ formatAmount(result()!.totalInterestMax!) }}</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="cb-stat cb-stat--indigo">
+                    <div class="cb-stat__icon"><i class="bi bi-wallet2"></i></div>
+                    <div class="cb-stat__label">Coût total</div>
+                    <div class="cb-stat__value">{{ formatAmount(result()!.totalCostMin!) }}</div>
+                    <div class="cb-stat__sub">à {{ formatAmount(result()!.totalCostMax!) }}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cb-card mb-3">
+                <div class="cb-card__body">
+                  <div class="cb-fees-row">
+                    <span class="cb-fees-row__label">
+                      <i class="bi bi-heart-pulse me-1"></i>Assurance ADI (mensuelle, décès/invalidité)
+                    </span>
+                    <span class="cb-fees-row__value">
+                      {{ formatAmount(result()!.adiMonthlyPremiumMin!) }} à {{ formatAmount(result()!.adiMonthlyPremiumMax!) }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            } @else {
+              <div class="row g-3 mb-3">
+                <div class="col-6">
+                  <div class="cb-stat cb-stat--green">
+                    <div class="cb-stat__icon"><i class="bi bi-percent"></i></div>
+                    <div class="cb-stat__label">Taux de profit (Mourabaha)</div>
+                    <div class="cb-stat__value">{{ formatPercent(result()!.applicableRate) }}</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="cb-stat cb-stat--amber">
+                    <div class="cb-stat__icon"><i class="bi bi-calendar-check"></i></div>
+                    <div class="cb-stat__label">Échéance TTC</div>
+                    <div class="cb-stat__value">{{ formatAmount(result()!.monthlyPaymentTtc!) }}</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="cb-stat cb-stat--red">
+                    <div class="cb-stat__icon"><i class="bi bi-graph-up-arrow"></i></div>
+                    <div class="cb-stat__label">Marge TTC</div>
+                    <div class="cb-stat__value">{{ formatAmount(result()!.marginTtc!) }}</div>
+                    <div class="cb-stat__sub">dont TVA {{ formatAmount(result()!.vatOnMargin!) }}</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="cb-stat cb-stat--indigo">
+                    <div class="cb-stat__icon"><i class="bi bi-wallet2"></i></div>
+                    <div class="cb-stat__label">Coût total</div>
+                    <div class="cb-stat__value">{{ formatAmount(result()!.totalCost) }}</div>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <div class="cb-card mb-3">
+              <div class="cb-card__header cb-card__header--green">
+                <div class="cb-card__header-icon cb-card__header-icon--green">
+                  <i class="bi bi-receipt"></i>
+                </div>
+                <div>
+                  <p class="cb-card__header-title">Détail des frais</p>
+                  <p class="cb-card__header-sub">Frais liés à votre dossier</p>
+                </div>
+              </div>
+              <div class="cb-card__body">
+                <div class="cb-fees-row">
+                  <span class="cb-fees-row__label">Frais d'enregistrement</span>
+                  <span class="cb-fees-row__value">{{ formatAmount(result()!.registrationFees) }}</span>
+                </div>
+                <div class="cb-fees-row">
+                  <span class="cb-fees-row__label">Conservation foncière</span>
+                  <span class="cb-fees-row__value">{{ formatAmount(result()!.landConservationFees) }}</span>
+                </div>
+                <div class="cb-fees-row">
+                  <span class="cb-fees-row__label">Frais de notaire</span>
+                  <span class="cb-fees-row__value">{{ formatAmount(result()!.notaryFees) }}</span>
+                </div>
+                <div class="cb-fees-row">
+                  <span class="cb-fees-row__label">Frais de dossier</span>
+                  <span class="cb-fees-row__value">{{ formatAmount(result()!.processingFees) }}</span>
+                </div>
+                <div class="cb-fees-row cb-fees-row--total">
+                  <span class="cb-fees-row__label">Total des frais</span>
+                  <span class="cb-fees-row__value">{{ formatAmount(result()!.totalFees) }}</span>
+                </div>
+              </div>
+            </div>
+
+            @if (result()!.amortizationSchedule.length > 0) {
+              <div class="cb-card">
+                <button type="button" class="cb-card__header cb-card__header--indigo w-100 border-0 text-start cb-card-header-clickable" (click)="toggleSchedule()">
+                  <div class="cb-card__header-icon cb-card__header-icon--indigo">
+                    <i class="bi bi-table"></i>
+                  </div>
+                  <div>
+                    <p class="cb-card__header-title">Tableau d'amortissement</p>
+                    <p class="cb-card__header-sub">{{ result()!.amortizationSchedule.length }} échéances - cliquez pour {{ showSchedule() ? 'masquer' : 'afficher' }}</p>
+                  </div>
+                  <i class="bi ms-auto" [class.bi-chevron-down]="!showSchedule()" [class.bi-chevron-up]="showSchedule()"></i>
+                </button>
+                @if (showSchedule()) {
+                  <div class="cb-card__body cb-card__body--flush">
+                    <div class="table-responsive cb-schedule-table-wrap">
+                      <table class="cb-table">
+                        <thead>
+                          <tr>
+                            <th>N°</th>
+                            <th>Solde début</th>
+                            @if (result()!.productType === 'CONVENTIONAL') {
+                              <th>Intérêts</th>
+                            } @else {
+                              <th>Marge HT</th>
+                              <th>TVA</th>
+                            }
+                            <th>Principal</th>
+                            <th>Échéance</th>
+                            <th>Solde fin</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @for (row of result()!.amortizationSchedule; track row.installmentNumber) {
+                            <tr>
+                              <td>{{ row.installmentNumber }}</td>
+                              <td>{{ formatAmount(row.beginningBalance) }}</td>
+                              @if (result()!.productType === 'CONVENTIONAL') {
+                                <td>{{ formatAmount(row.interest!) }}</td>
+                              } @else {
+                                <td>{{ formatAmount(row.marginHt!) }}</td>
+                                <td>{{ formatAmount(row.vatOnMargin!) }}</td>
+                              }
+                              <td>{{ formatAmount(row.principal) }}</td>
+                              <td class="fw-semibold">{{ formatAmount(row.payment) }}</td>
+                              <td>{{ formatAmount(row.endingBalance) }}</td>
+                            </tr>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="cb-card cb-empty-card">
+            <div class="cb-empty">
+              <div class="cb-empty__icon"><i class="bi bi-house-door"></i></div>
+              <p class="cb-empty__title">Votre simulation apparaîtra ici</p>
+              <p class="cb-empty__sub">Remplissez le formulaire et cliquez sur "Simuler".</p>
+            </div>
+          </div>
+        }
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<section class="cb-why">
+  <div class="container">
+    <div class="cb-why__header">
+      <span class="cb-why__label">Nos atouts</span>
+      <h2 class="cb-why__title">Pourquoi nous choisir ?</h2>
+    </div>
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-md-4">
+        <div class="cb-why-card">
+          <div class="cb-why-card__num">1</div>
+          <div class="cb-why-card__icon">
+            <i class="bi bi-laptop"></i>
+          </div>
+          <h3 class="cb-why-card__title">Parcours simplifié et 100&nbsp;% digital</h3>
+          <p class="cb-why-card__text">
+            Demandez votre crédit en ligne et obtenez votre financement sans vous déplacer en agence.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="cb-why-card">
+          <div class="cb-why-card__num">2</div>
+          <div class="cb-why-card__icon">
+            <i class="bi bi-buildings"></i>
+          </div>
+          <h3 class="cb-why-card__title">Expertise immobilière</h3>
+          <p class="cb-why-card__text">
+            Notre équipe a une connaissance accrue du marché grâce à une collaboration étroite avec les acteurs du secteur.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="cb-why-card">
+          <div class="cb-why-card__num">3</div>
+          <div class="cb-why-card__icon">
+            <i class="bi bi-file-earmark-check"></i>
+          </div>
+          <h3 class="cb-why-card__title">Conventions multiples</h3>
+          <p class="cb-why-card__text">
+            De nombreuses conventions signées avec d'importantes institutions publiques et privées pour faciliter votre accès à la propriété.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="cb-steps">
+  <div class="container">
+    <div class="cb-why__header">
+      <span class="cb-why__label">Le processus</span>
+      <h2 class="cb-why__title">Je finance mon bien en 5&nbsp;étapes</h2>
+    </div>
+    <div class="cb-steps__track">
+
+      <div class="cb-step-item">
+        <div class="cb-step-item__circle">
+          <i class="bi bi-calculator"></i>
+        </div>
+        <div class="cb-step-item__connector"></div>
+        <p class="cb-step-item__num">Étape 1</p>
+        <p class="cb-step-item__label">Je simule<br>mon crédit</p>
+      </div>
+
+      <div class="cb-step-item">
+        <div class="cb-step-item__circle">
+          <i class="bi bi-person-circle"></i>
+        </div>
+        <div class="cb-step-item__connector"></div>
+        <p class="cb-step-item__num">Étape 2</p>
+        <p class="cb-step-item__label">J'accède à<br>mon espace abonné</p>
+      </div>
+
+      <div class="cb-step-item">
+        <div class="cb-step-item__circle">
+          <i class="bi bi-send"></i>
+        </div>
+        <div class="cb-step-item__connector"></div>
+        <p class="cb-step-item__num">Étape 3</p>
+        <p class="cb-step-item__label">Je demande<br>mon crédit en ligne</p>
+      </div>
+
+      <div class="cb-step-item">
+        <div class="cb-step-item__circle">
+          <i class="bi bi-folder2-open"></i>
+        </div>
+        <div class="cb-step-item__connector"></div>
+        <p class="cb-step-item__num">Étape 4</p>
+        <p class="cb-step-item__label">Je suis et complète<br>mon dossier de crédit</p>
+      </div>
+
+      <div class="cb-step-item cb-step-item--last">
+        <div class="cb-step-item__circle cb-step-item__circle--accent">
+          <i class="bi bi-house-check"></i>
+        </div>
+        <p class="cb-step-item__num">Étape 5</p>
+        <p class="cb-step-item__label">J'obtiens<br>mon crédit</p>
+      </div>
+
+    </div>
+  </div>
+</section>

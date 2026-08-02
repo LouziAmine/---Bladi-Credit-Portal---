@@ -1,0 +1,101 @@
+<nav class="navbar navbar-expand-lg shadow-sm cb-header-navbar">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/simulation">
+      <span class="d-inline-flex align-items-center justify-content-center rounded-3 cb-header-logo-wrap">
+        <picture>
+          <source srcset="logo-sm.webp" type="image/webp">
+          <img src="logo-sm.png" alt="Credit Bladi" width="42" height="36" class="cb-header-logo-img">
+        </picture>
+      </span>
+    </a>
+
+    <button
+      class="navbar-toggler border-0 cb-header-toggler"
+      type="button"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="isMenuOpen()"
+      aria-label="Toggle navigation"
+    >
+      <i class="bi bi-list fs-4"></i>
+    </button>
+
+    <div class="navbar-collapse" [class.show]="isMenuOpen()">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link text-white-75 fw-medium px-3" routerLink="/simulation" routerLinkActive="active">
+            <i class="bi bi-calculator me-1"></i>Simulation
+          </a>
+        </li>
+        @if (isAuthenticated()) {
+          @if (isManager()) {
+            <li class="nav-item dropdown" [class.show]="isAdminMenuOpen()">
+              <a
+                class="nav-link text-white-75 fw-medium px-3 dropdown-toggle"
+                href="#"
+                role="button"
+                (click)="toggleAdminMenu($event)"
+                [attr.aria-expanded]="isAdminMenuOpen()"
+              >
+                <i class="bi bi-gear me-1"></i>Administration
+              </a>
+              <ul class="dropdown-menu shadow border-0 rounded-3" [class.show]="isAdminMenuOpen()">
+                <li>
+                  <a class="dropdown-item py-2" routerLink="/admin/users">
+                    <i class="bi bi-people me-2 text-success"></i>Utilisateurs
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2" routerLink="/admin/bam-parameters">
+                    <i class="bi bi-sliders me-2 text-success"></i>Paramètres BAM
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2" routerLink="/admin/credit-rates">
+                    <i class="bi bi-percent me-2 text-success"></i>Taux de crédit
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2" routerLink="/admin/mourabaha-parameters">
+                    <i class="bi bi-moon-stars me-2 text-success"></i>Paramètres Mourabaha
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2" routerLink="/admin/audit-log">
+                    <i class="bi bi-journal-text me-2 text-success"></i>Journal d'audit
+                  </a>
+                </li>
+              </ul>
+            </li>
+          }
+        }
+      </ul>
+
+      <div class="d-flex gap-2 align-items-center">
+        @if (isAuthenticated()) {
+          <div class="d-flex align-items-center gap-2 me-1">
+            <i class="bi bi-person-circle text-white fs-5"></i>
+            <div class="d-flex flex-column lh-1">
+              <span class="text-white fw-semibold cb-header-username">
+                {{ username() }}
+              </span>
+              <span class="badge rounded-pill mt-1 cb-header-badge"
+                [style.background]="isManager() ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.15)'">
+                {{ role() }}
+              </span>
+            </div>
+          </div>
+          <button class="btn btn-sm fw-medium px-3 cb-header-btn-outline" type="button" (click)="logout()">
+            <i class="bi bi-box-arrow-right me-1"></i>Déconnexion
+          </button>
+        } @else {
+          <a class="btn btn-sm fw-medium px-3 cb-header-btn-outline" routerLink="/login">
+            <i class="bi bi-person me-1"></i>Connexion
+          </a>
+          <a class="btn btn-sm fw-semibold px-3 cb-header-btn-solid" routerLink="/register">
+            S'inscrire
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+</nav>

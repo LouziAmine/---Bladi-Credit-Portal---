@@ -1,0 +1,161 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-gear-fill"></i> Administration
+    </div>
+    <h1 class="cb-hero__title">Gestion des utilisateurs</h1>
+    <p class="cb-hero__subtitle">Consultez les comptes existants, gérez les rôles et créez de nouveaux accès.</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+
+    <app-loading-spinner [loading]="loadingList()" message="Chargement des utilisateurs..." />
+    <app-error-message [message]="listErrorMessage()" />
+
+    @if (!loadingList() && users().length > 0) {
+      <div class="cb-card mb-4">
+        <div class="cb-card__header cb-card__header--indigo">
+          <div class="cb-card__header-icon cb-card__header-icon--indigo">
+            <i class="bi bi-people"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">Comptes existants</p>
+            <p class="cb-card__header-sub">Basculez le rôle d'un utilisateur en un clic</p>
+          </div>
+        </div>
+        <div class="cb-card__body cb-card__body--flush">
+          <div class="table-responsive">
+            <table class="cb-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nom d'utilisateur</th>
+                  <th>Rôle</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (user of users(); track user.id) {
+                  <tr>
+                    <td><span class="fw-semibold">#{{ user.id }}</span></td>
+                    <td>
+                      {{ user.username }}
+                      @if (user.username === currentUsername) {
+                        <span class="cb-badge cb-badge--gray ms-1">Vous</span>
+                      }
+                    </td>
+                    <td>
+                      @if (user.role === 'MANAGER') {
+                        <span class="cb-badge cb-badge--green"><i class="bi bi-shield-check"></i>MANAGER</span>
+                      } @else {
+                        <span class="cb-badge cb-badge--gray"><i class="bi bi-person"></i>CLIENT</span>
+                      }
+                    </td>
+                    <td>
+                      <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button"
+                        [disabled]="user.username === currentUsername || updatingUserId() === user.id"
+                        [title]="user.username === currentUsername ? 'Un manager ne peut pas modifier son propre rôle' : ''"
+                        (click)="toggleRole(user)">
+                        @if (updatingUserId() === user.id) {
+                          <span class="spinner-border spinner-border-sm" role="status"></span>
+                        } @else if (user.role === 'MANAGER') {
+                          <i class="bi bi-arrow-down-circle"></i>Rétrograder en CLIENT
+                        } @else {
+                          <i class="bi bi-arrow-up-circle"></i>Promouvoir en MANAGER
+                        }
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <div class="cb-card">
+          <div class="cb-card__header cb-card__header--green">
+            <div class="cb-card__header-icon cb-card__header-icon--green">
+              <i class="bi bi-person-plus-fill"></i>
+            </div>
+            <div>
+              <p class="cb-card__header-title">Créer un utilisateur</p>
+              <p class="cb-card__header-sub">Rôle MANAGER requis</p>
+            </div>
+          </div>
+          <div class="cb-card__body">
+            <app-error-message [message]="errorMessage()" />
+            <app-loading-spinner [loading]="loading()" message="Création en cours..." />
+
+            @if (successMessage()) {
+              <div class="cb-alert cb-alert--success">
+                <i class="bi bi-check-circle-fill"></i>
+                <span>{{ successMessage() }}</span>
+              </div>
+            }
+
+            <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+              <div class="mb-3">
+                <label for="username" class="cb-label">
+                  <i class="bi bi-person"></i>Nom d'utilisateur
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                  <input id="username" type="text" class="form-control"
+                    [class.is-invalid]="form.controls.username.invalid && form.controls.username.touched"
+                    formControlName="username" placeholder="john.doe"/>
+                </div>
+                @if (form.controls.username.errors?.['required'] && form.controls.username.touched) {
+                  <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>Le nom d'utilisateur est requis.</div>
+                } @else if (form.controls.username.errors?.['minlength'] && form.controls.username.touched) {
+                  <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>Minimum 3 caractères.</div>
+                }
+              </div>
+
+              <div class="mb-3">
+                <label for="password" class="cb-label">
+                  <i class="bi bi-lock"></i>Mot de passe
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                  <input id="password" type="password" class="form-control"
+                    [class.is-invalid]="form.controls.password.invalid && form.controls.password.touched"
+                    formControlName="password" placeholder="••••••••"/>
+                </div>
+                @if (form.controls.password.errors?.['required'] && form.controls.password.touched) {
+                  <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>Le mot de passe est requis.</div>
+                } @else if (form.controls.password.errors?.['minlength'] && form.controls.password.touched) {
+                  <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>Minimum 12 caractères.</div>
+                } @else if (form.controls.password.errors?.['passwordComplexity'] && form.controls.password.touched) {
+                  <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>Doit contenir une majuscule, une minuscule et un chiffre.</div>
+                } @else if (!form.controls.password.touched) {
+                  <div class="small mt-1 cb-muted-text">12 caractères minimum, avec majuscule, minuscule et chiffre.</div>
+                }
+              </div>
+
+              <div class="mb-4">
+                <label for="role" class="cb-label">
+                  <i class="bi bi-shield-check"></i>Rôle
+                </label>
+                <select id="role" class="form-select" formControlName="role">
+                  @for (role of roles; track role) {
+                    <option [value]="role">{{ role }}</option>
+                  }
+                </select>
+              </div>
+
+              <button type="submit" class="cb-btn cb-btn--primary w-100 justify-content-center" [disabled]="loading()">
+                <i class="bi bi-person-plus"></i>Créer l'utilisateur
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

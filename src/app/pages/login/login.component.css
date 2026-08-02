@@ -1,0 +1,161 @@
+.cb-auth-page {
+  position: relative;
+  overflow: hidden;
+  background: var(--cb-bg);
+}
+
+.cb-auth-watermark {
+  position: absolute;
+  width: 42%;
+  max-width: 560px;
+  top: 50%;
+  left: 72.5%;
+  transform: translate(-50%, -50%) rotate(8deg);
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cb-auth-hero {
+  width: 45%;
+  background: linear-gradient(145deg, #00321a 0%, #005229 50%, #00843d 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.cb-auth-hero-blob-1 {
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  pointer-events: none;
+}
+
+.cb-auth-hero-blob-2 {
+  position: absolute;
+  bottom: 60px;
+  left: -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(0, 200, 80, 0.08);
+  pointer-events: none;
+}
+
+.cb-auth-hero-watermark {
+  position: absolute;
+  width: 115%;
+  max-width: none;
+  bottom: -8%;
+  right: -18%;
+  opacity: 0.1;
+  transform: rotate(-8deg);
+  pointer-events: none;
+  z-index: 0;
+  filter: grayscale(20%);
+}
+
+.cb-auth-hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.cb-auth-hero-badge {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cb-auth-hero-logo {
+  height: 32px;
+  width: auto;
+}
+
+.cb-auth-hero-brand {
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.cb-auth-hero-title {
+  font-size: 2.6rem;
+  letter-spacing: -1px;
+}
+
+.cb-auth-hero-accent {
+  color: #6effa8;
+}
+
+.cb-auth-hero-subtitle {
+  font-size: 1.05rem;
+  opacity: 0.8;
+  max-width: 320px;
+}
+
+.cb-auth-feature {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.cb-auth-feature-icon-wrap {
+  width: 40px;
+  height: 40px;
+  background: rgba(110, 255, 168, 0.18);
+}
+
+.cb-auth-feature-icon {
+  color: #6effa8;
+  font-size: 1.1rem;
+}
+
+.cb-auth-feature-title {
+  font-size: 0.88rem;
+}
+
+.cb-auth-feature-subtitle {
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+.cb-auth-hero-footer {
+  position: relative;
+  z-index: 1;
+  opacity: 0.75;
+  font-size: 0.75rem;
+}
+
+.cb-auth-form-panel {
+  background: transparent;
+  position: relative;
+}
+
+.cb-auth-form-wrap {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 1;
+}
+
+.cb-auth-mobile-logo {
+  height: 160px;
+  width: auto;
+}
+
+.cb-auth-heading {
+  color: var(--cb-text);
+}
+
+.cb-auth-label {
+  color: var(--cb-text);
+}
+
+.cb-auth-muted {
+  color: var(--cb-muted);
+}
+
+.cb-auth-link {
+  color: var(--cb-green);
+}

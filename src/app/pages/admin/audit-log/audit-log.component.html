@@ -1,0 +1,74 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-gear-fill"></i> Administration
+    </div>
+    <h1 class="cb-hero__title">Journal d'audit</h1>
+    <p class="cb-hero__subtitle">Traçabilité complète : connexions, simulations, rejets BAM, changements de rôle.</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+
+    <app-loading-spinner [loading]="loading()" message="Chargement du journal..." />
+    <app-error-message [message]="errorMessage()" />
+
+    @if (!loading() && entries().length > 0) {
+      <div class="cb-card">
+        <div class="cb-card__header cb-card__header--indigo">
+          <div class="cb-card__header-icon cb-card__header-icon--indigo">
+            <i class="bi bi-journal-text"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">Événements ({{ total() }})</p>
+            <p class="cb-card__header-sub">Les plus récents en premier</p>
+          </div>
+        </div>
+        <div class="cb-card__body cb-card__body--flush">
+          <div class="table-responsive">
+            <table class="cb-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Utilisateur</th>
+                  <th>Action</th>
+                  <th>IP</th>
+                  <th>Détails</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (entry of entries(); track entry.id) {
+                  <tr>
+                    <td class="text-nowrap">{{ entry.performedAt }}</td>
+                    <td>{{ entry.username ?? '-' }}</td>
+                    <td><span class="cb-badge cb-badge--indigo">{{ entry.action }}</span></td>
+                    <td>{{ entry.ipAddress ?? '-' }}</td>
+                    <td class="small cb-details-cell">{{ entry.details ?? '-' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between p-3 border-top">
+          <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button" [disabled]="currentPage() <= 1" (click)="previousPage()">
+            <i class="bi bi-chevron-left"></i>Précédent
+          </button>
+          <span class="small cb-muted-text">Page {{ currentPage() }} / {{ lastPage() }}</span>
+          <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button" [disabled]="currentPage() >= lastPage()" (click)="nextPage()">
+            Suivant<i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    } @else if (!loading() && entries().length === 0) {
+      <div class="cb-card cb-empty-card">
+        <div class="cb-empty">
+          <div class="cb-empty__icon"><i class="bi bi-journal-x"></i></div>
+          <p class="cb-empty__title">Aucun événement enregistré</p>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

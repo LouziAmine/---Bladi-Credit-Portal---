@@ -1,0 +1,240 @@
+.cb-muted-text {
+  color: var(--cb-muted);
+}
+
+.cb-toggle-switch {
+  width: 2.4em;
+  height: 1.25em;
+  cursor: pointer;
+}
+
+.cb-schedule-table-wrap {
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.cb-card-header-clickable {
+  cursor: pointer;
+}
+
+.cb-empty-card {
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cb-why {
+  padding: 3.5rem 0 3rem;
+  background: var(--cb-surface);
+  border-top: 1px solid var(--cb-border);
+}
+
+.cb-why__header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.cb-why__label {
+  display: inline-block;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--cb-green);
+  background: var(--cb-green-light);
+  border: 1px solid var(--cb-green-border);
+  border-radius: var(--cb-radius-pill);
+  padding: .25em .9em;
+  margin-bottom: .75rem;
+}
+
+.cb-why__title {
+  font-size: clamp(1.3rem, 3vw, 1.85rem);
+  font-weight: 700;
+  color: var(--cb-text);
+  margin: 0;
+}
+
+.cb-why-card {
+  background: var(--cb-surface);
+  border: 1px solid var(--cb-border);
+  border-radius: var(--cb-radius);
+  box-shadow: var(--cb-shadow);
+  padding: 2rem 1.75rem 1.75rem;
+  height: 100%;
+  position: relative;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.cb-why-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--cb-shadow-md);
+}
+
+.cb-why-card__num {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--cb-green-light);
+  color: var(--cb-green);
+  font-size: .8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cb-why-card__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: var(--cb-green);
+  color: #fff;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.cb-why-card__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cb-text);
+  margin-bottom: .65rem;
+}
+
+.cb-why-card__text {
+  font-size: .875rem;
+  color: var(--cb-text-light);
+  line-height: 1.65;
+  margin: 0;
+}
+
+.cb-steps {
+  padding: 3.5rem 0 4rem;
+  background: linear-gradient(135deg, var(--cb-green-dark) 0%, var(--cb-green) 65%, var(--cb-green-mid) 100%);
+}
+
+.cb-steps .cb-why__label {
+  color: #fff;
+  background: rgba(255,255,255,.15);
+  border-color: rgba(255,255,255,.3);
+}
+
+.cb-steps .cb-why__title {
+  color: #fff;
+}
+
+.cb-steps__track {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.cb-step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  flex: 1;
+  min-width: 140px;
+  max-width: 180px;
+}
+
+.cb-step-item__circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  border: 2px solid rgba(255,255,255,.5);
+  color: #fff;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  transition: background .2s ease, transform .2s ease;
+}
+
+.cb-step-item:hover .cb-step-item__circle {
+  background: rgba(255,255,255,.28);
+  transform: scale(1.08);
+}
+
+.cb-step-item__circle--accent {
+  background: #fff;
+  color: var(--cb-green);
+  border-color: #fff;
+}
+
+.cb-step-item:hover .cb-step-item__circle--accent {
+  background: #fff;
+  transform: scale(1.08);
+}
+
+.cb-step-item__connector {
+  position: absolute;
+  top: 31px;
+  left: calc(50% + 32px);
+  right: calc(-50% + 32px);
+  height: 2px;
+  background: rgba(255,255,255,.35);
+  z-index: 0;
+}
+
+.cb-step-item--last .cb-step-item__connector {
+  display: none;
+}
+
+.cb-step-item__num {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.65);
+  margin: 1rem 0 .3rem;
+}
+
+.cb-step-item__label {
+  font-size: .88rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.45;
+  margin: 0;
+  padding: 0 .25rem;
+}
+
+@media (max-width: 575px) {
+  .cb-steps__track {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .cb-step-item {
+    flex-direction: row;
+    text-align: left;
+    gap: 1.25rem;
+    min-width: unset;
+    max-width: 320px;
+    width: 100%;
+  }
+
+  .cb-step-item__connector {
+    display: none;
+  }
+
+  .cb-step-item__num,
+  .cb-step-item__label {
+    margin: 0;
+  }
+}

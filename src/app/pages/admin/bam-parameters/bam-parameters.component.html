@@ -1,0 +1,175 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-gear-fill"></i> Administration
+    </div>
+    <h1 class="cb-hero__title">Paramètres BAM</h1>
+    <p class="cb-hero__subtitle">Gérez les ratios et frais appliqués aux simulations de crédit.</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+
+    <app-loading-spinner [loading]="loadingList()" message="Chargement des paramètres..." />
+    <app-error-message [message]="errorMessage()" />
+
+    @if (!loadingList() && parameters().length > 0) {
+      <div class="cb-card mb-4">
+        <div class="cb-card__header cb-card__header--indigo">
+          <div class="cb-card__header-icon cb-card__header-icon--indigo">
+            <i class="bi bi-table"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">Configurations existantes</p>
+            <p class="cb-card__header-sub">Sélectionnez un enregistrement pour le modifier</p>
+          </div>
+        </div>
+        <div class="cb-card__body cb-card__body--flush">
+          <div class="table-responsive">
+            <table class="cb-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Frais dossier (%)</th>
+                  <th>Enregistrement (%)</th>
+                  <th>Conservation (%)</th>
+                  <th>Notaire (%)</th>
+                  <th>LTV max (%)</th>
+                  <th>Endettement max (%)</th>
+                  <th>Âge max maturité</th>
+                  <th>ADI mensuel (%)</th>
+                  <th>Statut</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (param of parameters(); track param.id) {
+                  <tr [class.cb-table__row--active]="selectedId() === param.id">
+                    <td><span class="fw-semibold">#{{ param.id }}</span></td>
+                    <td>{{ param.processingFeesRatio }}</td>
+                    <td>{{ param.registrationFeeRatio }}</td>
+                    <td>{{ param.landConservationRatio }}</td>
+                    <td>{{ param.notaryFeeRatio }}</td>
+                    <td>{{ param.ltvRatio }}</td>
+                    <td>{{ param.maxDebtRatio }}</td>
+                    <td>{{ param.maxAgeAtMaturity }}</td>
+                    <td>{{ param.adiMonthlyRate }}</td>
+                    <td>
+                      @if (param.active) {
+                        <span class="cb-badge cb-badge--green"><i class="bi bi-check-circle-fill"></i>Actif</span>
+                      } @else {
+                        <span class="cb-badge cb-badge--gray"><i class="bi bi-dash-circle"></i>Inactif</span>
+                      }
+                    </td>
+                    <td>
+                      <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button" (click)="selectRecord(param)">
+                        <i class="bi bi-pencil"></i>Modifier
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (selectedId() !== null) {
+      <div class="cb-card cb-animate">
+        <div class="cb-card__header cb-card__header--amber">
+          <div class="cb-card__header-icon cb-card__header-icon--amber">
+            <i class="bi bi-pencil-square"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">Modifier l'enregistrement #{{ selectedId() }}</p>
+            <p class="cb-card__header-sub">Les modifications s'appliquent aux nouvelles simulations</p>
+          </div>
+        </div>
+        <div class="cb-card__body">
+          <app-loading-spinner [loading]="loading()" message="Mise à jour en cours..." />
+
+          @if (successMessage()) {
+            <div class="cb-alert cb-alert--success">
+              <i class="bi bi-check-circle-fill"></i>
+              <span>{{ successMessage() }}</span>
+            </div>
+          }
+
+          <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="cb-label" for="processingFeesRatio"><i class="bi bi-percent"></i>Ratio frais dossier</label>
+                <input id="processingFeesRatio" type="number" class="form-control" formControlName="processingFeesRatio" step="0.001"/>
+              </div>
+              <div class="col-md-4">
+                <label class="cb-label" for="minProcessingFees"><i class="bi bi-arrow-down-circle"></i>Min frais dossier</label>
+                <div class="input-group">
+                  <input id="minProcessingFees" type="number" class="form-control" formControlName="minProcessingFees"/>
+                  <span class="input-group-text">MAD</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="cb-label" for="maxProcessingFees"><i class="bi bi-arrow-up-circle"></i>Max frais dossier</label>
+                <div class="input-group">
+                  <input id="maxProcessingFees" type="number" class="form-control" formControlName="maxProcessingFees"/>
+                  <span class="input-group-text">MAD</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="cb-label" for="registrationFeeRatio"><i class="bi bi-building"></i>Ratio enregistrement</label>
+                <input id="registrationFeeRatio" type="number" class="form-control" formControlName="registrationFeeRatio" step="0.001"/>
+              </div>
+              <div class="col-md-4">
+                <label class="cb-label" for="landConservationRatio"><i class="bi bi-map"></i>Ratio conservation foncière</label>
+                <input id="landConservationRatio" type="number" class="form-control" formControlName="landConservationRatio" step="0.001"/>
+              </div>
+              <div class="col-md-4">
+                <label class="cb-label" for="notaryFeeRatio"><i class="bi bi-person-badge"></i>Ratio notaire</label>
+                <input id="notaryFeeRatio" type="number" class="form-control" formControlName="notaryFeeRatio" step="0.001"/>
+              </div>
+              <div class="col-md-4">
+                <label class="cb-label" for="ltvRatio"><i class="bi bi-house-lock"></i>Ratio LTV max (dépôt min. 10%)</label>
+                <input id="ltvRatio" type="number" class="form-control" formControlName="ltvRatio" step="0.0001" max="0.90"/>
+              </div>
+              <div class="col-md-4">
+                <label class="cb-label" for="maxDebtRatio"><i class="bi bi-graph-down"></i>Taux d'endettement max</label>
+                <input id="maxDebtRatio" type="number" class="form-control" formControlName="maxDebtRatio" step="0.0001" max="0.40"/>
+              </div>
+              <div class="col-md-4">
+                <label class="cb-label" for="maxAgeAtMaturity"><i class="bi bi-hourglass-split"></i>Âge max à maturité</label>
+                <input id="maxAgeAtMaturity" type="number" class="form-control" formControlName="maxAgeAtMaturity" step="1" max="85"/>
+              </div>
+              <div class="col-md-4">
+                <label class="cb-label" for="adiMonthlyRate"><i class="bi bi-heart-pulse"></i>Taux ADI mensuel (assurance)</label>
+                <input id="adiMonthlyRate" type="number" class="form-control" formControlName="adiMonthlyRate" step="0.0001" max="0.001"/>
+              </div>
+              <div class="col-12">
+                <div class="cb-toggle-row">
+                  <div class="form-check form-switch mb-0">
+                    <input id="active" type="checkbox" class="form-check-input cb-toggle-switch" role="switch"
+                      formControlName="active"/>
+                  </div>
+                  <label for="active" class="mb-0">
+                    <i class="bi bi-lightning-charge-fill me-1"></i>Définir comme configuration active
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+              <button type="submit" class="cb-btn cb-btn--amber" [disabled]="loading()">
+                <i class="bi bi-floppy"></i>Mettre à jour
+              </button>
+              <button type="button" class="cb-btn cb-btn--ghost" (click)="clearSelection()">
+                <i class="bi bi-x-lg"></i>Annuler
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

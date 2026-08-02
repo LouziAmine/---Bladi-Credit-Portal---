@@ -1,0 +1,22 @@
+footer {
+  font-size: 0.875rem;
+}
+
+.cb-footer {
+  background: var(--cb-green-dark);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.cb-footer-logo-wrap {
+  background: #fff;
+  padding: 4px 8px;
+}
+
+.cb-footer-logo-img {
+  height: 30px;
+  width: auto;
+}
+
+.cb-footer-muted {
+  color: rgba(255, 255, 255, 0.75);
+}

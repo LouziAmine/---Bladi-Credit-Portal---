@@ -1,0 +1,42 @@
+env:
+  contexts:
+    - name: credit-bladi-ui
+      urls:
+        - "http://host.docker.internal:4300"
+  parameters:
+    failOnError: true
+    progressToStdout: true
+
+jobs:
+  - type: passiveScan-config
+    parameters:
+      maxAlertsPerRule: 10
+
+  - type: spiderAjax
+    parameters:
+      context: credit-bladi-ui
+      url: "http://host.docker.internal:4300"
+      maxDuration: 5
+
+  - type: passiveScan-wait
+    parameters:
+      maxDuration: 5
+
+  - type: activeScan
+    parameters:
+      context: credit-bladi-ui
+    policyDefinition:
+      defaultStrength: "medium"
+      defaultThreshold: "medium"
+
+  - type: report
+    parameters:
+      template: "traditional-html"
+      reportDir: "/zap/wrk"
+      reportFile: "zap-report"
+      reportTitle: "Credit Bladi UI — ASVS DAST report"
+
+  - type: exitStatus
+    parameters:
+      errorLevel: "High"
+      warnLevel: "Medium"
