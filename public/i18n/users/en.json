@@ -1,0 +1,43 @@
+{
+  "users": {
+    "title": "User management",
+    "subtitle": "View existing accounts, manage roles and create new access.",
+    "loading": "Loading users...",
+    "list": {
+      "title": "Existing accounts",
+      "subtitle": "Toggle a user's role in one click"
+    },
+    "col": {
+      "fullName": "Full name",
+      "username": "Username",
+      "email": "Email",
+      "role": "Role",
+      "profile": "Profile (grade / team)"
+    },
+    "you": "You",
+    "noGrade": "No grade",
+    "noTeam": "No team",
+    "none": "None",
+    "cannotModifyOwnRole": "A manager cannot modify their own role",
+    "cannotModifyOwnProfile": "A manager cannot change their own grade, team or e-mail",
+    "demoteToClient": "Demote to CLIENT",
+    "promoteToManager": "Promote to MANAGER",
+    "form": {
+      "title": "Create a user",
+      "managerRequired": "MANAGER role required",
+      "creating": "Creating...",
+      "fullName": "Full name",
+      "email": "Email",
+      "emailInvalid": "The email address is not valid.",
+      "role": "Role",
+      "grade": "Grade",
+      "team": "Team",
+      "submit": "Create user"
+    },
+    "createSuccess": "User \"{{ username }}\" created successfully.",
+    "loadErrorFallback": "Unable to load users.",
+    "roleChangeErrorFallback": "Error while changing the user's role.",
+    "profileUpdateErrorFallback": "Error while updating the profile.",
+    "createErrorFallback": "Error while creating the user."
+  }
+}

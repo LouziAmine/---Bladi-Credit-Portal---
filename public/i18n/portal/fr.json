@@ -1,0 +1,82 @@
+{
+  "portal": {
+    "eyebrow": "Espace client",
+    "role": {
+      "RESPONSABLE": "Responsable",
+      "DELEGUE": "Délégué"
+    },
+    "status": {
+      "APPROVED": "Approuvé",
+      "PENDING": "En attente",
+      "REJECTED": "Rejeté",
+      "REVOKED": "Révoqué"
+    },
+    "col": {
+      "enterpriseId": "Entreprise",
+      "role": "Rôle",
+      "requestedOn": "Demandé le",
+      "name": "Nom",
+      "sector": "Secteur"
+    },
+    "claim": {
+      "title": "Revendiquer une entreprise",
+      "subtitle": "Demandez l'accès au portefeuille de votre entreprise avec son numéro d'immatriculation (RC/ICE)",
+      "submitting": "Envoi en cours...",
+      "registrationNumber": "Numéro d'immatriculation (RC/ICE)",
+      "role": "Votre rôle",
+      "submit": "Envoyer la demande",
+      "success": "Votre demande a été envoyée. Elle est en attente de validation par un manager.",
+      "errorFallback": "Erreur lors de l'envoi de la demande."
+    },
+    "myLinks": {
+      "title": "Mes demandes",
+      "subtitle": "Historique de vos demandes de liaison, quel que soit leur statut",
+      "loading": "Chargement de vos demandes...",
+      "loadErrorFallback": "Impossible de charger vos demandes.",
+      "empty": "Vous n'avez encore fait aucune demande"
+    },
+    "myPortfolio": {
+      "title": "Mon portefeuille",
+      "subtitle": "Vos crédits immobiliers et les entreprises dont vous suivez l'avancement des crédits.",
+      "cardSubtitle": "Entreprises pour lesquelles votre accès est approuvé",
+      "loading": "Chargement de votre portefeuille...",
+      "loadErrorFallback": "Impossible de charger votre portefeuille.",
+      "empty": "Aucune entreprise approuvée pour le moment",
+      "viewDemands": "Voir les dossiers"
+    },
+    "demands": {
+      "title": "Dossiers de l'entreprise",
+      "subtitle": "Suivi des dossiers de crédit de cette entreprise.",
+      "back": "Retour à mon portefeuille",
+      "loading": "Chargement des dossiers...",
+      "loadErrorFallback": "Impossible de charger les dossiers de cette entreprise.",
+      "listTitle": "Dossiers",
+      "col": {
+        "reference": "Référence",
+        "type": "Type",
+        "amount": "Montant",
+        "duration": "Durée (mois)",
+        "rate": "Taux",
+        "createdOn": "Créé le"
+      },
+      "status": {
+        "rejected": "Rejeté",
+        "completed": "Terminé",
+        "inProgress": "En cours"
+      },
+      "documents": "Documents",
+      "empty": "Aucun dossier pour cette entreprise"
+    },
+    "mortgage": {
+      "title": "Mes crédits immobiliers",
+      "subtitle": "Vos dossiers de crédit immobilier : suivi, échéancier et déclaration de vos paiements.",
+      "loading": "Chargement de vos crédits immobiliers...",
+      "loadErrorFallback": "Impossible de charger vos crédits immobiliers.",
+      "open": "Ouvrir le dossier"
+    },
+    "dossier": {
+      "title": "Mon dossier",
+      "subtitle": "Suivez votre dossier, fournissez les documents demandés et déclarez vos paiements."
+    }
+  }
+}

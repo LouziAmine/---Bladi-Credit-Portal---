@@ -1,0 +1,48 @@
+{
+  "bamVerification": {
+    "title": "BAM Verification (simulation)",
+    "subtitle": "SCIP (unpaid cheques) + Centrale des Risques (credit exposure): simulated data, MVP only",
+    "identifiant": "Identifier (ICE or CIN)",
+    "identifiantPlaceholder": "e.g. 001234567000089",
+    "scenario": "Demo scenario (optional)",
+    "scenarioAuto": "Automatic (weighted draw)",
+    "scenarios": {
+      "CLEAR": "Clean",
+      "MINOR_INCIDENT": "Minor regularized incident",
+      "ACTIVE_INCIDENT": "Active incident",
+      "PERSONAL_EXPOSURE_DETECTED": "Personal exposure detected",
+      "MULTIPLE_EXPOSURES": "Multiple exposures",
+      "CONSOLIDATED_GROUP_EXPOSURE": "Consolidated group exposure",
+      "REQUIRES_MANUAL_REVIEW": "Needs manual review"
+    },
+    "submit": "Verify",
+    "loading": "Verifying...",
+    "errorFallback": "Verification failed.",
+    "mockBadge": "SIMULATION",
+    "recommandation": "Simulated recommendation",
+    "recommandations": {
+      "FAVORABLE": "Favorable",
+      "TO_REVIEW": "Needs review",
+      "UNFAVORABLE": "Unfavorable"
+    },
+    "identifiantVerifie": "Verified identifier",
+    "timestamp": "Verified on",
+    "scip": {
+      "title": "SCIP: unpaid cheque incidents",
+      "ras": "Clean",
+      "incidentDetecte": "Incident detected",
+      "regularise": "Regularized",
+      "nonRegularise": "Not regularized"
+    },
+    "centraleRisques": {
+      "title": "Centrale des Risques: credit exposure",
+      "ras": "Clean",
+      "encoursDetecte": "Exposure detected"
+    },
+    "repaymentStatus": {
+      "CURRENT": "Current",
+      "OVERDUE": "Overdue",
+      "IN_LITIGATION": "In litigation"
+    }
+  }
+}

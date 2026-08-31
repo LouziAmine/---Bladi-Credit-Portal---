@@ -1,0 +1,26 @@
+<div class="cb-card mb-4">
+  <div class="cb-card__header cb-card__header--indigo">
+    <div class="cb-card__header-icon cb-card__header-icon--indigo">
+      <i class="bi bi-chat-left-text"></i>
+    </div>
+    <div>
+      <p class="cb-card__header-title">{{ 'demandDetail.comments.title' | translate }}</p>
+      <p class="cb-card__header-sub">
+        {{ comments().length }} {{ 'demandDetail.comments.count' | translate }}
+      </p>
+    </div>
+  </div>
+  <div class="cb-card__body">
+    <ul class="list-unstyled d-flex flex-column gap-3 mb-0">
+      @for (item of comments(); track item.id) {
+        <li class="border-bottom pb-3">
+          <div class="d-flex justify-content-between align-items-baseline flex-wrap gap-2">
+            <span class="fw-semibold">{{ item.username }}</span>
+            <span class="small cb-muted-text">{{ item.stepName }} · {{ item.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <p class="mb-0 mt-1">{{ item.comment }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</div>

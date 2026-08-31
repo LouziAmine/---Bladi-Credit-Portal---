@@ -1,0 +1,37 @@
+{
+  "enterprises": {
+    "title": "Entreprises",
+    "subtitle": "Clients entreprise et leur portefeuille de dossiers de crédit.",
+    "form": {
+      "title": "Nouvelle entreprise",
+      "subtitle": "Enregistrez un client entreprise pour lui rattacher des dossiers",
+      "creating": "Création en cours...",
+      "name": "Nom de l'entreprise",
+      "sector": "Secteur d'activité",
+      "noSector": "Aucun secteur enregistré, ",
+      "addOne": "ajoutez-en un",
+      "first": "d'abord.",
+      "submit": "Créer",
+      "registrationNumber": "Numéro RC / ICE",
+      "registrationNumberPlaceholder": "RC-45210-CASABLANCA",
+      "registrationNumberHint": "Permet au client de revendiquer l’accès à ce portefeuille depuis son espace."
+    },
+    "loading": "Chargement des entreprises...",
+    "list": {
+      "title": "Entreprises",
+      "subtitle": "Consultez le portefeuille de dossiers de chaque entreprise"
+    },
+    "col": {
+      "name": "Nom",
+      "sector": "Secteur",
+      "createdOn": "Créée le",
+      "registrationNumber": "RC / ICE"
+    },
+    "portfolio": "Portefeuille",
+    "access": "Accès portefeuille",
+    "empty": "Aucune entreprise enregistrée",
+    "createSuccess": "Entreprise créée avec succès.",
+    "loadErrorFallback": "Impossible de charger les entreprises. Serveur indisponible.",
+    "createErrorFallback": "Erreur lors de la création."
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "mortgageCredit": {
+    "hero": {
+      "eyebrow": "قرض عقاري",
+      "title": "محاكي القرض العقاري",
+      "subtitle": "احسب قسطك الشهري في الوقت الفعلي وفق معايير بنك المغرب المضبوطة."
+    },
+    "form": {
+      "title": "معايير القرض",
+      "subtitle": "املأ الحقول أدناه",
+      "calculating": "جارٍ الحساب...",
+      "applicantName": "الاسم الكامل",
+      "applicantNameRequired": "الاسم مطلوب.",
+      "email": "البريد الإلكتروني للتواصل",
+      "emailRequired": "البريد الإلكتروني مطلوب.",
+      "emailInvalid": "بريد إلكتروني غير صالح.",
+      "phone": "هاتف التواصل",
+      "phoneRequired": "الهاتف مطلوب.",
+      "phoneInvalid": "رقم هاتف مغربي غير صالح.",
+      "productType": "نوع التمويل",
+      "productConventional": "تقليدي",
+      "productMourabaha": "مرابحة",
+      "productMourabahaHint": "تمويل تشاركي (مرابحة) - هامش ربح + ضريبة القيمة المضافة، بدون فوائد.",
+      "productConventionalHint": "قرض تقليدي بمعدل فائدة.",
+      "amount": "مبلغ القرض",
+      "amountMin": "70,000 درهم",
+      "amountMax": "30,000,000 درهم",
+      "duration": "مدة السداد",
+      "months": "شهر",
+      "durationMin": "12 شهرًا (سنة واحدة)",
+      "durationMax": "300 شهر (25 سنة)",
+      "cspCode": "الفئة السوسيو-مهنية",
+      "selectPlaceholder": "اختر...",
+      "cspRequired": "الفئة السوسيو-مهنية مطلوبة.",
+      "age": "عمر المقترض",
+      "years": "سنة",
+      "ageRequired": "العمر مطلوب.",
+      "ageRange": "يجب أن يكون بين 18 و74 سنة.",
+      "propertyValue": "قيمة العقار",
+      "propertyValueRequired": "قيمة العقار مطلوبة.",
+      "propertyValueRange": "بين 80,000 و50,000,000 درهم.",
+      "monthlyIncome": "الدخل الشهري الصافي",
+      "monthlyIncomeRequired": "الدخل الشهري مطلوب.",
+      "monthlyIncomeRange": "بين 1,000 و5,000,000 درهم.",
+      "nationalityCode": "الجنسية (رمز ISO)",
+      "moroccanResident": "مقيم بالمغرب",
+      "coBorrower": "قرض مع مقترض مشارك",
+      "coBorrowerMonthlyIncome": "الدخل الشهري للمقترض المشارك",
+      "coBorrowerHint": "يُضاف إلى دخلك لاحتساب نسبة المديونية (يضاعف تأمين ADI الإلزامي).",
+      "submit": "احسب المحاكاة",
+      "resetAria": "إعادة تعيين النموذج"
+    },
+    "csp": {
+      "SALA": "أجير (SALA)",
+      "FONC": "موظف عمومي (FONC)",
+      "RETR": "متقاعد (RETR)",
+      "PROF": "مهنة حرة (PROF)",
+      "INDE": "مستقل (INDE)"
+    },
+    "results": {
+      "title": "النتائج",
+      "bamCompliant": "معايير بنك المغرب مطبقة",
+      "caseCreated": "تم إنشاء الملف: المرجع",
+      "caseCreatedSuffix": "قيد المتابعة عبر مسار المعالجة.",
+      "taeg": "المعدل السنوي الفعلي الإجمالي المقدر:",
+      "to": "إلى",
+      "annualRate": "المعدل السنوي",
+      "allInMonthlyPayment": "القسط الشهري شاملاً كل شيء",
+      "totalInterest": "إجمالي الفوائد",
+      "totalCost": "التكلفة الإجمالية",
+      "adiInsurance": "تأمين ADI (شهري، وفاة/عجز)",
+      "mourabahaRate": "معدل الربح (مرابحة)",
+      "installmentTtc": "القسط شامل الضريبة",
+      "marginTtc": "الهامش شامل الضريبة",
+      "includingVat": "منها ضريبة القيمة المضافة",
+      "takafulInsurance": "مساهمة التكافل (شهرية، تأمين تعاوني إسلامي)"
+    },
+    "fees": {
+      "title": "تفاصيل الرسوم",
+      "subtitle": "الرسوم المرتبطة بملفك",
+      "registration": "رسوم التسجيل",
+      "landConservation": "المحافظة العقارية",
+      "notary": "أتعاب التوثيق",
+      "processing": "رسوم الملف",
+      "total": "إجمالي الرسوم"
+    },
+    "schedule": {
+      "title": "جدول الاستهلاك",
+      "installments": "دفعة",
+      "clickToToggle": "انقر لـ",
+      "hide": "إخفاء",
+      "show": "إظهار",
+      "col": {
+        "num": "رقم",
+        "beginningBalance": "الرصيد الأولي",
+        "interest": "الفوائد",
+        "marginHt": "الهامش قبل الضريبة",
+        "vat": "ضريبة القيمة المضافة",
+        "principal": "أصل الدين",
+        "insurance": "التأمين",
+        "installment": "القسط",
+        "endingBalance": "الرصيد النهائي"
+      }
+    },
+    "empty": {
+      "title": "ستظهر محاكاتك هنا",
+      "subtitle": "املأ النموذج وانقر على \"احسب المحاكاة\"."
+    },
+    "why": {
+      "label": "نقاط قوتنا",
+      "title": "لماذا تختارنا؟",
+      "digital": {
+        "title": "مسار مبسّط ورقمي 100%",
+        "text": "قدّم طلب قرضك عبر الإنترنت واحصل على تمويلك دون التنقل إلى وكالة."
+      },
+      "expertise": {
+        "title": "خبرة عقارية",
+        "text": "يتمتع فريقنا بمعرفة عميقة بالسوق بفضل تعاون وثيق مع الفاعلين في القطاع."
+      },
+      "conventions": {
+        "title": "اتفاقيات متعددة",
+        "text": "العديد من الاتفاقيات الموقعة مع مؤسسات عمومية وخاصة كبرى لتسهيل حصولك على السكن."
+      }
+    },
+    "process": {
+      "label": "المسار",
+      "title": "موّل عقارك في 5 خطوات",
+      "step1": {
+        "num": "الخطوة 1",
+        "label": "أحاكي<br>قرضي"
+      },
+      "step2": {
+        "num": "الخطوة 2",
+        "label": "أدخل إلى<br>مساحتي الخاصة"
+      },
+      "step3": {
+        "num": "الخطوة 3",
+        "label": "أطلب<br>قرضي عبر الإنترنت"
+      },
+      "step4": {
+        "num": "الخطوة 4",
+        "label": "أتابع وأكمل<br>ملف قرضي"
+      },
+      "step5": {
+        "num": "الخطوة 5",
+        "label": "أحصل على<br>قرضي"
+      }
+    },
+    "errorFallback": "خطأ أثناء المحاكاة."
+  }
+}

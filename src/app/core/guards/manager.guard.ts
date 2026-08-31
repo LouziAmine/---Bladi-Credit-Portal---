@@ -10,5 +10,5 @@ export const managerGuard: CanActivateFn = () => {
     return true;
   }
 
-  return router.createUrlTree(['/simulation']);
+  return router.createUrlTree(['/mortgage-credit']);
 };

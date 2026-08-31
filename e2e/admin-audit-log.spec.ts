@@ -22,7 +22,7 @@ test.describe('Admin - audit log', () => {
   });
 
   test('pagination controls stay consistent with the current/last page state', async ({ page }) => {
-    await expect(page.getByText(/^Page \d+ \/ \d+$/)).toBeVisible();
+    await expect(page.getByText(/Page \d+ \/ \d+/)).toBeVisible();
 
     const previous = page.getByRole('button', { name: /précédent/i });
     const next = page.getByRole('button', { name: /suivant/i });
@@ -32,11 +32,11 @@ test.describe('Admin - audit log', () => {
 
     if (await next.isEnabled()) {
       await next.click();
-      await expect(page.getByText(/^Page 2 \//)).toBeVisible();
+      await expect(page.getByText(/Page 2 \//)).toBeVisible();
       await expect(previous).toBeEnabled();
 
       await previous.click();
-      await expect(page.getByText(/^Page 1 \//)).toBeVisible();
+      await expect(page.getByText(/Page 1 \//)).toBeVisible();
     }
   });
 });

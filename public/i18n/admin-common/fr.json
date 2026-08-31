@@ -1,0 +1,26 @@
+{
+  "adminCommon": {
+    "previous": "Précédent",
+    "next": "Suivant",
+    "page": "Page",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "actions": "Actions",
+    "edit": "Modifier",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "add": "Ajouter",
+    "yes": "Oui",
+    "no": "Non",
+    "existingConfigs": "Configurations existantes",
+    "selectToEdit": "Sélectionnez un enregistrement pour le modifier",
+    "editRecord": "Modifier l'enregistrement",
+    "updating": "Mise à jour en cours...",
+    "update": "Mettre à jour",
+    "setActive": "Définir comme configuration active",
+    "status": "Statut",
+    "updateSuccess": "Mise à jour effectuée avec succès.",
+    "updateErrorFallback": "Erreur lors de la mise à jour."
+  }
+}

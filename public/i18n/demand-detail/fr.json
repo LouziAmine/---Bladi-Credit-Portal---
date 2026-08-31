@@ -1,0 +1,167 @@
+{
+  "demandDetail": {
+    "backToCases": "Retour aux dossiers",
+    "loading": "Chargement du dossier...",
+    "case": "Dossier",
+    "enterpriseCategory": "Catégorie d'entreprise",
+    "contact": "Contact",
+    "initialSimulation": {
+      "title": "Simulation initiale du client",
+      "subtitle": "Chiffres tels que simulés à la création du dossier: conservés même après un changement de taux/montant/durée"
+    },
+    "pipeline": {
+      "title": "Pipeline de traitement",
+      "stepsTotal": "étapes au total"
+    },
+    "step": {
+      "final": "Étape finale",
+      "current": "Étape actuelle"
+    },
+    "requiredProfile": "Profil requis",
+    "assignedTo": "Assigné à",
+    "assignedBy": "Affecté par",
+    "unassigned": "Non affecté (pool équipe)",
+    "enteredOn": "Entré le",
+    "actionToPerform": "Action à effectuer",
+    "assignReassign": "Affecter / réaffecter",
+    "classifyCase": "Classifier le dossier",
+    "advanceReturnCase": "Avancer / retourner le dossier",
+    "addRemark": "Ajouter une remarque",
+    "assigning": "Affectation en cours...",
+    "savingComment": "Enregistrement de la remarque...",
+    "classifying": "Classification en cours...",
+    "advancing": "Avancement en cours...",
+    "assignReassignTo": "Affecter / réaffecter à",
+    "selectEligibleUser": "Sélectionner un utilisateur éligible",
+    "noEligibleUser": "Aucun utilisateur éligible (grade/équipe requis non pourvu).",
+    "remark": "Remarque",
+    "commentHint": "N'avance ni n'affecte le dossier: visible dans les commentaires ci-dessous.",
+    "classify": {
+      "legend": "Validation initiale avec le client",
+      "legendHint": "Le chargé d'affaires contacte le client pour confirmer que la demande est réelle avant de la rattacher à son portefeuille.",
+      "searchingMatch": "Recherche d'une entreprise existante correspondant à",
+      "alreadyExists": "Cette entreprise existe déjà :",
+      "useThisEnterprise": "Utiliser cette entreprise",
+      "noMatch": "Aucune entreprise existante ne correspond à",
+      "createAndAttach": "Créer et rattacher",
+      "clientEnterprise": "Entreprise cliente",
+      "selectEnterprise": "Sélectionner une entreprise",
+      "createOne": "créez-en une",
+      "initiationOwner": "Responsable de l'initiation",
+      "clientRib": "RIB du client",
+      "clientRibPlaceholder": "ex : 230 780 0123456789012345 67",
+      "clientRibHint": "Optionnel: pré-remplira le RIB proposé au client quand il déclarera un versement (il pourra toujours le modifier)."
+    },
+    "note": "Note",
+    "advance": {
+      "assignedToOther1": "Cette étape est affectée à",
+      "assignedToOther2": "seule cette personne peut l'avancer ou la retourner. Passe en mode « Affecter / réaffecter » pour te l'affecter d'abord.",
+      "newStepOwner": "Responsable de la nouvelle étape",
+      "mandatory": "Obligatoire : désigne qui prend en charge le dossier à",
+      "previousStep": "l'étape précédente",
+      "nextStep": "l'étape suivante",
+      "lastStepHint": "Dernière étape : le dossier sera clôturé, aucun responsable à désigner.",
+      "rateDecision": "Décision sur le taux d'intérêt",
+      "rateDecisionHint": "Conserver garde le taux actuel du dossier. Saisie manuelle applique une valeur choisie par le chargé du profil requis à cette étape.",
+      "noRateYet": "Ce dossier n'a pas encore de taux applicable connu: « Conserver » est indisponible ; choisissez « Saisie manuelle ».",
+      "manualRate": "Taux saisi manuellement (%)",
+      "amountDecision": "Décision sur le montant",
+      "amountDecisionHint": "Une saisie manuelle revérifie automatiquement le ratio de financement (montant/CA), la couverture de garantie et le ratio d'endettement du client: le changement est refusé s'il dépasse ces limites. Seul le profil requis à cette étape peut avancer le dossier.",
+      "manualAmount": "Montant saisi manuellement (MAD)",
+      "durationDecision": "Décision sur la durée",
+      "durationDecisionHint": "Une saisie manuelle doit rester entre 12 et 300 mois. Comme le montant, elle influence le ratio d'endettement revérifié à chaque changement.",
+      "manualDuration": "Durée saisie manuellement (mois)",
+      "decision": "Décision",
+      "onlyDecisionStep": "Disponible uniquement à l'étape Décision comité.",
+      "committeeType": "Type de comité",
+      "onlyCommitteeProgStep": "Disponible uniquement à l'étape Programmation du comité.",
+      "insurance": {
+        "title": "Assurances",
+        "adiSubscribed": "ADI (assurance décès-invalidité) de la caution souscrite",
+        "adiHint": "Obligatoire pour avancer le dossier: couvre la caution/dirigeant en cas de décès ou d'invalidité (BAM/ACAPS).",
+        "coverageType": "Type de couverture",
+        "damageSubscribed": "Assurance dommages / multirisque sur les garanties réelles souscrite",
+        "damageHint": "Obligatoire car ce dossier comporte des garanties réelles (nantissement/hypothèque/gage): la police doit désigner la banque comme bénéficiaire.",
+        "onlyInsuranceStep": "Disponible uniquement à l'étape Souscription et validation des assurances."
+      },
+      "returnReason": "Motif de retour",
+      "noPreviousStep": "Aucune étape précédente : le retour n'est pas possible depuis la première étape.",
+      "returnHint": "Renseigné, le dossier est renvoyé à l'étape précédente au lieu d'avancer.",
+      "reserves": "Réserves",
+      "recommendations": "Recommandations"
+    },
+    "assign": "Affecter",
+    "addRemarkSubmit": "Ajouter la remarque",
+    "returnCase": "Retourner le dossier",
+    "advanceCase": "Avancer le dossier",
+    "history": {
+      "title": "Historique",
+      "stepsCount": "étape(s) parcourue(s)",
+      "col": {
+        "process": "Processus",
+        "assignment": "Affectation",
+        "simulation": "Simulation",
+        "exitedOn": "Sorti le",
+        "rate": "Taux"
+      },
+      "notAvailable": "Non disponible pour cette étape",
+      "returned": "Retourné",
+      "by": "par"
+    },
+    "assignmentHistory": {
+      "title": "Historique des affectations",
+      "count": "affectation(s)",
+      "col": {
+        "previousUsername": "Ancien affecté",
+        "newUsername": "Nouvel affecté",
+        "assignedBy": "Affecté par",
+        "assignedAt": "Le"
+      }
+    },
+    "comments": {
+      "title": "Commentaires",
+      "count": "remarque(s)"
+    },
+    "loadErrorFallback": "Impossible de charger le dossier.",
+    "advanceErrorFallback": "Erreur lors de l'avancement du dossier.",
+    "classifyErrorFallback": "Erreur lors de la classification du dossier.",
+    "matchCheckErrorFallback": "Impossible de vérifier si cette entreprise existe déjà.",
+    "createEnterpriseErrorFallback": "Erreur lors de la création de l'entreprise.",
+    "assignErrorFallback": "Erreur lors de l'affectation du dossier.",
+    "scheduleErrorFallback": "Impossible de générer le tableau d'amortissement.",
+    "initialSimulationErrorFallback": "Impossible de générer la simulation initiale.",
+    "commentErrorFallback": "Erreur lors de l'ajout de la remarque.",
+    "choices": {
+      "rateOption": {
+        "KEEP": { "label": "Conserver", "description": "Garder le taux applicable actuel du dossier, sans le modifier." },
+        "MANUAL": { "label": "Saisie manuelle", "description": "Saisir directement une valeur de taux." }
+      },
+      "amountOption": {
+        "KEEP": { "label": "Conserver", "description": "Garder le montant actuel du dossier, sans le modifier." },
+        "MANUAL": { "label": "Saisie manuelle", "description": "Saisir directement un nouveau montant." }
+      },
+      "durationOption": {
+        "KEEP": { "label": "Conserver", "description": "Garder la durée actuelle du dossier, sans la modifier." },
+        "MANUAL": { "label": "Saisie manuelle", "description": "Saisir directement une nouvelle durée." }
+      },
+      "classificationOutcome": {
+        "REAL": { "label": "Réel", "description": "Le client confirme sa demande: le dossier rejoint son portefeuille et entre en pipeline." },
+        "FAKE": { "label": "Fake", "description": "Demande frauduleuse ou non authentique: le dossier est rejeté, sans portefeuille." },
+        "SIMULATION_ONLY": { "label": "Simple simulation", "description": "Le client testait juste le simulateur, sans demande réelle: le dossier est rejeté." }
+      },
+      "decisionOutcome": {
+        "APPROVED": "Accordé",
+        "DEFERRED": "Ajourné",
+        "REJECTED": "Refusé"
+      },
+      "committeeType": {
+        "ROTATING": "Comité tournant",
+        "STANDING_SESSION": "Comité séance tenante"
+      },
+      "insuranceCoverageType": {
+        "BANK_GROUP_POLICY": "Police groupe de la banque",
+        "EXTERNAL_DELEGATION": "Délégation d'assurance externe"
+      }
+    }
+  }
+}

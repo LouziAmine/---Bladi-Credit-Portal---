@@ -4,18 +4,24 @@ import { provideHttpClient } from '@angular/common/http';
 import { AuditLogService } from './audit-log.service';
 import { AuditLogEntry } from '../../models/audit-log.model';
 import { CreditPage } from '../../models/page.model';
+import { CODE_LOGIN } from '../../../testing/mocks/mock-codes';
+import { PERSON_INTERNAL_SERVER_ERROR } from '../../../testing/mocks/mock-contacts';
+import { DATE_2026_07_28T10_00_00Z } from '../../../testing/mocks/mock-dates';
+import { USER_ADMIN } from '../../../testing/mocks/mock-users';
 
 describe('AuditLogService', () => {
   let service: AuditLogService;
   let httpMock: HttpTestingController;
 
   const mockEntry: AuditLogEntry = {
-    id: 1,
-    username: 'admin',
-    action: 'LOGIN',
+    id: '1',
+    username: USER_ADMIN,
+    action: CODE_LOGIN,
     ipAddress: '127.0.0.1',
     details: null,
-    performedAt: '2026-07-28T10:00:00Z',
+    performedAt: DATE_2026_07_28T10_00_00Z,
+    entityType: null,
+    entityId: null,
   };
 
   const mockPage: CreditPage<AuditLogEntry> = {
@@ -67,7 +73,7 @@ describe('AuditLogService', () => {
       service.getAll().subscribe({ error: (err) => (receivedError = err) });
 
       const req = httpMock.expectOne((r) => r.url === 'http://localhost:8080/api/v1/audit-log');
-      req.flush('Server error', { status: 500, statusText: 'Internal Server Error' });
+      req.flush('Server error', { status: 500, statusText: PERSON_INTERNAL_SERVER_ERROR });
 
       expect(receivedError).toBeTruthy();
     });

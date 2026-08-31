@@ -1,0 +1,108 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-buildings"></i> {{ 'portal.eyebrow' | translate }}
+    </div>
+    <h1 class="cb-hero__title">{{ 'portal.demands.title' | translate }}</h1>
+    <p class="cb-hero__subtitle">{{ 'portal.demands.subtitle' | translate }}</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+
+    <a class="cb-btn cb-btn--ghost cb-btn--sm mb-3" routerLink="/portal">
+      <i class="bi bi-chevron-left"></i>{{ 'portal.demands.back' | translate }}
+    </a>
+
+    <app-loading-spinner [loading]="loading()" [message]="'portal.demands.loading' | translate" />
+    <app-error-message [message]="errorMessage()" />
+
+    @if (!loading() && demands().length > 0) {
+      <div class="cb-card">
+        <div class="cb-card__header cb-card__header--indigo">
+          <div class="cb-card__header-icon cb-card__header-icon--indigo">
+            <i class="bi bi-kanban"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">{{ 'portal.demands.listTitle' | translate }} ({{ total() }})</p>
+          </div>
+        </div>
+        <div class="cb-card__body cb-card__body--flush">
+          <div class="table-responsive">
+            <table class="cb-table">
+              <thead>
+                <tr>
+                  <th>{{ 'portal.demands.col.reference' | translate }}</th>
+                  <th>{{ 'portal.demands.col.type' | translate }}</th>
+                  <th>{{ 'portal.demands.col.amount' | translate }}</th>
+                  <th>{{ 'portal.demands.col.duration' | translate }}</th>
+                  <th>{{ 'portal.demands.col.rate' | translate }}</th>
+                  <th>{{ 'adminCommon.status' | translate }}</th>
+                  <th>{{ 'portal.demands.col.createdOn' | translate }}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (demand of demands(); track demand.id) {
+                  <tr>
+                    <td class="fw-semibold">{{ demand.reference }}</td>
+                    <td>
+                      @if (demand.enterpriseType) {
+                        <span class="cb-badge cb-badge--indigo">{{ demand.enterpriseType }}</span>
+                      } @else { · }
+                    </td>
+                    <td>{{ demand.amount !== null ? formatAmount(demand.amount) : '-' }}</td>
+                    <td>{{ demand.duration ?? '-' }}</td>
+                    <td>{{ demand.applicableRate !== null ? demand.applicableRate + ' %' : '-' }}</td>
+                    <td>
+                      @if (demand.rejected) {
+                        <span class="cb-badge cb-badge--red">
+                          <i class="bi bi-x-circle-fill"></i>{{ 'portal.demands.status.rejected' | translate }}
+                        </span>
+                      } @else if (demand.completed) {
+                        <span class="cb-badge cb-badge--green">
+                          <i class="bi bi-check-circle-fill"></i>{{ 'portal.demands.status.completed' | translate }}
+                        </span>
+                      } @else {
+                        <span class="cb-badge cb-badge--amber">
+                          <i class="bi bi-hourglass-split"></i>{{ 'portal.demands.status.inProgress' | translate }}
+                        </span>
+                      }
+                    </td>
+                    <td class="text-nowrap">{{ demand.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+                    <td>
+                      <a class="cb-btn cb-btn--ghost cb-btn--sm"
+                         [routerLink]="['/portal', enterpriseId, 'demands', demand.id]">
+                        <i class="bi bi-tag"></i>{{ 'portal.demands.documents' | translate }}
+                      </a>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between p-3 border-top">
+          <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button" [disabled]="currentPage() <= 1" (click)="previousPage()">
+            <i class="bi bi-chevron-left"></i>{{ 'adminCommon.previous' | translate }}
+          </button>
+          <span class="small cb-muted-text">
+            {{ 'adminCommon.page' | translate }} {{ currentPage() }} / {{ lastPage() }}
+          </span>
+          <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button" [disabled]="currentPage() >= lastPage()" (click)="nextPage()">
+            {{ 'adminCommon.next' | translate }}<i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    } @else if (!loading() && demands().length === 0 && !errorMessage()) {
+      <div class="cb-card cb-empty-card">
+        <div class="cb-empty">
+          <div class="cb-empty__icon"><i class="bi bi-kanban"></i></div>
+          <p class="cb-empty__title">{{ 'portal.demands.empty' | translate }}</p>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

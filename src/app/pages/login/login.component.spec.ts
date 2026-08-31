@@ -5,6 +5,8 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { of } from 'rxjs';
 import { LoginComponent as Login } from './login.component';
 import { AuthService } from '../../core/services';
+import { provideTranslateTesting } from '../../testing/translate-testing.providers';
+import { USER_JOHN_DOE } from '../../testing/mocks/mock-users';
 
 describe('Login', () => {
   let fixture: ComponentFixture<Login>;
@@ -16,7 +18,12 @@ describe('Login', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Login],
-      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideTranslateTesting(),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Login);
@@ -51,26 +58,26 @@ describe('Login', () => {
     });
 
     it('should be valid with correct credentials', () => {
-      component['form'].setValue({ username: 'john.doe', password: 'pass123' });
+      component['form'].setValue({ username: USER_JOHN_DOE, password: 'pass123' });
       expect(component['form'].valid).toBe(true);
     });
   });
 
   describe('submit', () => {
-    it('should call login and navigate to /simulation on success', () => {
+    it('should call login and navigate to /mortgage-credit on success', () => {
       vi.spyOn(authService, 'login').mockReturnValue(of(undefined));
       const navigateSpy = vi.spyOn(router, 'navigate');
-      component['form'].setValue({ username: 'john.doe', password: 'pass123' });
+      component['form'].setValue({ username: USER_JOHN_DOE, password: 'pass123' });
 
       component.submit();
 
-      expect(authService.login).toHaveBeenCalledWith({ username: 'john.doe', password: 'pass123' });
-      expect(navigateSpy).toHaveBeenCalledWith(['/simulation']);
+      expect(authService.login).toHaveBeenCalledWith({ username: USER_JOHN_DOE, password: 'pass123' });
+      expect(navigateSpy).toHaveBeenCalledWith(['/mortgage-credit']);
     });
 
     it('should set error message on login failure (401)', () => {
       const navigateSpy = vi.spyOn(router, 'navigate');
-      component['form'].setValue({ username: 'john.doe', password: 'wrong123' });
+      component['form'].setValue({ username: USER_JOHN_DOE, password: 'wrong123' });
 
       component.submit();
 
@@ -86,7 +93,7 @@ describe('Login', () => {
     });
 
     it('should use default error message when API error has no description', () => {
-      component['form'].setValue({ username: 'john.doe', password: 'wrong123' });
+      component['form'].setValue({ username: USER_JOHN_DOE, password: 'wrong123' });
 
       component.submit();
 

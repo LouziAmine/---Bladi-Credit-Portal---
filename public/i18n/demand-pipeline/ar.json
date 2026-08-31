@@ -1,0 +1,12 @@
+{
+  "demandPipeline": {
+    "status": {
+      "done": "منتهية",
+      "current": "جارية",
+      "upcoming": "قادمة"
+    },
+    "step": "المرحلة",
+    "completedOn": "أُنهيت في",
+    "inProgressSince": "جارية منذ"
+  }
+}

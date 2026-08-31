@@ -1,0 +1,27 @@
+{
+  "login": {
+    "hero": {
+      "titleLine1": "Votre crédit",
+      "titleAccent": "immobilier",
+      "titleLine3": "au meilleur taux.",
+      "subtitle": "Simulez en quelques secondes, avec les paramètres BAM configurés par la banque.",
+      "secureTitle": "100% sécurisé",
+      "secureSubtitle": "Données chiffrées SSL",
+      "instantTitle": "Résultat instantané",
+      "instantSubtitle": "Simulation en 1 clic"
+    },
+    "heading": "Bon retour !",
+    "subheading": "Connectez-vous à votre espace personnel.",
+    "loggingIn": "Connexion en cours...",
+    "usernameLabel": "Nom d'utilisateur",
+    "usernameRequired": "Le nom d'utilisateur est requis.",
+    "usernameMinLength": "Minimum 3 caractères.",
+    "passwordLabel": "Mot de passe",
+    "passwordRequired": "Le mot de passe est requis.",
+    "passwordMinLength": "Minimum 6 caractères.",
+    "submit": "Se connecter",
+    "noAccount": "Pas encore de compte ?",
+    "registerLink": "S'inscrire gratuitement",
+    "invalidCredentialsFallback": "Identifiants invalides."
+  }
+}

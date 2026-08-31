@@ -1,0 +1,37 @@
+{
+  "enterprises": {
+    "title": "Enterprises",
+    "subtitle": "Business clients and their portfolio of credit cases.",
+    "form": {
+      "title": "New enterprise",
+      "subtitle": "Register a business client to attach cases to it",
+      "creating": "Creating...",
+      "name": "Enterprise name",
+      "sector": "Activity sector",
+      "noSector": "No sector registered, ",
+      "addOne": "add one",
+      "first": "first.",
+      "submit": "Create",
+      "registrationNumber": "Registration number (RC / ICE)",
+      "registrationNumberPlaceholder": "RC-45210-CASABLANCA",
+      "registrationNumberHint": "Lets the client claim access to this portfolio from their portal."
+    },
+    "loading": "Loading enterprises...",
+    "list": {
+      "title": "Enterprises",
+      "subtitle": "View each enterprise's portfolio of cases"
+    },
+    "col": {
+      "name": "Name",
+      "sector": "Sector",
+      "createdOn": "Created on",
+      "registrationNumber": "RC / ICE"
+    },
+    "portfolio": "Portfolio",
+    "access": "Portfolio access",
+    "empty": "No enterprise registered",
+    "createSuccess": "Enterprise created successfully.",
+    "loadErrorFallback": "Unable to load enterprises. Server unavailable.",
+    "createErrorFallback": "Error while creating."
+  }
+}

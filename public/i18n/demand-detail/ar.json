@@ -1,0 +1,167 @@
+{
+  "demandDetail": {
+    "backToCases": "العودة إلى الملفات",
+    "loading": "جارٍ تحميل الملف...",
+    "case": "الملف",
+    "enterpriseCategory": "فئة الشركة",
+    "contact": "التواصل",
+    "initialSimulation": {
+      "title": "المحاكاة الأولية للعميل",
+      "subtitle": "الأرقام كما تمت محاكاتها عند إنشاء الملف: محفوظة حتى بعد تغيير المعدل/المبلغ/المدة"
+    },
+    "pipeline": {
+      "title": "مسار المعالجة",
+      "stepsTotal": "مرحلة إجمالاً"
+    },
+    "step": {
+      "final": "المرحلة النهائية",
+      "current": "المرحلة الحالية"
+    },
+    "requiredProfile": "الملف المطلوب",
+    "assignedTo": "مُسند إلى",
+    "assignedBy": "أُسند من طرف",
+    "unassigned": "غير مُسند (مجموعة الفريق)",
+    "enteredOn": "دخل في",
+    "actionToPerform": "الإجراء المطلوب",
+    "assignReassign": "إسناد / إعادة إسناد",
+    "classifyCase": "تصنيف الملف",
+    "advanceReturnCase": "تقديم / إرجاع الملف",
+    "addRemark": "إضافة ملاحظة",
+    "assigning": "جارٍ الإسناد...",
+    "savingComment": "جارٍ تسجيل الملاحظة...",
+    "classifying": "جارٍ التصنيف...",
+    "advancing": "جارٍ التقديم...",
+    "assignReassignTo": "إسناد / إعادة إسناد إلى",
+    "selectEligibleUser": "اختر مستخدمًا مؤهلاً",
+    "noEligibleUser": "لا يوجد مستخدم مؤهل (الرتبة/الفريق المطلوب غير متوفر).",
+    "remark": "ملاحظة",
+    "commentHint": "لا يُقدّم الملف ولا يُسنده: يظهر في التعليقات أدناه.",
+    "classify": {
+      "legend": "التحقق الأولي مع العميل",
+      "legendHint": "يتصل المكلف بالشؤون بالعميل للتأكد من أن الطلب حقيقي قبل ربطه بمحفظته.",
+      "searchingMatch": "جارٍ البحث عن شركة موجودة مطابقة لـ",
+      "alreadyExists": "هذه الشركة موجودة بالفعل:",
+      "useThisEnterprise": "استخدام هذه الشركة",
+      "noMatch": "لا توجد شركة موجودة مطابقة لـ",
+      "createAndAttach": "إنشاء وربط",
+      "clientEnterprise": "الشركة العميلة",
+      "selectEnterprise": "اختر شركة",
+      "createOne": "أنشئ واحدة",
+      "initiationOwner": "المسؤول عن الانطلاق",
+      "clientRib": "RIB الخاص بالعميل",
+      "clientRibPlaceholder": "مثال: 230 780 0123456789012345 67",
+      "clientRibHint": "اختياري: سيتم استخدامه لملء RIB المقترح على العميل عند إعلانه عن دفعة (يمكنه دائمًا تغييره)."
+    },
+    "note": "ملاحظة",
+    "advance": {
+      "assignedToOther1": "هذه المرحلة مسندة إلى",
+      "assignedToOther2": "هذا الشخص وحده يمكنه تقديمها أو إرجاعها. انتقل إلى وضع «إسناد / إعادة إسناد» لإسنادها لنفسك أولاً.",
+      "newStepOwner": "المسؤول عن المرحلة الجديدة",
+      "mandatory": "إلزامي: حدد من يتولى مسؤولية الملف في",
+      "previousStep": "المرحلة السابقة",
+      "nextStep": "المرحلة التالية",
+      "lastStepHint": "المرحلة الأخيرة: سيتم إغلاق الملف، لا حاجة لتحديد مسؤول.",
+      "rateDecision": "قرار بشأن معدل الفائدة",
+      "rateDecisionHint": "الاحتفاظ يبقي على المعدل الحالي للملف. الإدخال اليدوي يطبق قيمة يختارها صاحب الملف الشخصي المطلوب في هذه المرحلة.",
+      "noRateYet": "لا يتوفر لهذا الملف معدل مطبق معروف بعد: «الاحتفاظ» غير متاح؛ اختر «إدخال يدوي».",
+      "manualRate": "المعدل المُدخل يدويًا (%)",
+      "amountDecision": "قرار بشأن المبلغ",
+      "amountDecisionHint": "يُعيد الإدخال اليدوي التحقق تلقائيًا من نسبة التمويل (المبلغ/رقم الأعمال)، وتغطية الضمانات، ونسبة مديونية العميل: يُرفض التغيير إذا تجاوز هذه الحدود. يمكن فقط لصاحب الملف الشخصي المطلوب في هذه المرحلة تقديم الملف.",
+      "manualAmount": "المبلغ المُدخل يدويًا (درهم)",
+      "durationDecision": "قرار بشأن المدة",
+      "durationDecisionHint": "يجب أن يبقى الإدخال اليدوي بين 12 و300 شهر. مثل المبلغ، تؤثر على نسبة المديونية التي يُعاد التحقق منها عند كل تغيير.",
+      "manualDuration": "المدة المُدخلة يدويًا (شهر)",
+      "decision": "القرار",
+      "onlyDecisionStep": "متاح فقط في مرحلة قرار اللجنة.",
+      "committeeType": "نوع اللجنة",
+      "onlyCommitteeProgStep": "متاح فقط في مرحلة برمجة اللجنة.",
+      "insurance": {
+        "title": "التأمين",
+        "adiSubscribed": "تم الاكتتاب في تأمين الوفاة والعجز (ADI) للكفيل",
+        "adiHint": "مطلوب للتقدم بالملف: يغطي الكفيل/المسير في حالة الوفاة أو العجز (بنك المغرب/ACAPS).",
+        "coverageType": "نوع التغطية",
+        "damageSubscribed": "تم الاكتتاب في تأمين الأضرار / متعدد المخاطر على الضمانات العينية",
+        "damageHint": "مطلوب لأن هذا الملف يتضمن ضمانات عينية (رهن حيازي/رهن عقاري): يجب أن تُسمّي البوليصة البنك كمستفيد.",
+        "onlyInsuranceStep": "متاح فقط في مرحلة الاكتتاب والتحقق من التأمينات."
+      },
+      "returnReason": "سبب الإرجاع",
+      "noPreviousStep": "لا توجد مرحلة سابقة: الإرجاع غير ممكن من المرحلة الأولى.",
+      "returnHint": "إذا تم تعبئته، يُعاد الملف إلى المرحلة السابقة بدلاً من التقديم.",
+      "reserves": "التحفظات",
+      "recommendations": "التوصيات"
+    },
+    "assign": "إسناد",
+    "addRemarkSubmit": "إضافة الملاحظة",
+    "returnCase": "إرجاع الملف",
+    "advanceCase": "تقديم الملف",
+    "history": {
+      "title": "السجل",
+      "stepsCount": "مرحلة مُجتازة",
+      "col": {
+        "process": "العملية",
+        "assignment": "الإسناد",
+        "simulation": "المحاكاة",
+        "exitedOn": "خرج في",
+        "rate": "المعدل"
+      },
+      "notAvailable": "غير متاح لهذه المرحلة",
+      "returned": "مُرجَع",
+      "by": "بواسطة"
+    },
+    "assignmentHistory": {
+      "title": "سجل الإسنادات",
+      "count": "إسناد(ات)",
+      "col": {
+        "previousUsername": "المُسنَد إليه سابقًا",
+        "newUsername": "المُسنَد إليه الجديد",
+        "assignedBy": "أُسنِد بواسطة",
+        "assignedAt": "بتاريخ"
+      }
+    },
+    "comments": {
+      "title": "التعليقات",
+      "count": "ملاحظة"
+    },
+    "loadErrorFallback": "تعذر تحميل الملف.",
+    "advanceErrorFallback": "خطأ أثناء تقديم الملف.",
+    "classifyErrorFallback": "خطأ أثناء تصنيف الملف.",
+    "matchCheckErrorFallback": "تعذر التحقق مما إذا كانت هذه الشركة موجودة بالفعل.",
+    "createEnterpriseErrorFallback": "خطأ أثناء إنشاء الشركة.",
+    "assignErrorFallback": "خطأ أثناء إسناد الملف.",
+    "scheduleErrorFallback": "تعذر توليد جدول الاستهلاك.",
+    "initialSimulationErrorFallback": "تعذر توليد المحاكاة الأولية.",
+    "commentErrorFallback": "خطأ أثناء إضافة الملاحظة.",
+    "choices": {
+      "rateOption": {
+        "KEEP": { "label": "الاحتفاظ", "description": "الإبقاء على المعدل المطبق حاليًا للملف دون تغييره." },
+        "MANUAL": { "label": "إدخال يدوي", "description": "إدخال قيمة معدل مباشرة." }
+      },
+      "amountOption": {
+        "KEEP": { "label": "الاحتفاظ", "description": "الإبقاء على المبلغ الحالي للملف دون تغييره." },
+        "MANUAL": { "label": "إدخال يدوي", "description": "إدخال مبلغ جديد مباشرة." }
+      },
+      "durationOption": {
+        "KEEP": { "label": "الاحتفاظ", "description": "الإبقاء على المدة الحالية للملف دون تغييرها." },
+        "MANUAL": { "label": "إدخال يدوي", "description": "إدخال مدة جديدة مباشرة." }
+      },
+      "classificationOutcome": {
+        "REAL": { "label": "حقيقي", "description": "يؤكد العميل طلبه: ينضم الملف إلى محفظته ويدخل مسار المعالجة." },
+        "FAKE": { "label": "وهمي", "description": "طلب احتيالي أو غير حقيقي: يُرفض الملف دون محفظة." },
+        "SIMULATION_ONLY": { "label": "مجرد محاكاة", "description": "كان العميل يجرب المحاكي فقط دون طلب حقيقي: يُرفض الملف." }
+      },
+      "decisionOutcome": {
+        "APPROVED": "مقبول",
+        "DEFERRED": "مؤجل",
+        "REJECTED": "مرفوض"
+      },
+      "committeeType": {
+        "ROTATING": "لجنة دوارة",
+        "STANDING_SESSION": "لجنة جلسة قائمة"
+      },
+      "insuranceCoverageType": {
+        "BANK_GROUP_POLICY": "بوليصة مجموعة البنك",
+        "EXTERNAL_DELEGATION": "تفويض تأمين خارجي"
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+<section class="cb-why">
+  <div class="container">
+    <div class="cb-why__header">
+      <span class="cb-why__label">{{ i18nPrefix() + '.why.label' | translate }}</span>
+      <h2 class="cb-why__title">{{ i18nPrefix() + '.why.title' | translate }}</h2>
+    </div>
+    <div class="row g-4 justify-content-center">
+      @for (reason of reasons(); track reason.key; let index = $index) {
+        <div class="col-md-4">
+          <div class="cb-why-card">
+            <div class="cb-why-card__num">{{ index + 1 }}</div>
+            <div class="cb-why-card__icon">
+              <i class="bi" [class]="reason.icon"></i>
+            </div>
+            <h3 class="cb-why-card__title">{{ i18nPrefix() + '.why.' + reason.key + '.title' | translate }}</h3>
+            <p class="cb-why-card__text">{{ i18nPrefix() + '.why.' + reason.key + '.text' | translate }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="cb-steps">
+  <div class="container">
+    <div class="cb-why__header">
+      <span class="cb-why__label">{{ i18nPrefix() + '.process.label' | translate }}</span>
+      <h2 class="cb-why__title">{{ i18nPrefix() + '.process.title' | translate }}</h2>
+    </div>
+    <div class="cb-steps__track">
+      @for (step of steps(); track step.key) {
+        <div class="cb-step-item" [class.cb-step-item--last]="step.last">
+          <div class="cb-step-item__circle" [class.cb-step-item__circle--accent]="step.last">
+            <i class="bi" [class]="step.icon"></i>
+          </div>
+          @if (!step.last) {
+            <div class="cb-step-item__connector"></div>
+          }
+          <p class="cb-step-item__num">{{ i18nPrefix() + '.process.' + step.key + '.num' | translate }}</p>
+          <p class="cb-step-item__label" [innerHTML]="i18nPrefix() + '.process.' + step.key + '.label' | translate"></p>
+        </div>
+      }
+    </div>
+  </div>
+</section>

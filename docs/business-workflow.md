@@ -1,121 +1,139 @@
-[← Back to README](../README.md) · [User Guide (Annotated Screenshots) →](user-guide/README.md)
+[Back to README](../README.md) · [User Guide](user-guide/README.md)
 
-# Application Overview & User Journeys (Business Domain)
+# Application Overview
 
-This document explains **what the portal lets people do**, screen by screen, without technical
-jargon, aimed at Product Owners, Scrum Masters, and managers who need to understand *what the
-application does*, not how it's coded. It covers the UI's business behavior; the regulatory
-calculation rules behind every simulation (BAM eligibility checks, CSP profiles, the two financing
-products) are the backend's domain and are documented in detail in the
-[Credit-Bladi backend's Simulation Workflow](../../Credit-Bladi/docs/business-workflow.md); this
-document assumes that context and focuses on how it surfaces in the portal.
-
-## What this application is
-
-Credit Bladi Portal is the public-facing web application for a Moroccan mortgage credit simulator.
-It has two audiences in one app:
-
-- **A public simulator**: the front door. Anyone can estimate a mortgage's monthly cost in one
-  form, with zero login and zero friction, exactly mirroring the backend's "no account, no
-  paperwork" design.
-- **A staff back office**: a restricted area where bank managers adjust the regulatory
-  parameters that drive every simulation, manage staff accounts, and review the compliance audit
-  trail.
+What the portal lets people do, screen by screen, for product owners and business readers. The rules behind
+the numbers (BAM checks, CSP profiles, Mourabaha, enterprise types, the instruction steps) are described in
+the API's [Mortgage Credit](https://github.com/LouziAmine/---Credit-Bladi---/blob/release/2.1.0/docs/mortgage-credit-workflow.md)
+and [Enterprise Credit](https://github.com/LouziAmine/---Credit-Bladi---/blob/release/2.1.0/docs/enterprise-credit-workflow.md)
+documents.
 
 ## Who can do what
 
-| Role | Access | Can do |
-|---|---|---|
-| **Visitor** (not logged in) | Public | Run a mortgage simulation on `/simulation`, register a new account, log in |
-| **Client** (logged in, `CLIENT` role) | Authenticated | Everything a Visitor can do, plus stay logged in across visits. No additional screens are unlocked; the simulator itself requires no account by design |
-| **Manager** (logged in, `MANAGER` role) | Authenticated + elevated | Everything above, plus the entire **Administration** area: manage staff accounts and roles, edit BAM parameters, edit Conventional credit rates, edit Mourabaha parameters, and browse the audit log |
+| Role | Can do |
+|---|---|
+| Visitor (not logged in) | Simulate a mortgage (`/mortgage-credit`, the landing page) or a company investment loan (`/investment-credit`), register, log in, accept an e-mail invitation (`/invitations/:token`) |
+| Client (`CLIENT`) | The same, plus the client portal (`/portal`): the companies and mortgage dossiers they have access to, requested documents, the repayment schedule, payment declarations, an early repayment quote |
+| Bank staff (`MANAGER`) | Everything in the back office (`/admin`): dossiers, parameters, users, enterprises, client access, audit log, Excel import, and the notification bell |
 
-Registration always creates a `CLIENT` account; a `MANAGER` can only be created, or promoted from
-an existing `CLIENT`, by another `MANAGER` from the Users screen (see below). There is no
-self-service way to become a manager.
+Registering always creates a `CLIENT` account. Only a manager can create another manager, or promote a client,
+from the Users screen.
 
 ```mermaid
 flowchart LR
-    subgraph Public["Public: no login"]
-        Visitor(["👤 Visitor"]) -->|"Run a simulation"| Sim["/simulation"]
-        Visitor -->|"Register / Log in"| Auth["/register · /login"]
+    subgraph Public["Public, no login"]
+        V(["Visitor"]) --> MS["Mortgage simulator"]
+        V --> IS["Investment simulator"]
+        V --> AU["Register / Log in"]
+        V --> INV["Invitation link"]
     end
-
-    subgraph Staff["Bank staff: login required"]
-        Client(["🙂 Client"]) -->|"Same simulator, session kept"| Sim
-        Manager(["👔 Manager"]) -->|"Administration menu"| Admin["/admin/*"]
-        Admin --> Users["Users"]
-        Admin --> Bam["BAM Parameters"]
-        Admin --> Rates["Credit Rates"]
-        Admin --> Mour["Mourabaha Parameters"]
-        Admin --> Log["Audit Log"]
+    subgraph Bank["Back office (MANAGER)"]
+        D["Dossiers pipeline"]
+        P["Parameters"]
+        U["Users, enterprises, client access"]
+        L["Audit log"]
+        X["Excel import"]
     end
-
-    Auth -.->|"successful login"| Client
-    Client -.->|"promoted by a Manager"| Manager
+    subgraph Portal["Client portal (CLIENT)"]
+        PF["My companies and mortgage dossiers"]
+        DD["Dossier: documents, schedule, payments"]
+    end
+    MS -. "eligible simulation opens a dossier" .-> D
+    IS -. "eligible simulation opens a dossier" .-> D
+    X -. "dossiers created in bulk" .-> D
+    D -. "invites the borrower / links the company" .-> PF
+    D -. "asks for a document" .-> DD
+    INV -. "creates the account and its access" .-> PF
+    PF --> DD
 ```
 
-## Screen-by-screen walkthrough
+## 1. Simulators
 
-### 1. Simulation (`/simulation`): the landing page
+**Mortgage (`/mortgage-credit`).** One form: amount (70,000 to 30,000,000 MAD), property value, duration
+(12 to 300 months), product (conventional or Mourabaha), professional category (CSP), age, nationality,
+residence, monthly income and an optional co-borrower. The answer is either a full breakdown (rate, monthly
+payment, insurance, fees, TEG, total cost, schedule) or the exact reason for a refusal (deposit, age at
+maturity, debt ratio, duration, legal rate ceiling).
 
-The application's front door; it loads by default at `/` and needs no login. The applicant fills
-in a single form and gets an immediate result, with no page reload and no wizard:
+**Investment (`/investment-credit`).** The same for a company: identity, activity sector, contact, size
+(TPE, auto-entrepreneur, PME, ETI, GE), age and financials (revenue, net result, existing debt service,
+guarantees), amount (50,000 to 100,000,000 MAD) and duration.
 
-- **Loan amount** and **property value**, adjusted with sliders (70,000–30,000,000 MAD and
-  80,000–50,000,000 MAD)
-- **Duration** in months (12–300), also a slider
-- **Financing product**: Conventional (interest-based) or Mourabaha (Sharia-compliant); see the
-  backend's [product comparison](../../Credit-Bladi/docs/business-workflow.md#the-two-financing-products)
-  for what changes between the two
-- **Professional category (CSP)**: Salarié, Fonctionnaire, Retraité, Profession libérale,
-  Indépendant, the single biggest lever on the offered rate for Conventional financing
-- **Applicant profile**: age, nationality (Moroccan residents only in the current form),
-  monthly income, and an optional co-borrower with their own income
+In both cases, an eligible simulation opens a dossier for the bank and shows its reference. The visitor has
+nothing else to do. A new simulation by the same person (same name and e-mail) on a dossier that is not
+classified yet updates that dossier instead of opening a second one.
 
-Submitting either returns a full cost breakdown (rate, monthly payment, insurance, total cost,
-TAEG, one-time fees, and an expandable month-by-month amortization schedule) or a specific
-rejection reason surfaced inline; the applicant is never left guessing why they weren't eligible.
-Both outcomes are recorded server-side for the compliance audit trail described below.
+## 2. Accounts
 
-### 2. Register (`/register`) and Login (`/login`)
+- **Register** (`/register`) and **log in** (`/login`) are reachable only when logged out. The session is kept in
+  `HttpOnly` cookies and renews itself silently.
+- **Invitation** (`/invitations/:token`), from an e-mail: the person sees who invited them, chooses a username and
+  a password, and their account is created with its access already granted (to a company, or to their own
+  mortgage dossier).
 
-Standard account screens, only reachable by someone **not** already logged in (a logged-in visitor
-is redirected straight to `/simulation`). Registration asks for a username and a password meeting
-a minimum complexity bar; a successful registration redirects to login automatically after a short
-confirmation message. Login establishes a session (an HttpOnly cookie, invisible to the page
-itself; see [Architecture](architecture.md#authentication--session-flow)) and redirects to
-`/simulation`.
+## 3. Back office (`/admin`)
 
-### 3. Administration area (`/admin/*`): Manager only
+Hidden from the menu and blocked for anyone who is not a manager.
 
-Hidden entirely from the navigation menu, and blocked at the route level, for anyone who isn't
-logged in as a Manager. A Client who is logged in but not a Manager is redirected back to
-`/simulation` if they try to reach an admin URL directly.
+| Screen | What a manager does there |
+|---|---|
+| Dossiers (`/admin/demands`) | Filter and open every dossier. See [Dossier detail](#4-dossier-detail-admindemandsid) below |
+| Excel import (`/admin/demands/import`) | Create dossiers in bulk from an `.xlsx` file; the report lists each rejected row and why |
+| BAM parameters | Debt ratio, minimum deposit (LTV), age at maturity, borrower insurance, fee ratios |
+| Credit rates | Rate range and duration range per CSP |
+| Mourabaha parameters | Profit margin, VAT, takaful |
+| Investment parameters | Eligibility thresholds, rate range and fees per enterprise type |
+| Enterprises | Client companies attached to dossiers |
+| Enterprise links | Pending access requests from clients (approve or reject), invitations, revocations |
+| Activity sectors, Document suggestions | Reference lists used by the forms |
+| Users | Create staff accounts, change a role, set grade, team and e-mail (never on one's own account) |
+| Audit log | Who did what, when, from which IP, with the before and after values |
 
-| Screen | Route | What a Manager can do there |
+Every parameter change applies to the very next simulation and is written to the audit log. Parameters in
+force when the committee approves a dossier are frozen for that dossier.
+
+## 4. Dossier detail (`/admin/demands/:id`)
+
+| Part | What it does |
+|---|---|
+| Classify | First step only: confirms the dossier is real (and attaches the company, or invites the mortgage borrower) or closes it as fake or simulation only. A simulated BAM check (SCIP, Centrale des Risques) is shown next to the form |
+| Assign | Gives the current step to an eligible colleague |
+| Advance / return | Closes the step and opens the next one, or sends the dossier back one step with a reason. Before the committee, the amount, rate and duration can be kept or changed; after its decision they are fixed |
+| Four-eyes rule | Whoever handled an earlier step cannot take the committee decision |
+| Comment | A note on the current step |
+| Documents | Upload, preview and download; a new file of the same type replaces the previous one. Every upload is scanned by the antivirus |
+| Request a document | Asks the client for a specific document; the client is notified and sees the request in the portal |
+| Pipeline, history, assignments | Progress of every step, the decisions and terms before and after, every hand-off |
+| Credit file | Opens once the last step is closed: disbursed amount, the bank's RIB, the schedule with each installment's status, payment validation or rejection, early repayment |
+
+## 5. Client portal (`/portal`)
+
+A client sees something here once they have access to a company or to a mortgage dossier:
+
+- **Invited** by a manager (e-mail link, or an existing account), or a mortgage borrower invited when their
+  dossier is classified.
+- **Claim**: the client enters the company's registration number; a manager approves it.
+
+| Screen | What the client sees |
+|---|---|
+| Portfolio (`/portal`) | Their companies, their mortgage dossiers, and the status of their access requests |
+| Company dossiers (`/portal/:enterpriseId/demands`) | Each dossier of that company and its current step |
+| Dossier (`.../demands/:demandId`, `/portal/mortgage/:demandId`) | Requested documents (upload PDF, image, Word or Excel up to 15 MB), and once approved: the schedule, a "J'ai payé" declaration per installment, an early repayment quote |
+
+The client never changes the processing of a dossier: they follow it, answer document requests and declare
+payments.
+
+## 6. Payments
+
+There is no payment gateway. A client declares a payment ("J'ai payé", with the RIB they paid from); a manager
+checks the bank statement and validates it or rejects it with a reason. Each side is notified. A daily job
+flags overdue installments and reminds the client by e-mail and SMS.
+
+## 7. Notifications
+
+| Who | Channel | When |
 |---|---|---|
-| **Users** | `/admin/users` | See every registered account; create a new staff account directly (username, password, role); promote a `CLIENT` to `MANAGER` or demote a `MANAGER` back to `CLIENT` with one click |
-| **BAM Parameters** | `/admin/bam-parameters` | Edit the bank-wide regulatory thresholds every simulation is checked against: max debt ratio, minimum deposit (LTV), max age at maturity, insurance rate, processing/registration/notary/land-conservation fee ratios, and whether the parameter set is active |
-| **Credit Rates** | `/admin/credit-rates` | Edit the Conventional interest rate range and allowed loan duration range for each professional category (CSP) |
-| **Mourabaha Parameters** | `/admin/mourabaha-parameters` | Edit the single bank-wide profit margin rate and VAT rate applied to every Mourabaha simulation, regardless of applicant profile |
-| **Audit Log** | `/admin/audit-log` | Browse the compliance trail: who did what, from where (IP address), and when: every simulation outcome and every parameter/user change |
+| Staff | Bell in the header, live (Server-Sent Events), plus e-mail if one is set | A new dossier waits for their step, a step is assigned to them, a client answered a request or declared a payment |
+| Clients | E-mail and SMS | A document is requested, a payment is validated or rejected, an installment is overdue, an invitation |
 
-These screens are the UI on top of exactly the regulatory levers the backend documents in
-["Why the regulatory parameters are adjustable, not
-hardcoded"](../../Credit-Bladi/docs/business-workflow.md#why-the-regulatory-parameters-are-adjustable-not-hardcoded):
-a Manager can react to a Bank Al-Maghrib rule change the same day, without waiting for a software
-release, and every change they make is itself logged to the same audit trail a simulation outcome
-is.
-
-## Why this matters for the business
-
-- **The simulator has zero friction on purpose.** Requiring an account before letting someone see
-  a monthly payment estimate would kill the product's entire value proposition as a lead-generation
-  front door.
-- **Nothing about pricing is hardcoded in the app.** Every number a Manager can see on the
-  Administration screens is the actual configuration driving the public simulator in real time:
-  changing a rate on `/admin/credit-rates` changes the very next simulation's result.
-- **Every consequential action is traceable.** Account creation, role changes, parameter edits, and
-  every simulation outcome (accepted or rejected) all flow into the same audit log a Manager can
-  review on `/admin/audit-log`; this is what a BAM compliance review or internal audit relies on.
+Clients have no bell in the portal yet: the API's notification endpoints are reserved for staff.

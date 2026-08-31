@@ -27,12 +27,12 @@
 
     <div class="cb-auth-hero-content">
       <h1 class="fw-black mb-3 lh-sm cb-auth-hero-title">
-        Rejoignez<br>
+        {{ 'register.hero.titleLine1' | translate }}<br>
         <span class="cb-auth-hero-accent">Credit Bladi</span><br>
-        dès aujourd'hui.
+        {{ 'register.hero.titleLine3' | translate }}
       </h1>
       <p class="mb-5 cb-auth-hero-subtitle">
-        Accédez gratuitement à notre simulateur de crédit immobilier marocain.
+        {{ 'register.hero.subtitle' | translate }}
       </p>
       <div class="d-flex flex-column gap-3">
         <div class="d-flex align-items-center gap-3 p-3 rounded-3 cb-auth-feature">
@@ -40,8 +40,8 @@
             <i class="bi bi-check-circle cb-auth-feature-icon"></i>
           </div>
           <div>
-            <div class="fw-semibold cb-auth-feature-title">Simulation instantanée</div>
-            <div class="cb-auth-feature-subtitle">Résultat en temps réel</div>
+            <div class="fw-semibold cb-auth-feature-title">{{ 'register.hero.instantTitle' | translate }}</div>
+            <div class="cb-auth-feature-subtitle">{{ 'register.hero.instantSubtitle' | translate }}</div>
           </div>
         </div>
         <div class="d-flex align-items-center gap-3 p-3 rounded-3 cb-auth-feature">
@@ -49,8 +49,8 @@
             <i class="bi bi-bank cb-auth-feature-icon"></i>
           </div>
           <div>
-            <div class="fw-semibold cb-auth-feature-title">Conforme BAM</div>
-            <div class="cb-auth-feature-subtitle">Règlements officiels respectés</div>
+            <div class="fw-semibold cb-auth-feature-title">{{ 'register.hero.bamTitle' | translate }}</div>
+            <div class="cb-auth-feature-subtitle">{{ 'register.hero.bamSubtitle' | translate }}</div>
           </div>
         </div>
         <div class="d-flex align-items-center gap-3 p-3 rounded-3 cb-auth-feature">
@@ -58,15 +58,15 @@
             <i class="bi bi-gift cb-auth-feature-icon"></i>
           </div>
           <div>
-            <div class="fw-semibold cb-auth-feature-title">100% gratuit</div>
-            <div class="cb-auth-feature-subtitle">Sans engagement</div>
+            <div class="fw-semibold cb-auth-feature-title">{{ 'register.hero.freeTitle' | translate }}</div>
+            <div class="cb-auth-feature-subtitle">{{ 'register.hero.freeSubtitle' | translate }}</div>
           </div>
         </div>
       </div>
     </div>
 
     <p class="mb-0 cb-auth-hero-footer">
-      &copy; 2026 Credit Bladi - Simulation de branding
+      &copy; 2026 Credit Bladi - {{ 'footer.tagline' | translate }}
     </p>
   </div>
 
@@ -83,12 +83,12 @@
       </div>
 
       <div class="mb-4">
-        <h2 class="fw-bold mb-1 cb-auth-heading">Créer un compte</h2>
-        <p class="cb-auth-muted">Rejoignez Credit Bladi en quelques secondes.</p>
+        <h2 class="fw-bold mb-1 cb-auth-heading">{{ 'register.heading' | translate }}</h2>
+        <p class="cb-auth-muted">{{ 'register.subheading' | translate }}</p>
       </div>
 
       <app-error-message [message]="errorMessage()" />
-      <app-loading-spinner [loading]="loading()" message="Création du compte..." />
+      <app-loading-spinner [loading]="loading()" [message]="'register.creating' | translate" />
 
       @if (successMessage()) {
         <div class="alert rounded-3 d-flex align-items-center gap-2 cb-auth-success-alert" role="alert">
@@ -99,7 +99,9 @@
 
       <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
         <div class="mb-3">
-          <label for="username" class="form-label fw-semibold small cb-auth-label">Nom d'utilisateur</label>
+          <label for="username" class="form-label fw-semibold small cb-auth-label">
+            {{ 'register.usernameLabel' | translate }}
+          </label>
           <div class="input-group">
             <span class="input-group-text"><i class="bi bi-person"></i></span>
             <input
@@ -113,14 +115,20 @@
             />
           </div>
           @if (form.controls.username.errors?.['required'] && form.controls.username.touched) {
-            <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>Le nom d'utilisateur est requis.</div>
+            <div class="text-danger small mt-1">
+              <i class="bi bi-exclamation-circle me-1"></i>{{ 'register.usernameRequired' | translate }}
+            </div>
           } @else if (form.controls.username.errors?.['minlength'] && form.controls.username.touched) {
-            <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>Minimum 3 caractères.</div>
+            <div class="text-danger small mt-1">
+              <i class="bi bi-exclamation-circle me-1"></i>{{ 'register.usernameMinLength' | translate }}
+            </div>
           }
         </div>
 
         <div class="mb-4">
-          <label for="password" class="form-label fw-semibold small cb-auth-label">Mot de passe</label>
+          <label for="password" class="form-label fw-semibold small cb-auth-label">
+            {{ 'register.passwordLabel' | translate }}
+          </label>
           <div class="input-group">
             <span class="input-group-text"><i class="bi bi-lock"></i></span>
             <input
@@ -134,24 +142,32 @@
             />
           </div>
           @if (form.controls.password.errors?.['required'] && form.controls.password.touched) {
-            <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>Le mot de passe est requis.</div>
+            <div class="text-danger small mt-1">
+              <i class="bi bi-exclamation-circle me-1"></i>{{ 'register.passwordRequired' | translate }}
+            </div>
           } @else if (form.controls.password.errors?.['minlength'] && form.controls.password.touched) {
-            <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>Minimum 12 caractères.</div>
+            <div class="text-danger small mt-1">
+              <i class="bi bi-exclamation-circle me-1"></i>{{ 'register.passwordMinLength' | translate }}
+            </div>
           } @else if (form.controls.password.errors?.['passwordComplexity'] && form.controls.password.touched) {
-            <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>Doit contenir une majuscule, une minuscule et un chiffre.</div>
+            <div class="text-danger small mt-1">
+              <i class="bi bi-exclamation-circle me-1"></i>{{ 'register.passwordComplexity' | translate }}
+            </div>
           } @else if (!form.controls.password.touched) {
-            <div class="small mt-1 cb-auth-muted">12 caractères minimum, avec majuscule, minuscule et chiffre.</div>
+            <div class="small mt-1 cb-auth-muted">{{ 'register.passwordHint' | translate }}</div>
           }
         </div>
 
         <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold rounded-pill" [disabled]="loading()">
-          <i class="bi bi-person-plus me-2"></i>Créer mon compte
+          <i class="bi bi-person-plus me-2"></i>{{ 'register.submit' | translate }}
         </button>
       </form>
 
       <p class="text-center mt-4 small cb-auth-muted">
-        Déjà un compte ?
-        <a routerLink="/login" class="fw-semibold text-decoration-none cb-auth-link">Se connecter</a>
+        {{ 'register.alreadyAccount' | translate }}
+        <a routerLink="/login" class="fw-semibold text-decoration-none cb-auth-link">
+          {{ 'register.loginLink' | translate }}
+        </a>
       </p>
     </div>
   </div>

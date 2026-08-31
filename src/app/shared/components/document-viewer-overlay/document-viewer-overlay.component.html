@@ -1,0 +1,17 @@
+@if (url()) {
+  <div
+    class="cb-doc-viewer-backdrop"
+    role="button"
+    tabindex="0"
+    (click)="onBackdropClick($event)"
+    (keydown.enter)="close()"
+    (keydown.escape)="close()"
+  >
+    <div class="cb-doc-viewer-panel">
+      <button type="button" class="cb-btn cb-btn--ghost cb-btn--sm cb-doc-viewer-close" (click)="close()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+      <iframe [src]="url()" class="cb-doc-viewer-frame" title="document"></iframe>
+    </div>
+  </div>
+}

@@ -1,0 +1,94 @@
+{
+  "creditFile": {
+    "client": {
+      "title": "ملف القرض",
+      "subtitle": "الصرف وجدول سداد قرضك",
+      "loading": "جارٍ تحميل ملف القرض...",
+      "reference": "مرجع الملف",
+      "disbursedAmount": "المبلغ المصروف",
+      "disbursedAt": "تاريخ الصرف",
+      "status": "حالة الملف",
+      "fileStatus": {
+        "ACTIVE": "نشط",
+        "CLOSED": "مسدد"
+      },
+      "beneficiary": "الحساب المراد التحويل إليه",
+      "beneficiaryHint": "قم بتحويلك إلى هذا RIB، ثم أعلن عنه أدناه لكل قسط.",
+      "col": {
+        "sequenceNumber": "رقم",
+        "dueDate": "تاريخ الاستحقاق",
+        "amount": "المبلغ",
+        "status": "الحالة",
+        "action": "إجراء"
+      },
+      "installmentStatus": {
+        "PENDING": "قادم",
+        "DECLARED": "مُعلَن",
+        "PAID": "مدفوع",
+        "LATE": "متأخر",
+        "REPAID_EARLY": "مسددة مسبقاً"
+      },
+      "paidOn": "دُفع في",
+      "declaredOn": "أُعلن في",
+      "declaredWaiting": "في انتظار التحقق من طرف المسؤول",
+      "payAction": "لقد دفعت",
+      "paying": "جارٍ التسجيل...",
+      "sourceRibLabel": "RIB المستخدم للتحويل",
+      "sourceRibPlaceholder": "مثال: 230 780 0123456789012345 67",
+      "sourceRibRequired": "RIB مطلوب (10 أحرف على الأقل).",
+      "confirmDeclare": "تأكيد",
+      "cancelDeclare": "إلغاء",
+      "latePenaltyIncluded": "منها غرامة التأخير",
+      "repaidEarly": "مسددة بالسداد المسبق",
+      "loadErrorFallback": "تعذر تحميل ملف القرض.",
+      "payErrorFallback": "خطأ أثناء تسجيل الدفعة.",
+      "showAllInstallments": "عرض جدول الاستحقاقات كاملًا ({{count}} استحقاقًا)",
+      "showNextInstallments": "عرض الاستحقاقات القادمة فقط"
+    },
+    "admin": {
+      "title": "ملف القرض",
+      "subtitle": "الصرف وجدول السداد",
+      "loading": "جارٍ تحميل ملف القرض...",
+      "reference": "مرجع الملف",
+      "disbursedAmount": "المبلغ المصروف",
+      "disbursedAt": "تاريخ الصرف",
+      "status": "حالة الملف",
+      "fileStatus": {
+        "ACTIVE": "نشط",
+        "CLOSED": "مسدد"
+      },
+      "beneficiary": "الحساب المراد التحويل إليه",
+      "clientRib": "RIB الخاص بالعميل (المصرح به عند التصنيف)",
+      "col": {
+        "sequenceNumber": "رقم",
+        "dueDate": "تاريخ الاستحقاق",
+        "amount": "المبلغ",
+        "status": "الحالة",
+        "paidAt": "دُفع في"
+      },
+      "installmentStatus": {
+        "PENDING": "قادم",
+        "DECLARED": "مُعلَن",
+        "PAID": "مدفوع",
+        "LATE": "متأخر",
+        "REPAID_EARLY": "مسددة مسبقاً"
+      },
+      "declaredOn": "أُعلن في",
+      "declaredBy": "أعلنه",
+      "declaredSourceRib": "RIB المصرح به من طرف العميل",
+      "validateAction": "التحقق",
+      "validating": "جارٍ التحقق...",
+      "rejectAction": "رفض",
+      "rejecting": "جارٍ الرفض...",
+      "rejectReasonPlaceholder": "سبب الرفض",
+      "confirmReject": "تأكيد الرفض",
+      "cancelReject": "إلغاء",
+      "validateErrorFallback": "خطأ أثناء التحقق من الدفعة.",
+      "rejectErrorFallback": "خطأ أثناء رفض الدفعة.",
+      "empty": "لم يتم فتح ملف قرض لهذا الطلب بعد.",
+      "latePenaltyIncluded": "منها غرامة التأخير",
+      "loadErrorFallback": "تعذر تحميل ملف القرض.",
+      "scheduleLabel": "جدول السداد"
+    }
+  }
+}

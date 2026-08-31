@@ -1,0 +1,111 @@
+{
+  "investmentCredit": {
+    "hero": {
+      "eyebrow": "Enterprise Credit",
+      "title": "Business loan simulator",
+      "subtitle": "Investment financing for micro-businesses, sole proprietors, SMEs, mid-caps and large companies."
+    },
+    "form": {
+      "title": "Company information",
+      "subtitle": "Fill in the fields below",
+      "calculating": "Calculating...",
+      "companyName": "Legal name",
+      "companyNameRequired": "The legal name is required.",
+      "enterpriseType": "Company category",
+      "enterpriseTypeRequired": "The category is required.",
+      "selectPlaceholder": "Select...",
+      "sector": "Activity sector",
+      "sectorUnspecified": "Unspecified",
+      "email": "Contact email",
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Invalid email.",
+      "phone": "Contact phone",
+      "phoneRequired": "Phone number is required.",
+      "phoneInvalid": "Invalid Moroccan phone number.",
+      "companyAgeYears": "Company age",
+      "companyAgeYearsRequired": "Company age is required.",
+      "amount": "Financing amount",
+      "amountRequired": "Amount is required.",
+      "amountRange": "Between MAD 50,000 and MAD 100,000,000.",
+      "duration": "Financing duration",
+      "annualRevenue": "Annual revenue",
+      "annualRevenueRequired": "Annual revenue is required.",
+      "netAnnualResult": "Net annual result",
+      "netAnnualResultRequired": "Net annual result is required.",
+      "existingAnnualDebtService": "Existing debt service",
+      "madPerYear": "MAD/year",
+      "existingDebtHint": "0 if the company has no ongoing credit.",
+      "guaranteesValue": "Value of guarantees offered",
+      "guaranteesValueRequired": "Guarantees value is required.",
+      "submit": "Simulate",
+      "resetAria": "Reset the form"
+    },
+    "type": {
+      "TPE": "Micro-business (TPE)",
+      "AUTO_ENTREPRENEUR": "Sole proprietor",
+      "PME": "Small and medium enterprise (SME)",
+      "ETI": "Mid-cap company (ETI)",
+      "GE": "Large company (GE)"
+    },
+    "results": {
+      "title": "Results",
+      "eligible": "Eligible",
+      "caseCreated": "Case created: reference",
+      "caseCreatedSuffix": "tracked via the processing pipeline.",
+      "applicableRate": "Applicable rate",
+      "monthlyPayment": "Monthly payment",
+      "totalInterest": "Total interest",
+      "totalCost": "Total cost"
+    },
+    "fees": {
+      "title": "Fees breakdown",
+      "subtitle": "Fees related to your file",
+      "processing": "Processing fees",
+      "taeg": "APR"
+    },
+    "empty": {
+      "subtitle": "Fill in the form and click \"Simulate\"."
+    },
+    "errorFallback": "Error during simulation.",
+    "why": {
+      "label": "Our strengths",
+      "title": "Why choose us?",
+      "digital": {
+        "title": "Instant simulation, every company profile",
+        "text": "From sole trader to large enterprise, simulate your investment credit online and get an immediate estimate, with no branch visit needed."
+      },
+      "expertise": {
+        "title": "Pricing calibrated by profile",
+        "text": "A rate scale and eligibility criteria our team adjusts to your company's size and maturity, for an offer genuinely fitted to your situation."
+      },
+      "tracking": {
+        "title": "Transparent file tracking",
+        "text": "Follow every step of the review, classification, analysis, decision, contract, directly from your client area, with no need to chase your bank."
+      }
+    },
+    "process": {
+      "label": "The process",
+      "title": "Finance your investment in 5 steps",
+      "step1": {
+        "num": "Step 1",
+        "label": "I simulate<br>my loan"
+      },
+      "step2": {
+        "num": "Step 2",
+        "label": "My file is<br>classified"
+      },
+      "step3": {
+        "num": "Step 3",
+        "label": "My file is<br>reviewed and analyzed"
+      },
+      "step4": {
+        "num": "Step 4",
+        "label": "The committee<br>decides"
+      },
+      "step5": {
+        "num": "Step 5",
+        "label": "I get<br>my financing"
+      }
+    }
+  }
+}

@@ -1,0 +1,125 @@
+<div class="cb-card mb-3">
+  <div class="cb-card__header cb-card__header--amber">
+    <div class="cb-card__header-icon cb-card__header-icon--amber"><i class="bi bi-lightning-charge"></i></div>
+    <div>
+      <p class="cb-card__header-title">{{ 'earlyRepayment.title' | translate }}</p>
+      <p class="cb-card__header-sub">
+        {{ (mode() === 'MANAGER' ? 'earlyRepayment.subtitleManager' : 'earlyRepayment.subtitleClient') | translate }}
+      </p>
+    </div>
+  </div>
+  <div class="cb-card__body">
+    <form [formGroup]="form" (ngSubmit)="requestQuote()" novalidate>
+      <div class="row g-3 align-items-end">
+        <div class="col-md-6">
+          <label for="earlyRepaymentAmount" class="cb-label">
+            <i class="bi bi-cash-stack"></i>{{ 'earlyRepayment.amount' | translate }}
+          </label>
+          <input id="earlyRepaymentAmount" type="number" min="0.01" step="0.01" class="form-control"
+                 formControlName="amount" [placeholder]="'earlyRepayment.amountPlaceholder' | translate" />
+          @if (form.controls.amount.invalid && form.controls.amount.touched) {
+            <span class="small text-danger">{{ 'earlyRepayment.amountInvalid' | translate }}</span>
+          }
+        </div>
+        <div class="col-md-3">
+          <button type="submit" class="cb-btn cb-btn--amber w-100" [disabled]="loading() || recording()">
+            <i class="bi bi-calculator"></i>{{ 'earlyRepayment.quoteAction' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <app-loading-spinner [loading]="loading()" [message]="'earlyRepayment.quoting' | translate" />
+    <app-error-message [message]="errorMessage()" />
+
+    @if (quote(); as q) {
+      <div class="row g-3 mt-2">
+        <div class="col-md-4">
+          <p class="cb-label mb-1">{{ 'earlyRepayment.kind' | translate }}</p>
+          <span class="cb-badge" [class.cb-badge--green]="q.fullRepayment" [class.cb-badge--indigo]="!q.fullRepayment">
+            {{ (q.fullRepayment ? 'earlyRepayment.full' : 'earlyRepayment.partial') | translate }}
+          </span>
+        </div>
+        <div class="col-md-4">
+          <p class="cb-label mb-1">{{ 'earlyRepayment.outstandingBefore' | translate }}</p>
+          <p class="fw-semibold mb-0">{{ formatAmount(q.outstandingBefore) }}</p>
+        </div>
+        <div class="col-md-4">
+          <p class="cb-label mb-1">{{ 'earlyRepayment.repaidPrincipal' | translate }}</p>
+          <p class="fw-semibold mb-0">{{ formatAmount(q.repaidPrincipal) }}</p>
+        </div>
+        <div class="col-md-4">
+          <p class="cb-label mb-1">{{ 'earlyRepayment.accruedInterest' | translate }}</p>
+          <p class="fw-semibold mb-0">{{ formatAmount(q.accruedInterest) }}</p>
+        </div>
+        <div class="col-md-4">
+          <p class="cb-label mb-1">{{ 'earlyRepayment.indemnity' | translate }}</p>
+          <p class="fw-semibold mb-0">{{ formatAmount(q.indemnity) }}</p>
+        </div>
+        <div class="col-md-4">
+          <p class="cb-label mb-1">{{ 'earlyRepayment.totalToPay' | translate }}</p>
+          <p class="fw-bold mb-0">{{ formatAmount(q.totalToPay) }}</p>
+        </div>
+        <div class="col-md-4">
+          <p class="cb-label mb-1">{{ 'earlyRepayment.outstandingAfter' | translate }}</p>
+          <p class="fw-semibold mb-0">{{ formatAmount(q.outstandingAfter) }}</p>
+        </div>
+        @if (q.newMonthlyPayment !== null) {
+          <div class="col-md-4">
+            <p class="cb-label mb-1">{{ 'earlyRepayment.newMonthlyPayment' | translate }}</p>
+            <p class="fw-semibold mb-0">{{ formatAmount(q.newMonthlyPayment) }}</p>
+          </div>
+        }
+        <div class="col-md-4">
+          <p class="cb-label mb-1">{{ 'earlyRepayment.valueDate' | translate }}</p>
+          <p class="fw-semibold mb-0">{{ q.valueDate | date: 'dd/MM/yyyy' }}</p>
+        </div>
+      </div>
+
+      @if (mode() === 'MANAGER') {
+        <div class="d-flex gap-2 mt-3">
+          <button type="button" class="cb-btn cb-btn--indigo" [disabled]="recording()" (click)="record()">
+            <i class="bi bi-check2-circle"></i>
+            {{ (recording() ? 'earlyRepayment.recording' : 'earlyRepayment.recordAction') | translate }}
+          </button>
+        </div>
+      } @else {
+        <p class="small cb-muted-text mt-3 mb-0">
+          <i class="bi bi-info-circle me-1"></i>{{ 'earlyRepayment.clientHint' | translate }}
+        </p>
+      }
+    }
+
+    @if (mode() === 'MANAGER' && history().length > 0) {
+      <p class="cb-label mt-4 mb-2">{{ 'earlyRepayment.history' | translate }}</p>
+      <div class="table-responsive">
+        <table class="cb-table">
+          <thead>
+            <tr>
+              <th>{{ 'earlyRepayment.col.performedAt' | translate }}</th>
+              <th>{{ 'earlyRepayment.kind' | translate }}</th>
+              <th>{{ 'earlyRepayment.repaidPrincipal' | translate }}</th>
+              <th>{{ 'earlyRepayment.indemnity' | translate }}</th>
+              <th>{{ 'earlyRepayment.col.totalPaid' | translate }}</th>
+              <th>{{ 'earlyRepayment.outstandingAfter' | translate }}</th>
+              <th>{{ 'earlyRepayment.col.performedBy' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (entry of history(); track entry.id) {
+              <tr>
+                <td class="text-nowrap">{{ entry.performedAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+                <td>{{ (entry.fullRepayment ? 'earlyRepayment.full' : 'earlyRepayment.partial') | translate }}</td>
+                <td>{{ formatAmount(entry.repaidPrincipal) }}</td>
+                <td>{{ formatAmount(entry.indemnity) }}</td>
+                <td class="fw-semibold">{{ formatAmount(entry.totalPaid) }}</td>
+                <td>{{ formatAmount(entry.outstandingAfter) }}</td>
+                <td>{{ entry.performedBy }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

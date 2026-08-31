@@ -1,0 +1,116 @@
+<div class="cb-card mb-4">
+  <div class="cb-card__header cb-card__header--indigo">
+    <div class="cb-card__header-icon cb-card__header-icon--indigo"><i class="bi bi-paperclip"></i></div>
+    <div>
+      <p class="cb-card__header-title">{{ 'documentUpload.title' | translate }}</p>
+      <p class="cb-card__header-sub">{{ 'documentUpload.subtitle' | translate }}</p>
+    </div>
+  </div>
+  <div class="cb-card__body">
+    <app-loading-spinner [loading]="loading()" [message]="'documentUpload.loading' | translate" />
+    <app-error-message [message]="errorMessage()" />
+
+    @if (!loading() && documents().length === 0) {
+      <p class="cb-muted-text mb-3">{{ 'documentUpload.empty' | translate }}</p>
+    }
+
+    @if (documents().length > 0) {
+      <div class="table-responsive mb-3">
+        <table class="table table-sm align-middle">
+          <thead>
+            <tr>
+              <th>{{ 'documentUpload.col.file' | translate }}</th>
+              <th>{{ 'documentUpload.col.type' | translate }}</th>
+              <th>{{ 'documentUpload.col.step' | translate }}</th>
+              <th>{{ 'documentUpload.col.status' | translate }}</th>
+              <th>{{ 'documentUpload.col.antivirus' | translate }}</th>
+              <th>{{ 'documentUpload.col.uploadedBy' | translate }}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (doc of documents(); track doc.id) {
+              <tr [class.text-muted]="doc.status === 'SUPERSEDED'">
+                <td>
+                  <i class="bi bi-file-earmark"></i>
+                  {{ doc.originalFilename }}
+                  <span class="small cb-muted-text">({{ formatSize(doc.sizeBytes) }})</span>
+                </td>
+                <td>{{ doc.documentType ?? '-' }}</td>
+                <td>{{ doc.stepName }}</td>
+                <td>
+                  @if (doc.status === 'ACTIVE') {
+                    <span class="cb-badge cb-badge--green">{{ 'documentUpload.status.active' | translate }}</span>
+                  } @else {
+                    <span class="cb-badge cb-badge--gray">{{ 'documentUpload.status.superseded' | translate }}</span>
+                  }
+                </td>
+                <td>
+                  @if (doc.scanStatus === 'CLEAN') {
+                    <span class="cb-badge cb-badge--green">
+                      <i class="bi bi-shield-check"></i>{{ 'documentUpload.scan.clean' | translate }}
+                    </span>
+                  } @else if (doc.scanStatus === 'SKIPPED') {
+                    <span class="cb-badge cb-badge--gray">{{ 'documentUpload.scan.skipped' | translate }}</span>
+                  } @else if (doc.scanStatus === 'PENDING') {
+                    <span class="cb-badge cb-badge--amber">{{ 'documentUpload.scan.pending' | translate }}</span>
+                  } @else {
+                    <span class="cb-badge cb-badge--red">
+                      <i class="bi bi-shield-x"></i>{{ 'documentUpload.scan.infected' | translate }}
+                    </span>
+                  }
+                </td>
+                <td>{{ doc.uploadedBy }}</td>
+                <td>
+                  @if (doc.scanStatus === 'CLEAN' || doc.scanStatus === 'SKIPPED') {
+                    <button type="button" class="cb-btn cb-btn--ghost cb-btn--sm"
+                            [disabled]="viewingId() === doc.id"
+                            (click)="view(doc)"
+                            [attr.aria-label]="('documentUpload.viewAria' | translate) + ' ' + doc.originalFilename">
+                      <i class="bi bi-eye"></i>{{ 'documentUpload.view' | translate }}
+                    </button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <hr class="my-3"/>
+
+    <form [formGroup]="form" (ngSubmit)="upload()" novalidate>
+      <div class="row g-3 align-items-end">
+        <div class="col-md-5">
+          <label for="documentFile" class="cb-label">
+            <i class="bi bi-paperclip"></i>{{ 'documentUpload.file' | translate }}
+          </label>
+          <input id="documentFile" type="file" class="form-control"
+                 accept=".pdf,.jpg,.jpeg,.png,.docx,.xlsx"
+                 (change)="onFileSelected($event)"/>
+          @if (selectedFileError()) {
+            <div class="small mt-1 text-danger">{{ selectedFileError() }}</div>
+          } @else {
+            <div class="small mt-1 cb-muted-text">{{ 'documentUpload.fileHint' | translate }}</div>
+          }
+        </div>
+        <div class="col-md-5">
+          <label for="documentType" class="cb-label">
+            <i class="bi bi-tag"></i>{{ 'documentUpload.documentType' | translate }}
+          </label>
+          <input id="documentType" type="text" class="form-control" formControlName="documentType"
+                 [placeholder]="'documentUpload.documentTypePlaceholder' | translate"/>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="cb-btn cb-btn--indigo w-100" [disabled]="uploading() || !selectedFile()">
+            <i class="bi bi-upload"></i>{{ 'documentUpload.submit' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <app-loading-spinner [loading]="uploading()" [message]="'documentUpload.uploading' | translate" />
+    <app-error-message [message]="uploadErrorMessage()" />
+  </div>
+</div>

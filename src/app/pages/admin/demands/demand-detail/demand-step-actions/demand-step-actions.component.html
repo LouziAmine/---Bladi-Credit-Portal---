@@ -1,0 +1,394 @@
+<div class="cb-card mb-4">
+  <div class="cb-card__header cb-card__header--indigo">
+    <div class="cb-card__header-icon cb-card__header-icon--indigo">
+      <i class="bi bi-signpost-split"></i>
+    </div>
+    <div>
+      <p class="cb-card__header-title">
+        {{ 'demandDetail.step.' + (demand().completed || demand().rejected ? 'final' : 'current') | translate }}
+      </p>
+      <p class="cb-card__header-sub">{{ currentStep().processName }}</p>
+    </div>
+  </div>
+  <div class="cb-card__body">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <p class="cb-label mb-1">{{ 'demandPipeline.step' | translate }}</p>
+        <p class="fw-semibold mb-0">{{ currentStep().stepName }}</p>
+      </div>
+      <div class="col-md-3">
+        <p class="cb-label mb-1">{{ 'demandDetail.requiredProfile' | translate }}</p>
+        @if (currentStep().requiredGradeName || currentStep().requiredTeamName) {
+          <span class="cb-badge cb-badge--indigo">
+            {{ currentStep().requiredGradeName }}
+            @if (currentStep().requiredGradeName && currentStep().requiredTeamName) { · }
+            {{ currentStep().requiredTeamName }}
+          </span>
+        } @else {
+          <p class="fw-semibold mb-0">-</p>
+        }
+      </div>
+      <div class="col-md-3">
+        <p class="cb-label mb-1">{{ 'demandDetail.assignedTo' | translate }}</p>
+        @if (currentStep().assignedUsername) {
+          <p class="fw-semibold mb-0">{{ assignedFullName() ?? currentStep().assignedUsername }}</p>
+          @if (currentStep().assignedBy) {
+            <p class="small mb-0 cb-muted-text">
+              {{ 'demandDetail.assignedBy' | translate }} {{ currentStep().assignedBy }}
+            </p>
+          }
+        } @else {
+          <span class="cb-badge cb-badge--gray">{{ 'demandDetail.unassigned' | translate }}</span>
+        }
+      </div>
+      <div class="col-md-3">
+        <p class="cb-label mb-1">{{ 'demandDetail.enteredOn' | translate }}</p>
+        <p class="fw-semibold mb-0">{{ currentStep().enteredAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+      </div>
+    </div>
+
+    @if (!demand().completed && !demand().rejected) {
+      <hr class="my-3"/>
+
+      <div class="d-flex gap-2 mb-3" role="group" [attr.aria-label]="'demandDetail.actionToPerform' | translate">
+        <button type="button" class="cb-btn cb-btn--sm"
+                [class.cb-btn--indigo]="actionMode() === 'ASSIGN'"
+                [class.cb-btn--ghost]="actionMode() !== 'ASSIGN'"
+                (click)="setActionMode('ASSIGN')">
+          <i class="bi bi-person-check"></i>{{ 'demandDetail.assignReassign' | translate }}
+        </button>
+        @if (isClassificationStep()) {
+          <button type="button" class="cb-btn cb-btn--sm"
+                  [class.cb-btn--amber]="actionMode() === 'CLASSIFY'"
+                  [class.cb-btn--ghost]="actionMode() !== 'CLASSIFY'"
+                  (click)="setActionMode('CLASSIFY')">
+            <i class="bi bi-patch-question"></i>{{ 'demandDetail.classifyCase' | translate }}
+          </button>
+        } @else {
+          <button type="button" class="cb-btn cb-btn--sm"
+                  [class.cb-btn--red]="actionMode() === 'ADVANCE' && willReturnDossier()"
+                  [class.cb-btn--amber]="actionMode() === 'ADVANCE' && !willReturnDossier()"
+                  [class.cb-btn--ghost]="actionMode() !== 'ADVANCE'"
+                  (click)="setActionMode('ADVANCE')">
+            <i class="bi bi-arrow-right-circle"></i>{{ 'demandDetail.advanceReturnCase' | translate }}
+          </button>
+        }
+        <button type="button" class="cb-btn cb-btn--sm"
+                [class.cb-btn--indigo]="actionMode() === 'COMMENT'"
+                [class.cb-btn--ghost]="actionMode() !== 'COMMENT'"
+                (click)="setActionMode('COMMENT')">
+          <i class="bi bi-chat-left-text"></i>{{ 'demandDetail.addRemark' | translate }}
+        </button>
+      </div>
+
+      @if (isClassificationStep() && isEnterpriseDemand()) {
+        <app-bam-verification-panel
+          [enterpriseType]="demand().enterprise!.enterpriseType"
+          [companyName]="demand().contactName"
+        />
+      }
+
+      @if (actionMode() === 'CLASSIFY') {
+        <app-demand-classification [demand]="demand()" [nextEligibleAssignees]="nextEligibleAssignees()"
+                                   (classified)="changed.emit()" />
+      } @else {
+        @if (actionMode() === 'ASSIGN') {
+          <app-loading-spinner [loading]="assigning()" [message]="'demandDetail.assigning' | translate" />
+          <app-error-message [message]="assignErrorMessage()" />
+        } @else if (actionMode() === 'COMMENT') {
+          <app-loading-spinner [loading]="commenting()" [message]="'demandDetail.savingComment' | translate" />
+          <app-error-message [message]="commentErrorMessage()" />
+        } @else {
+          <app-loading-spinner [loading]="advancing()" [message]="'demandDetail.advancing' | translate" />
+          <app-error-message [message]="advanceErrorMessage()" />
+        }
+
+        <form [formGroup]="actionMode() === 'ASSIGN' ? assignForm : (actionMode() === 'COMMENT' ? commentForm : form)"
+              (ngSubmit)="onSubmit()" novalidate>
+          @if (actionMode() === 'ASSIGN') {
+            <div class="flex-grow-1">
+              <label for="assignUsername" class="cb-label">
+                <i class="bi bi-person-check"></i>{{ 'demandDetail.assignReassignTo' | translate }}
+              </label>
+              <select id="assignUsername" class="form-select" formControlName="username">
+                <option value="">{{ 'demandDetail.selectEligibleUser' | translate }}</option>
+                @for (eligible of eligibleAssignees(); track eligible.id) {
+                  <option [value]="eligible.username">{{ eligible.fullName ?? eligible.username }} · {{ eligible.gradeName }}</option>
+                }
+              </select>
+              @if (eligibleAssignees().length === 0) {
+                <div class="small mt-1 cb-muted-text">{{ 'demandDetail.noEligibleUser' | translate }}</div>
+              }
+            </div>
+          } @else if (actionMode() === 'COMMENT') {
+            <div class="flex-grow-1">
+              <label for="comment" class="cb-label">
+                <i class="bi bi-chat-left-text"></i>{{ 'demandDetail.remark' | translate }}
+              </label>
+              <textarea id="comment" class="form-control" formControlName="comment" rows="2"></textarea>
+              <div class="small mt-1 cb-muted-text">{{ 'demandDetail.commentHint' | translate }}</div>
+            </div>
+          } @else {
+            @if (isAssignedToSomeoneElse()) {
+              <div class="cb-alert cb-alert--amber">
+                <i class="bi bi-lock-fill"></i>
+                <span>
+                  {{ 'demandDetail.advance.assignedToOther1' | translate }}
+                  <strong>{{ assignedFullName() ?? currentStep().assignedUsername }}</strong> -
+                  {{ 'demandDetail.advance.assignedToOther2' | translate }}
+                </span>
+              </div>
+            }
+            <div class="row g-3">
+              <div class="col-12">
+                <label for="assigneeUsername" class="cb-label">
+                  <i class="bi bi-person-check"></i>{{ 'demandDetail.advance.newStepOwner' | translate }}
+                </label>
+                <select id="assigneeUsername" class="form-select" formControlName="assigneeUsername">
+                  <option value="">{{ 'demandDetail.selectEligibleUser' | translate }}</option>
+                  @for (eligible of assigneeOptions(); track eligible.id) {
+                    <option [value]="eligible.username">{{ eligible.fullName ?? eligible.username }} · {{ eligible.gradeName }}</option>
+                  }
+                </select>
+                @if (needsAssignee()) {
+                  <div class="small mt-1 cb-muted-text">
+                    {{ 'demandDetail.advance.mandatory' | translate }}
+                    {{ (willReturnDossier() ? 'demandDetail.advance.previousStep' : 'demandDetail.advance.nextStep') | translate }}.
+                    @if (assigneeOptions().length === 0) {
+                      {{ 'demandDetail.noEligibleUser' | translate }}
+                    }
+                  </div>
+                } @else {
+                  <div class="small mt-1 cb-muted-text">{{ 'demandDetail.advance.lastStepHint' | translate }}</div>
+                }
+              </div>
+              <div class="col-12">
+                <label for="note" class="cb-label">
+                  <i class="bi bi-chat-left-text"></i>{{ 'demandDetail.note' | translate }}
+                </label>
+                <textarea id="note" class="form-control" formControlName="note" rows="2"></textarea>
+              </div>
+              <div class="col-12">
+                <fieldset class="border-0 p-0 m-0">
+                  <legend class="cb-label h6">
+                    <i class="bi bi-percent"></i>{{ 'demandDetail.advance.rateDecision' | translate }}
+                    <i class="bi bi-info-circle cb-muted-text ms-1"
+                       [title]="'demandDetail.advance.rateDecisionHint' | translate"></i>
+                  </legend>
+                  <div class="btn-group w-100" role="group">
+                    @for (choice of rateOptionChoices; track choice) {
+                      <input type="radio" class="btn-check" [id]="'rateOption' + choice"
+                             formControlName="rateOption" [value]="choice"
+                             [attr.disabled]="choice === 'KEEP' && !hasCurrentRate() ? true : null"/>
+                      <label class="btn btn-outline-success" [for]="'rateOption' + choice">
+                        {{ 'demandDetail.choices.rateOption.' + choice + '.label' | translate }}
+                      </label>
+                    }
+                  </div>
+                  @if (selectedRateOptionDescription()) {
+                    <p class="small mt-1 mb-0 cb-muted-text">{{ selectedRateOptionDescription() }}</p>
+                  }
+                </fieldset>
+                @if (!hasCurrentRate()) {
+                  <div class="small mt-1 cb-muted-text">{{ 'demandDetail.advance.noRateYet' | translate }}</div>
+                }
+                @if (form.value.rateOption === 'MANUAL') {
+                  <div class="mt-2">
+                    <label for="manualRate" class="cb-label">{{ 'demandDetail.advance.manualRate' | translate }}</label>
+                    <input id="manualRate" type="number" step="0.01" min="0.01" max="100"
+                           class="form-control" formControlName="manualRate"/>
+                  </div>
+                }
+              </div>
+              <div class="col-12">
+                <fieldset class="border-0 p-0 m-0">
+                  <legend class="cb-label h6">
+                    <i class="bi bi-cash-coin"></i>{{ 'demandDetail.advance.amountDecision' | translate }}
+                    <i class="bi bi-info-circle cb-muted-text ms-1"
+                       [title]="'demandDetail.advance.amountDecisionHint' | translate"></i>
+                  </legend>
+                  <div class="btn-group w-100" role="group">
+                    @for (choice of amountOptionChoices; track choice) {
+                      <input type="radio" class="btn-check" [id]="'amountOption' + choice"
+                             formControlName="amountOption" [value]="choice"/>
+                      <label class="btn btn-outline-success" [for]="'amountOption' + choice">
+                        {{ 'demandDetail.choices.amountOption.' + choice + '.label' | translate }}
+                      </label>
+                    }
+                  </div>
+                  @if (selectedAmountOptionDescription()) {
+                    <p class="small mt-1 mb-0 cb-muted-text">{{ selectedAmountOptionDescription() }}</p>
+                  }
+                </fieldset>
+                @if (form.value.amountOption === 'MANUAL') {
+                  <div class="mt-2">
+                    <label for="manualAmount" class="cb-label">{{ 'demandDetail.advance.manualAmount' | translate }}</label>
+                    <input id="manualAmount" type="number" step="0.01" min="0.01"
+                           class="form-control" formControlName="manualAmount"/>
+                  </div>
+                }
+              </div>
+              <div class="col-12">
+                <fieldset class="border-0 p-0 m-0">
+                  <legend class="cb-label h6">
+                    <i class="bi bi-calendar-range"></i>{{ 'demandDetail.advance.durationDecision' | translate }}
+                    <i class="bi bi-info-circle cb-muted-text ms-1"
+                       [title]="'demandDetail.advance.durationDecisionHint' | translate"></i>
+                  </legend>
+                  <div class="btn-group w-100" role="group">
+                    @for (choice of durationOptionChoices; track choice) {
+                      <input type="radio" class="btn-check" [id]="'durationOption' + choice"
+                             formControlName="durationOption" [value]="choice"/>
+                      <label class="btn btn-outline-success" [for]="'durationOption' + choice">
+                        {{ 'demandDetail.choices.durationOption.' + choice + '.label' | translate }}
+                      </label>
+                    }
+                  </div>
+                  @if (selectedDurationOptionDescription()) {
+                    <p class="small mt-1 mb-0 cb-muted-text">{{ selectedDurationOptionDescription() }}</p>
+                  }
+                </fieldset>
+                @if (form.value.durationOption === 'MANUAL') {
+                  <div class="mt-2">
+                    <label for="manualDuration" class="cb-label">
+                      {{ 'demandDetail.advance.manualDuration' | translate }}
+                    </label>
+                    <input id="manualDuration" type="number" step="1" min="1"
+                           class="form-control" formControlName="manualDuration"/>
+                  </div>
+                }
+              </div>
+              <div class="col-md-6">
+                <label for="decisionOutcome" class="cb-label">
+                  <i class="bi bi-check2-square"></i>{{ 'demandDetail.advance.decision' | translate }}
+                </label>
+                <select id="decisionOutcome" class="form-select" formControlName="decisionOutcome">
+                  <option value="">{{ 'users.none' | translate }}</option>
+                  @for (opt of decisionOutcomeOptions; track opt) {
+                    <option [value]="opt">
+                      {{ 'demandDetail.choices.decisionOutcome.' + opt | translate }}
+                    </option>
+                  }
+                </select>
+                @if (!isDecisionStep()) {
+                  <div class="small mt-1 cb-muted-text">{{ 'demandDetail.advance.onlyDecisionStep' | translate }}</div>
+                }
+              </div>
+              <div class="col-md-6">
+                <label for="committeeType" class="cb-label">
+                  <i class="bi bi-people"></i>{{ 'demandDetail.advance.committeeType' | translate }}
+                </label>
+                <select id="committeeType" class="form-select" formControlName="committeeType">
+                  <option value="">{{ 'users.none' | translate }}</option>
+                  @for (opt of committeeTypeOptions; track opt) {
+                    <option [value]="opt">
+                      {{ 'demandDetail.choices.committeeType.' + opt | translate }}
+                    </option>
+                  }
+                </select>
+                @if (!isCommitteeProgStep()) {
+                  <div class="small mt-1 cb-muted-text">{{ 'demandDetail.advance.onlyCommitteeProgStep' | translate }}</div>
+                }
+              </div>
+              @if (isInsuranceStep()) {
+                <div class="col-12">
+                  <fieldset class="border-0 p-0 m-0">
+                    <legend class="cb-label h6">
+                      <i class="bi bi-shield-check"></i>{{ 'demandDetail.advance.insurance.title' | translate }}
+                    </legend>
+                    <div class="form-check">
+                      <input id="insuranceAdiSubscribed" type="checkbox" class="form-check-input"
+                             formControlName="insuranceAdiSubscribed"/>
+                      <label for="insuranceAdiSubscribed" class="form-check-label">
+                        {{ 'demandDetail.advance.insurance.adiSubscribed' | translate }}
+                      </label>
+                    </div>
+                    <div class="small cb-muted-text mb-2">{{ 'demandDetail.advance.insurance.adiHint' | translate }}</div>
+                    <label for="insuranceCoverageType" class="cb-label">
+                      {{ 'demandDetail.advance.insurance.coverageType' | translate }}
+                    </label>
+                    <select id="insuranceCoverageType" class="form-select mb-2" formControlName="insuranceCoverageType">
+                      <option value="">{{ 'users.none' | translate }}</option>
+                      @for (opt of insuranceCoverageTypeOptions; track opt) {
+                        <option [value]="opt">
+                          {{ 'demandDetail.choices.insuranceCoverageType.' + opt | translate }}
+                        </option>
+                      }
+                    </select>
+                    @if (hasRealGuarantees()) {
+                      <div class="form-check">
+                        <input id="insuranceDamageSubscribed" type="checkbox" class="form-check-input"
+                               formControlName="insuranceDamageSubscribed"/>
+                        <label for="insuranceDamageSubscribed" class="form-check-label">
+                          {{ 'demandDetail.advance.insurance.damageSubscribed' | translate }}
+                        </label>
+                      </div>
+                      <div class="small cb-muted-text">{{ 'demandDetail.advance.insurance.damageHint' | translate }}</div>
+                    }
+                  </fieldset>
+                </div>
+              } @else {
+                <div class="col-12">
+                  <div class="small cb-muted-text">
+                    <i class="bi bi-shield-check"></i>{{ 'demandDetail.advance.insurance.onlyInsuranceStep' | translate }}
+                  </div>
+                </div>
+              }
+              <div class="col-md-6">
+                <label for="returnReasonCode" class="cb-label">
+                  <i class="bi bi-arrow-return-left"></i>{{ 'demandDetail.advance.returnReason' | translate }}
+                </label>
+                <input id="returnReasonCode" type="text" class="form-control" formControlName="returnReasonCode"/>
+                <div class="small mt-1 cb-muted-text">
+                  @if (isAtFirstStep()) {
+                    {{ 'demandDetail.advance.noPreviousStep' | translate }}
+                  } @else {
+                    {{ 'demandDetail.advance.returnHint' | translate }}
+                  }
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="reserves" class="cb-label">
+                  <i class="bi bi-shield-exclamation"></i>{{ 'demandDetail.advance.reserves' | translate }}
+                </label>
+                <input id="reserves" type="text" class="form-control" formControlName="reserves"/>
+                @if (!isDecisionStep()) {
+                  <div class="small mt-1 cb-muted-text">{{ 'demandDetail.advance.onlyDecisionStep' | translate }}</div>
+                }
+              </div>
+              <div class="col-12">
+                <label for="recommendations" class="cb-label">
+                  <i class="bi bi-lightbulb"></i>{{ 'demandDetail.advance.recommendations' | translate }}
+                </label>
+                <textarea id="recommendations" class="form-control" formControlName="recommendations" rows="2"></textarea>
+                @if (!isDecisionStep()) {
+                  <div class="small mt-1 cb-muted-text">{{ 'demandDetail.advance.onlyDecisionStep' | translate }}</div>
+                }
+              </div>
+            </div>
+          }
+
+          <div class="d-flex gap-2 mt-4">
+            @if (actionMode() === 'ASSIGN') {
+              <button type="submit" class="cb-btn cb-btn--indigo" [disabled]="assigning() || !assignForm.value.username">
+                <i class="bi bi-person-check"></i>{{ 'demandDetail.assign' | translate }}
+              </button>
+            } @else if (actionMode() === 'COMMENT') {
+              <button type="submit" class="cb-btn cb-btn--indigo" [disabled]="commenting() || !commentForm.value.comment?.trim()">
+                <i class="bi bi-chat-left-text"></i>{{ 'demandDetail.addRemarkSubmit' | translate }}
+              </button>
+            } @else if (willReturnDossier()) {
+              <button type="submit" class="cb-btn cb-btn--red" [disabled]="isAdvanceDisabled()">
+                <i class="bi bi-arrow-return-left"></i>{{ 'demandDetail.returnCase' | translate }}
+              </button>
+            } @else {
+              <button type="submit" class="cb-btn cb-btn--amber" [disabled]="isAdvanceDisabled()">
+                <i class="bi bi-arrow-right-circle"></i>{{ 'demandDetail.advanceCase' | translate }}
+              </button>
+            }
+          </div>
+        </form>
+      }
+    }
+  </div>
+</div>

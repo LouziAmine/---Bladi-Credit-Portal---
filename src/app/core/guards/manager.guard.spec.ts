@@ -4,6 +4,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { managerGuard } from './manager.guard';
 import { TokenService } from '../services';
+import { CODE_CLIENT, CODE_MANAGER } from '../../testing/mocks/mock-codes';
+import { USER_ADMIN } from '../../testing/mocks/mock-users';
 
 describe('managerGuard', () => {
   let tokenService: TokenService;
@@ -24,20 +26,20 @@ describe('managerGuard', () => {
   });
 
   it('should allow access when role is MANAGER', () => {
-    tokenService.setAuthState('admin', 'MANAGER');
+    tokenService.setAuthState(USER_ADMIN, CODE_MANAGER);
     expect(runGuard()).toBe(true);
   });
 
-  it('should redirect to /simulation when role is CLIENT', () => {
-    tokenService.setAuthState('user', 'CLIENT');
+  it('should redirect to /mortgage-credit when role is CLIENT', () => {
+    tokenService.setAuthState('user', CODE_CLIENT);
     const result = runGuard();
-    const expectedUrl = router.createUrlTree(['/simulation']);
+    const expectedUrl = router.createUrlTree(['/mortgage-credit']);
     expect(result.toString()).toBe(expectedUrl.toString());
   });
 
-  it('should redirect to /simulation when no auth state', () => {
+  it('should redirect to /mortgage-credit when no auth state', () => {
     const result = runGuard();
-    const expectedUrl = router.createUrlTree(['/simulation']);
+    const expectedUrl = router.createUrlTree(['/mortgage-credit']);
     expect(result.toString()).toBe(expectedUrl.toString());
   });
 });

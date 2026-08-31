@@ -1,0 +1,151 @@
+{
+  "mortgageCredit": {
+    "hero": {
+      "eyebrow": "Crédit Immobilier",
+      "title": "Simulateur de crédit immobilier",
+      "subtitle": "Estimez votre mensualité en temps réel, avec les paramètres BAM configurés."
+    },
+    "form": {
+      "title": "Paramètres du crédit",
+      "subtitle": "Remplissez les champs ci-dessous",
+      "calculating": "Calcul en cours...",
+      "applicantName": "Nom complet",
+      "applicantNameRequired": "Le nom est requis.",
+      "email": "Email de contact",
+      "emailRequired": "L'email est requis.",
+      "emailInvalid": "Email invalide.",
+      "phone": "Téléphone de contact",
+      "phoneRequired": "Le téléphone est requis.",
+      "phoneInvalid": "Numéro de téléphone marocain invalide.",
+      "productType": "Type de financement",
+      "productConventional": "Conventionnel",
+      "productMourabaha": "Mourabaha",
+      "productMourabahaHint": "Financement participatif (Mourabaha) - marge bénéficiaire + TVA, sans intérêt.",
+      "productConventionalHint": "Crédit classique à taux d'intérêt.",
+      "amount": "Montant du crédit",
+      "amountMin": "70 000 MAD",
+      "amountMax": "30 000 000 MAD",
+      "duration": "Durée du remboursement",
+      "months": "mois",
+      "durationMin": "12 mois (1 an)",
+      "durationMax": "300 mois (25 ans)",
+      "cspCode": "Catégorie socio-professionnelle",
+      "selectPlaceholder": "Sélectionnez...",
+      "cspRequired": "La CSP est requise.",
+      "age": "Âge de l'emprunteur",
+      "years": "ans",
+      "ageRequired": "L'âge est requis.",
+      "ageRange": "Doit être entre 18 et 74 ans.",
+      "propertyValue": "Valeur du bien",
+      "propertyValueRequired": "La valeur du bien est requise.",
+      "propertyValueRange": "Entre 80 000 et 50 000 000 MAD.",
+      "monthlyIncome": "Revenu mensuel net",
+      "monthlyIncomeRequired": "Le revenu mensuel est requis.",
+      "monthlyIncomeRange": "Entre 1 000 et 5 000 000 MAD.",
+      "nationalityCode": "Nationalité (code ISO)",
+      "moroccanResident": "Résident marocain",
+      "coBorrower": "Prêt avec co-emprunteur",
+      "coBorrowerMonthlyIncome": "Revenu mensuel du co-emprunteur",
+      "coBorrowerHint": "Ajouté à votre revenu pour le calcul du taux d'endettement (double l'assurance ADI obligatoire).",
+      "submit": "Simuler",
+      "resetAria": "Réinitialiser le formulaire"
+    },
+    "csp": {
+      "SALA": "Salarié (SALA)",
+      "FONC": "Fonctionnaire (FONC)",
+      "RETR": "Retraité (RETR)",
+      "PROF": "Profession libérale (PROF)",
+      "INDE": "Indépendant (INDE)"
+    },
+    "results": {
+      "title": "Résultats",
+      "bamCompliant": "Paramètres BAM appliqués",
+      "caseCreated": "Dossier créé : référence",
+      "caseCreatedSuffix": "suivi via le pipeline de traitement.",
+      "taeg": "TAEG estimé (coût annuel effectif global) :",
+      "to": "à",
+      "annualRate": "Taux annuel",
+      "allInMonthlyPayment": "Mensualité tout compris",
+      "totalInterest": "Intérêts totaux",
+      "totalCost": "Coût total",
+      "adiInsurance": "Assurance ADI (mensuelle, décès/invalidité)",
+      "mourabahaRate": "Taux de profit (Mourabaha)",
+      "installmentTtc": "Échéance TTC",
+      "marginTtc": "Marge TTC",
+      "includingVat": "dont TVA",
+      "takafulInsurance": "Contribution Takaful (mensuelle, assurance coopérative islamique)"
+    },
+    "fees": {
+      "title": "Détail des frais",
+      "subtitle": "Frais liés à votre dossier",
+      "registration": "Frais d'enregistrement",
+      "landConservation": "Conservation foncière",
+      "notary": "Frais de notaire",
+      "processing": "Frais de dossier",
+      "total": "Total des frais"
+    },
+    "schedule": {
+      "title": "Tableau d'amortissement",
+      "installments": "échéances",
+      "clickToToggle": "cliquez pour",
+      "hide": "masquer",
+      "show": "afficher",
+      "col": {
+        "num": "N°",
+        "beginningBalance": "Solde début",
+        "interest": "Intérêts",
+        "marginHt": "Marge HT",
+        "vat": "TVA",
+        "principal": "Principal",
+        "insurance": "Assurance",
+        "installment": "Échéance",
+        "endingBalance": "Solde fin"
+      }
+    },
+    "empty": {
+      "title": "Votre simulation apparaîtra ici",
+      "subtitle": "Remplissez le formulaire et cliquez sur \"Simuler\"."
+    },
+    "why": {
+      "label": "Nos atouts",
+      "title": "Pourquoi nous choisir ?",
+      "digital": {
+        "title": "Parcours simplifié et 100 % digital",
+        "text": "Demandez votre crédit en ligne et obtenez votre financement sans vous déplacer en agence."
+      },
+      "expertise": {
+        "title": "Expertise immobilière",
+        "text": "Notre équipe a une connaissance accrue du marché grâce à une collaboration étroite avec les acteurs du secteur."
+      },
+      "conventions": {
+        "title": "Conventions multiples",
+        "text": "De nombreuses conventions signées avec d'importantes institutions publiques et privées pour faciliter votre accès à la propriété."
+      }
+    },
+    "process": {
+      "label": "Le processus",
+      "title": "Je finance mon bien en 5 étapes",
+      "step1": {
+        "num": "Étape 1",
+        "label": "Je simule<br>mon crédit"
+      },
+      "step2": {
+        "num": "Étape 2",
+        "label": "J'accède à<br>mon espace abonné"
+      },
+      "step3": {
+        "num": "Étape 3",
+        "label": "Je demande<br>mon crédit en ligne"
+      },
+      "step4": {
+        "num": "Étape 4",
+        "label": "Je suis et complète<br>mon dossier de crédit"
+      },
+      "step5": {
+        "num": "Étape 5",
+        "label": "J'obtiens<br>mon crédit"
+      }
+    },
+    "errorFallback": "Erreur lors de la simulation."
+  }
+}

@@ -1,260 +1,268 @@
-[← Back to README](../../README.md) · [Application Overview & User Journeys](../business-workflow.md)
-
-# User Guide (Annotated Screenshots)
-
-This guide walks through every screen of the portal with real screenshots, captured against a live
-instance of the app (Angular dev server + the [Credit-Bladi](../../../Credit-Bladi) backend on its
-`dev` profile). Nothing here is mocked: every number, every table row, and every audit log entry
-below is the actual output of the real business rules described in the backend's
-[Simulation Workflow](../../../Credit-Bladi/docs/business-workflow.md) and this portal's
-[Application Overview](../business-workflow.md). Use this page to show a new user, tester, or
-manager exactly what each scenario looks like end to end before they touch the app themselves.
+[Back to README](../../README.md) · [Application Overview](../business-workflow.md)
 
-Every **accepted** and **rejected** simulation input below is taken directly from the backend's own
-Karate integration tests
-([`simulation.feature`](../../../Credit-Bladi/src/test/java/com/credit/bladi/integration/api/v1/simulation/_post/simulation.feature),
-[`simulationErrors.feature`](../../../Credit-Bladi/src/test/java/com/credit/bladi/integration/api/v1/simulation/_post/simulationErrors.feature)),
-so every screenshot is reproducible and traceable to a specific test scenario, not a hand-picked
-number that happens to look nice.
+# User Guide
 
-## Table of Contents
+Every screenshot on this page is produced by the Playwright suite (`npm run test:e2e`) against the real API
+on its `dev` profile, with fictitious Moroccan companies and people. Running the suite refreshes them all
+(`docs/screenshots/e2e/`), so the guide always shows the current screens.
 
-- [1. Visitor: the public simulator](#1-visitor-the-public-simulator)
-  - [1.1 Conventional financing: accepted and rejected](#11-conventional-financing-accepted-and-rejected)
-  - [1.2 Mourabaha financing: accepted and rejected](#12-mourabaha-financing-accepted-and-rejected)
-  - [Rejection reasons at a glance](#rejection-reasons-at-a-glance)
-- [2. Creating an account and logging in](#2-creating-an-account-and-logging-in)
-- [3. Client: authenticated, same simulator](#3-client-authenticated-same-simulator)
-- [4. Manager: the Administration area](#4-manager-the-administration-area)
+- [1. Mortgage simulator](#1-mortgage-simulator)
+- [2. Investment simulator](#2-investment-simulator)
+- [3. Accounts and sign-in](#3-accounts-and-sign-in)
+- [4. Back office: an investment dossier from start to finish](#4-back-office-an-investment-dossier-from-start-to-finish)
+- [5. Back office: mortgage dossiers](#5-back-office-mortgage-dossiers)
+- [6. Client portal](#6-client-portal)
+- [7. Parameters and reference data](#7-parameters-and-reference-data)
+- [8. Users and audit log](#8-users-and-audit-log)
+- [9. Languages and mobile](#9-languages-and-mobile)
 
----
+## 1. Mortgage simulator
 
-## 1. Visitor: the public simulator
+The landing page. Anyone can simulate without an account.
 
-No login needed. This is what `/simulation` looks like by default:
+**Conventional loan accepted**: rate, monthly payment, insurance, fees, TEG and total cost.
 
-![Simulation form, empty](screenshots/simulation/00-empty-form.png)
+![Conventional mortgage accepted](../screenshots/e2e/simulation/01-conventional-accepted.png)
 
-Both products share three BAM eligibility gates, enforced via the exact same `BamParametersModel`
-checks in
-[`ConventionalFinancingStrategy`](../../../Credit-Bladi/src/main/java/com/credit/bladi/service/simulation/conventional/ConventionalFinancingStrategy.java)
-and
-[`MourabahaFinancingStrategy`](../../../Credit-Bladi/src/main/java/com/credit/bladi/service/simulation/mourabaha/MourabahaFinancingStrategy.java):
+**Mourabaha accepted**: profit margin, VAT and the all-inclusive installment, no interest rate.
 
-1. **Deposit / LTV**: loan amount must not exceed 90% of the property value
-2. **Age at maturity**: age + duration must not exceed the BAM ceiling (75 by default)
-3. **Debt ratio**: the resulting monthly payment must not exceed 40% of declared monthly income
+![Mourabaha accepted](../screenshots/e2e/simulation/02-mourabaha-accepted.png)
 
-**Conventional has a fourth gate that Mourabaha does not enforce: duration in range for the CSP
-profile** (e.g. Salarié: 12-240 months, Fonctionnaire: 12-300). This isn't a documentation
-simplification; it's a real asymmetry in the backend: `ConventionalFinancingStrategy` looks up the
-CSP's `CreditRateModel` and calls `creditRate.getDurationRange().assertContains(duration)` before
-anything else, while `MourabahaFinancingStrategy` never touches `ICreditRateRepository` at all (it
-only has a `MourabahaParametersModel`, which carries no per-CSP duration bounds). In practice this
-means a Salarié requesting 280 months is **rejected** on Conventional but **accepted** on Mourabaha,
-bound only by the global 12-300 month range checked at the request level. Worth flagging to the
-business owner if that's not an intentional gap.
+**Repayment schedule**, month by month (conventional, then Mourabaha).
 
-Any of the gates that do apply failing produces a `422` with a specific, human-readable reason shown
-inline on the form; the applicant is never left guessing. All of them are demonstrated below for
-**both** financing products, along with the Conventional-only duration gate.
+![Conventional schedule](../screenshots/e2e/simulation/04-amortization-schedule-conventional.png)
 
-**Which rate is actually used?** The rate range shown in the result (e.g. "5.00% à 5.50%") is just
-the CSP's configured bounds for transparency. The single number that drives the debt-ratio check,
-the TAEG, and every amortization row (the `applicableRate` in the API response) is picked by a
-dedicated per-CSP strategy under
-[`conventional/csp/`](../../../Credit-Bladi/src/main/java/com/credit/bladi/service/simulation/conventional/csp):
+![Mourabaha schedule](../screenshots/e2e/simulation/20-amortization-schedule-mourabaha.png)
 
-| CSP | Strategy class | Applicable rate |
-|---|---|---|
-| Retraité (RETR) | `RetiredStrategy` | `rateMin` (rate range is a single fixed value for this CSP anyway) |
-| Fonctionnaire (FONC) | `CivilServantStrategy` | `rateMin` (most favorable) |
-| Salarié (SALA) | `EmployeeStrategy` | average of `rateMin` and `rateMax` |
-| Profession libérale (PROF) | `ProfessionalStrategy` | `rateMax` (most conservative) |
-| Indépendant (INDE) | `FreelancerStrategy` | `rateMax` (most conservative) |
+**Co-borrower**: the second income is added to the debt-ratio check.
 
-This is why a Fonctionnaire can be **accepted** at a debt ratio that would have failed at their
-CSP's `rateMax`; see the regression test scenario in
-[`simulation.feature`](../../../Credit-Bladi/src/test/java/com/credit/bladi/integration/api/v1/simulation/_post/simulation.feature#L436).
-Mourabaha has no such per-CSP split: every profile uses the single bank-wide profit rate from
-[4.4](#44-mourabaha-parameters).
+![Co-borrower](../screenshots/e2e/simulation/03-coborrower-toggle.png)
 
-### 1.1 Conventional financing: accepted and rejected
+**Refusals** always say why:
 
-**Accepted**: Salarié (SALA), 35 years old, 800 000 MAD over 240 months against a 1 000 000 MAD
-property, 15 000 MAD monthly income. Passes all four gates, so the full cost breakdown appears:
-rate range, mensualité, ADI insurance, and the fee breakdown.
+| Rule | Screenshot |
+|---|---|
+| Age at maturity | ![Age at maturity](../screenshots/e2e/simulation/05-rejected-age-at-maturity.png) |
+| Minimum deposit (LTV) | ![Deposit](../screenshots/e2e/simulation/13-rejected-ltv-deposit-insufficient.png) |
+| Debt ratio | ![Debt ratio](../screenshots/e2e/simulation/14-rejected-debt-ratio-exceeded.png) |
+| Duration for the profile | ![Duration](../screenshots/e2e/simulation/15-rejected-duration-out-of-range.png) |
 
-![Accepted Conventional simulation result](screenshots/simulation/conventional/01-accepted.png)
+**Form checks** run before any call to the API.
 
-Clicking "Tableau d'amortissement" expands the full month-by-month amortization schedule for that
-same simulation:
+![Required fields](../screenshots/e2e/simulation/07-required-field-validation.png)
 
-![Amortization schedule expanded](screenshots/simulation/conventional/02-amortization-schedule.png)
+## 2. Investment simulator
 
-**Rejected: deposit insufficient (LTV).** Indépendant (INDE), 3 000 000 MAD loan against a
-3 200 000 MAD property (93.75% LTV, over the 90% ceiling):
+**Eligible company** (PME, then GE): the result shows the dossier reference opened for the bank.
 
-![Conventional rejected: deposit insufficient](screenshots/simulation/conventional/03-rejected-deposit-insufficient.png)
+![PME eligible](../screenshots/e2e/investment-credit/02-pme-eligible.png)
 
-**Rejected: debt ratio exceeded.** Same Salarié profile as the accepted case above, but with
-monthly income dropped to 8 000 MAD; the same 5 300 MAD mensualité now exceeds 40% of income:
+![GE eligible](../screenshots/e2e/investment-credit/03-ge-eligible.png)
 
-![Conventional rejected: debt ratio exceeded](screenshots/simulation/conventional/04-rejected-debt-ratio-exceeded.png)
+**Refusals**: company too young, financing above the revenue ratio, guarantees too low, debt service too high.
 
-**Rejected: age at maturity exceeded.** Same profile, but the applicant is 60: 60 + 20 years
-(240 months) = 80, over the 75-year BAM ceiling:
+| Rule | Screenshot |
+|---|---|
+| Company age | ![Too young](../screenshots/e2e/investment-credit/05-rejected-company-too-young.png) |
+| Financing ratio | ![Financing ratio](../screenshots/e2e/investment-credit/06-rejected-financing-ratio.png) |
+| Guarantee coverage | ![Guarantees](../screenshots/e2e/investment-credit/07-rejected-guarantee-coverage.png) |
+| Debt service | ![Debt service](../screenshots/e2e/investment-credit/08-rejected-debt-service.png) |
 
-![Conventional rejected: age at maturity exceeded](screenshots/simulation/conventional/05-rejected-age-at-maturity.png)
+## 3. Accounts and sign-in
 
-**Rejected: duration out of range for CSP (Conventional only).** Salarié's allowed duration tops
-out at 240 months; requesting 241 is rejected before any rate is even looked up. The identical
-request on Mourabaha would be **accepted**, since that gate doesn't exist on that code path (see
-above):
+**Register**: the password must be complex enough; a username can only be used once.
 
-![Conventional rejected: duration out of range](screenshots/simulation/conventional/06-rejected-duration-out-of-range.png)
+![Password complexity](../screenshots/e2e/register/01-password-complexity-validation.png)
 
-### 1.2 Mourabaha financing: accepted and rejected
+![Registered](../screenshots/e2e/register/03-register-success.png)
 
-Selecting "Mourabaha" switches the result panel to the Sharia-compliant breakdown (profit rate,
-marge TTC, TVA) instead of an interest rate. It goes through the same three eligibility gates as
-Conventional (LTV, age, debt ratio), but **not** the CSP duration-range gate, as explained above.
+**Log in**, with the error shown for wrong credentials.
 
-**Accepted**: Fonctionnaire (FONC), 700 000 MAD over 240 months, 850 000 MAD property, 18 000 MAD
-monthly income:
+![Wrong credentials](../screenshots/e2e/auth/03-login-invalid-credentials.png)
 
-![Accepted Mourabaha simulation result](screenshots/simulation/mourabaha/01-accepted.png)
+![Logged in](../screenshots/e2e/auth/04-login-success.png)
 
-Clicking "Tableau d'amortissement" here shows the Mourabaha-specific schedule columns, Marge HT
-and TVA per installment, instead of Conventional's single Intérêts column, since there's no
-interest rate involved:
+**Session safety**: no token is readable by the page, and the cookies are `HttpOnly` and `SameSite=Strict`.
 
-![Mourabaha amortization schedule expanded](screenshots/simulation/mourabaha/02-amortization-schedule.png)
+![No token in storage](../screenshots/e2e/security/03-no-token-in-storage.png)
 
-**Rejected: deposit insufficient (LTV).** Same 700 000 MAD loan, property value lowered to
-750 000 MAD (93.3% LTV):
+![Cookie flags](../screenshots/e2e/security/04-cookies-httponly-samesite.png)
 
-![Mourabaha rejected: deposit insufficient](screenshots/simulation/mourabaha/03-rejected-deposit-insufficient.png)
+## 4. Back office: an investment dossier from start to finish
 
-**Rejected: debt ratio exceeded.** Same loan and property, monthly income dropped to 5 000 MAD:
+**Dossier list**, filtered by status, type and search.
 
-![Mourabaha rejected: debt ratio exceeded](screenshots/simulation/mourabaha/04-rejected-debt-ratio-exceeded.png)
+![Dossier list](../screenshots/e2e/demand-workflow/01-demands-list-filtered.png)
 
-**Rejected: age at maturity exceeded.** Salarié, 500 000 MAD over 240 months, age 60 (same
-60 + 20 = 80 > 75 rule as Conventional):
+**Classification**: the simulated BAM check helps decide; the dossier is confirmed as real and attached to
+its company.
 
-![Mourabaha rejected: age at maturity exceeded](screenshots/simulation/mourabaha/05-rejected-age-at-maturity.png)
+![BAM check](../screenshots/e2e/demand-workflow/03-bam-verification.png)
 
-### Rejection reasons at a glance
+![Classification form](../screenshots/e2e/demand-workflow/04-classification-form.png)
 
-| BAM rule | Conventional | Mourabaha | Backend rule source |
-|---|---|---|---|
-| Deposit / LTV > 90% | [screenshot](screenshots/simulation/conventional/03-rejected-deposit-insufficient.png) | [screenshot](screenshots/simulation/mourabaha/03-rejected-deposit-insufficient.png) | `assertWithinLtv`: [`simulationErrors.feature:238`](../../../Credit-Bladi/src/test/java/com/credit/bladi/integration/api/v1/simulation/_post/simulationErrors.feature#L238) |
-| Debt ratio > 40% of income | [screenshot](screenshots/simulation/conventional/04-rejected-debt-ratio-exceeded.png) | [screenshot](screenshots/simulation/mourabaha/04-rejected-debt-ratio-exceeded.png) | `assertWithinDebtRatio`: [`simulationErrors.feature:247`](../../../Credit-Bladi/src/test/java/com/credit/bladi/integration/api/v1/simulation/_post/simulationErrors.feature#L247) |
-| Age at maturity > BAM ceiling (75) | [screenshot](screenshots/simulation/conventional/05-rejected-age-at-maturity.png) | [screenshot](screenshots/simulation/mourabaha/05-rejected-age-at-maturity.png) | `assertEligibleAge`: [`simulationErrors.feature:219`](../../../Credit-Bladi/src/test/java/com/credit/bladi/integration/api/v1/simulation/_post/simulationErrors.feature#L219) |
-| Duration out of range for CSP | [screenshot](screenshots/simulation/conventional/06-rejected-duration-out-of-range.png) | **not enforced**: Mourabaha has no CSP duration gate, only the global 12-300 month bound | CSP duration bounds: [`simulationErrors.feature:170`](../../../Credit-Bladi/src/test/java/com/credit/bladi/integration/api/v1/simulation/_post/simulationErrors.feature#L170) |
+![Classified](../screenshots/e2e/demand-workflow/06-classified-real.png)
 
-Every rejection above is also a `SIMULATION_REJECTED` row in the audit log with the machine-readable
-`reason` code (`DEPOSIT_INSUFFICIENT`, `DEBT_RATIO_EXCEEDED`, ...); see [4.5](#45-audit-log).
+**Assignment and remarks.**
 
----
+![Reassigned](../screenshots/e2e/demand-workflow/07-reassigned.png)
 
-## 2. Creating an account and logging in
+![Remark](../screenshots/e2e/demand-workflow/08-remark-added.png)
 
-Registration and login are only reachable when **not** already logged in ([`guestGuard`](../architecture.md)
-redirects an authenticated visitor straight back to `/simulation`).
+**Documents**: wrong file types and infected files are refused; a new version replaces the old one; files
+open in a viewer.
 
-### 2.1 Register
+![Infected file refused](../screenshots/e2e/demand-workflow/10-document-infected-refused.png)
 
-![Register form, empty](screenshots/register/01-empty.png)
+![Versions](../screenshots/e2e/demand-workflow/11-documents-versioned.png)
 
-A successful registration always creates a `CLIENT` account and shows a confirmation banner above
-the form:
+![Viewer](../screenshots/e2e/demand-workflow/12-document-viewer.png)
 
-![Register success confirmation](screenshots/register/02-success.png)
+**Request a document from the client.**
 
-**Rejected: username already taken (409).** Registering with a username that already exists (here,
-the seeded `admin` account) surfaces the backend's `CB-409` error inline, same pattern as every other
-rejection in this guide:
+![Document requested](../screenshots/e2e/demand-workflow/13-document-requested.png)
 
-![Register rejected: duplicate username](screenshots/register/03-error-duplicate-username.png)
+**Advance or return**: only the eligible profile can act; a dossier can go back one step with a reason.
 
-### 2.2 Login
+![Locked for others](../screenshots/e2e/demand-workflow/14-advance-locked-for-others.png)
 
-![Login form, empty](screenshots/login/01-empty.png)
+![Advance form](../screenshots/e2e/demand-workflow/15-advance-form.png)
 
-A wrong password (or unknown username, the backend intentionally returns the same generic message
-for both, to avoid leaking which usernames exist) surfaces inline, no page reload:
+![Returned](../screenshots/e2e/demand-workflow/16-returned-for-completion.png)
 
-![Login error: invalid credentials](screenshots/login/02-error-invalid-credentials.png)
+**Committee rules**: a deferred dossier must go back; a rate above the legal ceiling is refused.
 
----
+![Deferred](../screenshots/e2e/demand-workflow/17-decision-deferred-refused.png)
 
-## 3. Client: authenticated, same simulator
+![Above TMIC](../screenshots/e2e/demand-workflow/18-decision-rate-above-tmic.png)
 
-Logging in with the account created above changes only the header: a username, a `CLIENT` role
-badge, and a "Déconnexion" button appear. No new screens unlock; by design, the simulator itself
-never required an account (see [why the simulator has zero
-friction](../business-workflow.md#why-this-matters-for-the-business)).
+**Credit granted**, insurance confirmed, then the credit file opens with its schedule.
 
-![Client logged in, simulation page](screenshots/simulation/client-logged-in.png)
+![Granted](../screenshots/e2e/demand-workflow/19-credit-granted.png)
 
-Logging out returns to the anonymous header (Connexion / S'inscrire):
+![Insurance missing](../screenshots/e2e/demand-workflow/20-insurance-missing.png)
 
-![After logout, back to visitor header](screenshots/simulation/client-logged-out.png)
+![Credit file](../screenshots/e2e/demand-workflow/21-completed-credit-file.png)
 
----
+**Notification bell**, updated live.
 
-## 4. Manager: the Administration area
+![Notifications](../screenshots/e2e/demand-workflow/22-notifications.png)
 
-Logging in as a `MANAGER` (the seeded `admin` account in the `dev` profile) unlocks the
-"Administration" dropdown in the header, invisible to Visitors and Clients, and blocked at the
-route level for anyone without the role (see
-[`managerGuard`](../architecture.md#authentication--session-flow)).
+## 5. Back office: mortgage dossiers
 
-![Manager logged in, simulation page with Administration menu](screenshots/simulation/manager-logged-in.png)
+**Instruction**, then the **four-eyes rule**: the instructor cannot take the decision; a second person does.
 
-### 4.1 Users
+![Instruction](../screenshots/e2e/mortgage-workflow/01-mortgage-instruction.png)
 
-Every registered account, with one-click promote/demote between `CLIENT` and `MANAGER`, and a form
-to create a new staff account directly. The `client.demo...` row below is the very account created
-in [2.1](#21-register).
+![Four-eyes](../screenshots/e2e/mortgage-workflow/02-four-eyes-violation.png)
 
-![Admin: Users screen](screenshots/admin/users/01-users.png)
+![Second pair of eyes](../screenshots/e2e/mortgage-workflow/03-decided-by-second-eyes.png)
 
-### 4.2 BAM Parameters
+**Refusal by the committee** (the applicant is told by e-mail) and the rejected-dossiers filter.
 
-The bank-wide regulatory thresholds every simulation is checked against, including the LTV ratio,
-max debt ratio, and max age at maturity that produced every rejection in [1.1](#11-conventional-financing-accepted-and-rejected)
-and [1.2](#12-mourabaha-financing-accepted-and-rejected).
+![Refused](../screenshots/e2e/mortgage-workflow/04-committee-refused.png)
 
-![Admin: BAM Parameters screen](screenshots/admin/bam-parameters/01-bam-parameters.png)
+![Rejected filter](../screenshots/e2e/mortgage-workflow/05-rejected-filter.png)
 
-### 4.3 Credit Rates
+**Mourabaha credit file**, then the **borrower** invited by e-mail finds the dossier and declares a payment.
 
-The Conventional interest rate range and allowed duration range, per professional category (CSP):
-this is the exact table that drove the rate in [1.1](#11-conventional-financing-accepted-and-rejected)
-and the duration ceiling that produced the rejection in that same section.
+![Mourabaha credit file](../screenshots/e2e/mortgage-workflow/06-mourabaha-credit-file.png)
 
-![Admin: Credit Rates screen](screenshots/admin/credit-rates/01-credit-rates.png)
+![Borrower portfolio](../screenshots/e2e/mortgage-workflow/08-borrower-portfolio.png)
 
-### 4.4 Mourabaha Parameters
+![Payment declared](../screenshots/e2e/mortgage-workflow/09-borrower-payment-declared.png)
 
-The single bank-wide profit margin and VAT rate applied to every Mourabaha simulation, regardless
-of applicant profile; drove the result in [1.2](#12-mourabaha-financing-accepted-and-rejected).
+## 6. Client portal
 
-![Admin: Mourabaha Parameters screen](screenshots/admin/mourabaha-parameters/01-mourabaha-parameters.png)
+**Invitation**: the person sees who invites them and creates their account.
 
-### 4.5 Audit Log
+![Invitation](../screenshots/e2e/client-portal/01-invitation-preview.png)
 
-The full compliance trail. Every action performed while capturing this guide is in this exact
-table: the registration, duplicate-username error, and failed/successful logins from section 2, the
-accepted and every rejected simulation (Conventional and Mourabaha alike) from section 1, and the
-client's own login/logout, proving the audit trail records both authenticated and anonymous
-activity, tied together by IP address and timestamp.
+**Portfolio, company dossiers and a dossier.**
 
-![Admin: Audit Log screen](screenshots/admin/audit-log/01-audit-log.png)
+![Portfolio](../screenshots/e2e/client-portal/03-portfolio.png)
 
-Logging out as Manager returns to the same anonymous header as any other logout:
+![Company dossiers](../screenshots/e2e/client-portal/04-enterprise-dossiers.png)
 
-![After manager logout, back to visitor header](screenshots/simulation/manager-logged-out.png)
+![Dossier](../screenshots/e2e/client-portal/05-dossier-detail.png)
+
+**Requested documents**: an infected file is refused; the manager sees the request fulfilled.
+
+![Infected refused](../screenshots/e2e/client-portal/07-document-infected-refused.png)
+
+![Provided](../screenshots/e2e/client-portal/08-document-provided.png)
+
+**Payments**: the client declares a payment (an invalid RIB is refused), the manager validates or rejects it.
+
+![Invalid RIB](../screenshots/e2e/client-portal/11-declare-invalid-rib.png)
+
+![Declared](../screenshots/e2e/client-portal/12-payment-declared.png)
+
+![Validated and rejected](../screenshots/e2e/client-portal/14-manager-validated-and-rejected.png)
+
+**Early repayment**: the client gets a quote; the manager records a partial or a full repayment.
+
+![Quote](../screenshots/e2e/client-portal/16-client-early-repayment-quote.png)
+
+![Partial repayment](../screenshots/e2e/client-portal/17-partial-early-repayment.png)
+
+![Closed](../screenshots/e2e/client-portal/18-credit-file-closed.png)
+
+**Access to a company**: a claim waits for a manager's approval; access can be revoked; another company's
+dossiers stay closed.
+
+![Claim pending](../screenshots/e2e/client-portal/19-claim-pending.png)
+
+![Approved](../screenshots/e2e/client-portal/21-claim-approved.png)
+
+![Access denied](../screenshots/e2e/client-portal/24-access-denied.png)
+
+## 7. Parameters and reference data
+
+**BAM, credit rates and Mourabaha parameters**, with their input checks.
+
+![BAM](../screenshots/e2e/admin-parameters/01-bam-update-success.png)
+
+![Credit rates](../screenshots/e2e/admin-parameters/02-credit-rates-update-success.png)
+
+![Mourabaha](../screenshots/e2e/admin-parameters/04-mourabaha-update-success.png)
+
+**Investment parameters**: a rate above the legal ceiling is refused.
+
+![Above TMIC](../screenshots/e2e/admin-referential/07-investment-parameters-above-tmic.png)
+
+**Activity sectors, enterprises and document suggestions.**
+
+![Sector](../screenshots/e2e/admin-referential/01-activity-sector-created.png)
+
+![Enterprise](../screenshots/e2e/admin-referential/03-enterprise-created.png)
+
+**Excel import**: the report lists each rejected row.
+
+![Import report](../screenshots/e2e/admin-referential/08-demand-import-report.png)
+
+## 8. Users and audit log
+
+**Users**: create staff or client accounts; a manager cannot change their own role.
+
+![Create user](../screenshots/e2e/admin-users/01-create-client-user.png)
+
+![Own role locked](../screenshots/e2e/admin-users/03-self-role-change-disabled.png)
+
+**Audit log**: who did what, when, with the before and after values.
+
+![Audit log](../screenshots/e2e/admin-audit-log/01-audit-log-list.png)
+
+## 9. Languages and mobile
+
+**Arabic** turns the page right to left, refusals included.
+
+![Arabic](../screenshots/e2e/ux/01-arabic-rtl.png)
+
+![Arabic refusal](../screenshots/e2e/ux/02-arabic-rejection.png)
+
+**Phone width**: the menu collapses and a simulation can be completed end to end.
+
+![Mobile menu](../screenshots/e2e/ux/04-mobile-menu-open.png)
+
+![Mobile simulation](../screenshots/e2e/ux/05-mobile-simulation.png)

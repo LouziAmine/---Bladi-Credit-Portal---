@@ -6,6 +6,8 @@ import { of, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RegisterComponent as Register } from './register.component';
 import { AuthService } from '../../core/services';
+import { provideTranslateTesting } from '../../testing/translate-testing.providers';
+import { USER_EXISTING, USER_JOHN_DOE } from '../../testing/mocks/mock-users';
 
 const VALID_PASSWORD = 'Password1234';
 
@@ -19,7 +21,12 @@ describe('Register', () => {
     vi.useFakeTimers();
     await TestBed.configureTestingModule({
       imports: [Register],
-      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideTranslateTesting(),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Register);
@@ -48,22 +55,22 @@ describe('Register', () => {
     });
 
     it('should be valid with correct data', () => {
-      component['form'].setValue({ username: 'john.doe', password: VALID_PASSWORD });
+      component['form'].setValue({ username: USER_JOHN_DOE, password: VALID_PASSWORD });
       expect(component['form'].valid).toBe(true);
     });
 
     it('should be invalid when password is shorter than 12 characters', () => {
-      component['form'].setValue({ username: 'john.doe', password: 'Short1a' });
+      component['form'].setValue({ username: USER_JOHN_DOE, password: 'Short1a' });
       expect(component['form'].controls.password.errors?.['minlength']).toBeTruthy();
     });
 
     it('should be invalid when password has no uppercase letter', () => {
-      component['form'].setValue({ username: 'john.doe', password: 'password1234' });
+      component['form'].setValue({ username: USER_JOHN_DOE, password: 'password1234' });
       expect(component['form'].controls.password.errors?.['passwordComplexity']).toBeTruthy();
     });
 
     it('should be invalid when password has no digit', () => {
-      component['form'].setValue({ username: 'john.doe', password: 'PasswordOnly' });
+      component['form'].setValue({ username: USER_JOHN_DOE, password: 'PasswordOnly' });
       expect(component['form'].controls.password.errors?.['passwordComplexity']).toBeTruthy();
     });
   });
@@ -72,7 +79,7 @@ describe('Register', () => {
     it('should show success message and redirect to /login after 2s on success', () => {
       vi.spyOn(authService, 'register').mockReturnValue(of(undefined));
       const navigateSpy = vi.spyOn(router, 'navigate');
-      component['form'].setValue({ username: 'john.doe', password: VALID_PASSWORD });
+      component['form'].setValue({ username: USER_JOHN_DOE, password: VALID_PASSWORD });
 
       component.submit();
 
@@ -89,7 +96,7 @@ describe('Register', () => {
         status: 409,
       });
       vi.spyOn(authService, 'register').mockReturnValue(throwError(() => error));
-      component['form'].setValue({ username: 'existing', password: VALID_PASSWORD });
+      component['form'].setValue({ username: USER_EXISTING, password: VALID_PASSWORD });
 
       component.submit();
 

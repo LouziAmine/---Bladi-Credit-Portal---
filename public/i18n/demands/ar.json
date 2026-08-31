@@ -1,0 +1,40 @@
+{
+  "demands": {
+    "title": "متابعة الملفات",
+    "subtitle": "ملفات القروض العقارية وقروض الشركات المتابعة عبر مسار المعالجة.",
+    "portfolioOf": "محفظة",
+    "enterpriseHash": "الشركة #",
+    "removeFilter": "إزالة التصفية",
+    "import": "استيراد الطلبات",
+    "loading": "جارٍ تحميل الملفات...",
+    "search": {
+      "companyNameLabel": "العميل أو الشركة",
+      "companyNamePlaceholder": "البحث بالاسم...",
+      "statusAll": "كل الحالات",
+      "minAmountLabel": "المبلغ الأدنى (درهم)",
+      "maxAmountLabel": "المبلغ الأقصى (درهم)",
+      "reset": "إعادة تعيين"
+    },
+    "list": {
+      "title": "الملفات",
+      "subtitle": "انقر على ملف لعرض تفاصيله"
+    },
+    "col": {
+      "reference": "المرجع",
+      "enterprise": "العميل",
+      "category": "الفئة",
+      "amount": "المبلغ",
+      "duration": "المدة",
+      "createdOn": "أُنشئ في"
+    },
+    "status": {
+      "rejected": "مرفوض",
+      "completed": "منتهٍ",
+      "inProgress": "جارٍ"
+    },
+    "currentStepTitle": "المرحلة الحالية من مسار المعالجة",
+    "view": "عرض",
+    "empty": "لا يوجد أي ملف مسجل",
+    "loadErrorFallback": "تعذر تحميل الملفات."
+  }
+}

@@ -1,17 +1,17 @@
 <div class="cb-hero">
   <div class="container">
     <div class="cb-hero__eyebrow">
-      <i class="bi bi-gear-fill"></i> Administration
+      <i class="bi bi-gear-fill"></i> {{ 'nav.administration' | translate }}
     </div>
-    <h1 class="cb-hero__title">Gestion des utilisateurs</h1>
-    <p class="cb-hero__subtitle">Consultez les comptes existants, gérez les rôles et créez de nouveaux accès.</p>
+    <h1 class="cb-hero__title">{{ 'users.title' | translate }}</h1>
+    <p class="cb-hero__subtitle">{{ 'users.subtitle' | translate }}</p>
   </div>
 </div>
 
 <div class="cb-page">
   <div class="container">
 
-    <app-loading-spinner [loading]="loadingList()" message="Chargement des utilisateurs..." />
+    <app-loading-spinner [loading]="loadingList()" [message]="'users.loading' | translate" />
     <app-error-message [message]="listErrorMessage()" />
 
     @if (!loadingList() && users().length > 0) {
@@ -21,8 +21,8 @@
             <i class="bi bi-people"></i>
           </div>
           <div>
-            <p class="cb-card__header-title">Comptes existants</p>
-            <p class="cb-card__header-sub">Basculez le rôle d'un utilisateur en un clic</p>
+            <p class="cb-card__header-title">{{ 'users.list.title' | translate }}</p>
+            <p class="cb-card__header-sub">{{ 'users.list.subtitle' | translate }}</p>
           </div>
         </div>
         <div class="cb-card__body cb-card__body--flush">
@@ -31,8 +31,11 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Nom d'utilisateur</th>
-                  <th>Rôle</th>
+                  <th>{{ 'users.col.fullName' | translate }}</th>
+                  <th>{{ 'users.col.username' | translate }}</th>
+                  <th>{{ 'users.col.email' | translate }}</th>
+                  <th>{{ 'users.col.role' | translate }}</th>
+                  <th>{{ 'users.col.profile' | translate }}</th>
                   <th></th>
                 </tr>
               </thead>
@@ -40,11 +43,20 @@
                 @for (user of users(); track user.id) {
                   <tr>
                     <td><span class="fw-semibold">#{{ user.id }}</span></td>
+                    <td>{{ user.fullName ?? '-' }}</td>
                     <td>
                       {{ user.username }}
                       @if (user.username === currentUsername) {
-                        <span class="cb-badge cb-badge--gray ms-1">Vous</span>
+                        <span class="cb-badge cb-badge--gray ms-1">{{ 'users.you' | translate }}</span>
                       }
+                    </td>
+                    <td>
+                      <input type="email" class="form-control form-control-sm" #emailInput
+                        [disabled]="user.username === currentUsername || updatingUserId() === user.id"
+                        [title]="user.username === currentUsername ? ('users.cannotModifyOwnProfile' | translate) : ''"
+                        [value]="user.email ?? ''"
+                        [placeholder]="'users.form.email' | translate"
+                        (change)="updateProfile(user, user.gradeCode ?? '', user.teamCode ?? '', emailInput.value)">
                     </td>
                     <td>
                       @if (user.role === 'MANAGER') {
@@ -54,16 +66,42 @@
                       }
                     </td>
                     <td>
+                      <div class="d-flex gap-1">
+                        <select class="form-select form-select-sm" #gradeSelect
+                          [attr.aria-label]="('users.form.grade' | translate) + ' · ' + user.username"
+                          [disabled]="user.username === currentUsername || updatingUserId() === user.id"
+                          [title]="user.username === currentUsername ? ('users.cannotModifyOwnProfile' | translate) : ''"
+                          [value]="user.gradeCode ?? ''"
+                          (change)="updateProfile(user, gradeSelect.value, teamSelect.value)">
+                          <option value="" [selected]="!user.gradeCode">{{ 'users.noGrade' | translate }}</option>
+                          @for (grade of grades(); track grade.code) {
+                            <option [value]="grade.code" [selected]="grade.code === user.gradeCode">{{ grade.name }}</option>
+                          }
+                        </select>
+                        <select class="form-select form-select-sm" #teamSelect
+                          [attr.aria-label]="('users.form.team' | translate) + ' · ' + user.username"
+                          [disabled]="user.username === currentUsername || updatingUserId() === user.id"
+                          [title]="user.username === currentUsername ? ('users.cannotModifyOwnProfile' | translate) : ''"
+                          [value]="user.teamCode ?? ''"
+                          (change)="updateProfile(user, gradeSelect.value, teamSelect.value)">
+                          <option value="" [selected]="!user.teamCode">{{ 'users.noTeam' | translate }}</option>
+                          @for (team of teams(); track team.code) {
+                            <option [value]="team.code" [selected]="team.code === user.teamCode">{{ team.name }}</option>
+                          }
+                        </select>
+                      </div>
+                    </td>
+                    <td>
                       <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button"
                         [disabled]="user.username === currentUsername || updatingUserId() === user.id"
-                        [title]="user.username === currentUsername ? 'Un manager ne peut pas modifier son propre rôle' : ''"
+                        [title]="user.username === currentUsername ? ('users.cannotModifyOwnRole' | translate) : ''"
                         (click)="toggleRole(user)">
                         @if (updatingUserId() === user.id) {
                           <span class="spinner-border spinner-border-sm" role="status"></span>
                         } @else if (user.role === 'MANAGER') {
-                          <i class="bi bi-arrow-down-circle"></i>Rétrograder en CLIENT
+                          <i class="bi bi-arrow-down-circle"></i>{{ 'users.demoteToClient' | translate }}
                         } @else {
-                          <i class="bi bi-arrow-up-circle"></i>Promouvoir en MANAGER
+                          <i class="bi bi-arrow-up-circle"></i>{{ 'users.promoteToManager' | translate }}
                         }
                       </button>
                     </td>
@@ -71,6 +109,17 @@
                 }
               </tbody>
             </table>
+          </div>
+          <div class="d-flex align-items-center justify-content-between p-3 border-top">
+            <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button" [disabled]="currentPage() <= 1" (click)="previousPage()">
+              <i class="bi bi-chevron-left"></i>{{ 'adminCommon.previous' | translate }}
+            </button>
+            <span class="small cb-muted-text">
+              {{ 'adminCommon.page' | translate }} {{ currentPage() }} / {{ lastPage() }}
+            </span>
+            <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button" [disabled]="currentPage() >= lastPage()" (click)="nextPage()">
+              {{ 'adminCommon.next' | translate }}<i class="bi bi-chevron-right"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -84,13 +133,13 @@
               <i class="bi bi-person-plus-fill"></i>
             </div>
             <div>
-              <p class="cb-card__header-title">Créer un utilisateur</p>
-              <p class="cb-card__header-sub">Rôle MANAGER requis</p>
+              <p class="cb-card__header-title">{{ 'users.form.title' | translate }}</p>
+              <p class="cb-card__header-sub">{{ 'users.form.managerRequired' | translate }}</p>
             </div>
           </div>
           <div class="cb-card__body">
             <app-error-message [message]="errorMessage()" />
-            <app-loading-spinner [loading]="loading()" message="Création en cours..." />
+            <app-loading-spinner [loading]="loading()" [message]="'users.form.creating' | translate" />
 
             @if (successMessage()) {
               <div class="cb-alert cb-alert--success">
@@ -102,7 +151,7 @@
             <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
               <div class="mb-3">
                 <label for="username" class="cb-label">
-                  <i class="bi bi-person"></i>Nom d'utilisateur
+                  <i class="bi bi-person"></i>{{ 'login.usernameLabel' | translate }}
                 </label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-person"></i></span>
@@ -111,15 +160,47 @@
                     formControlName="username" placeholder="john.doe"/>
                 </div>
                 @if (form.controls.username.errors?.['required'] && form.controls.username.touched) {
-                  <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>Le nom d'utilisateur est requis.</div>
+                  <div class="cb-field-error">
+                    <i class="bi bi-exclamation-circle"></i>{{ 'login.usernameRequired' | translate }}
+                  </div>
                 } @else if (form.controls.username.errors?.['minlength'] && form.controls.username.touched) {
-                  <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>Minimum 3 caractères.</div>
+                  <div class="cb-field-error">
+                    <i class="bi bi-exclamation-circle"></i>{{ 'login.usernameMinLength' | translate }}
+                  </div>
+                }
+              </div>
+
+              <div class="mb-3">
+                <label for="fullName" class="cb-label">
+                  <i class="bi bi-person-badge"></i>{{ 'users.form.fullName' | translate }}
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                  <input id="fullName" type="text" class="form-control"
+                    formControlName="fullName" placeholder="Amine Louzi"/>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="email" class="cb-label">
+                  <i class="bi bi-envelope"></i>{{ 'users.form.email' | translate }}
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                  <input id="email" type="email" class="form-control"
+                    [class.is-invalid]="form.controls.email.invalid && form.controls.email.touched"
+                    formControlName="email" placeholder="john.doe@bladi-credit.ma"/>
+                </div>
+                @if (form.controls.email.errors?.['email'] && form.controls.email.touched) {
+                  <div class="cb-field-error">
+                    <i class="bi bi-exclamation-circle"></i>{{ 'users.form.emailInvalid' | translate }}
+                  </div>
                 }
               </div>
 
               <div class="mb-3">
                 <label for="password" class="cb-label">
-                  <i class="bi bi-lock"></i>Mot de passe
+                  <i class="bi bi-lock"></i>{{ 'register.passwordLabel' | translate }}
                 </label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-lock"></i></span>
@@ -128,19 +209,25 @@
                     formControlName="password" placeholder="••••••••"/>
                 </div>
                 @if (form.controls.password.errors?.['required'] && form.controls.password.touched) {
-                  <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>Le mot de passe est requis.</div>
+                  <div class="cb-field-error">
+                    <i class="bi bi-exclamation-circle"></i>{{ 'register.passwordRequired' | translate }}
+                  </div>
                 } @else if (form.controls.password.errors?.['minlength'] && form.controls.password.touched) {
-                  <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>Minimum 12 caractères.</div>
+                  <div class="cb-field-error">
+                    <i class="bi bi-exclamation-circle"></i>{{ 'register.passwordMinLength' | translate }}
+                  </div>
                 } @else if (form.controls.password.errors?.['passwordComplexity'] && form.controls.password.touched) {
-                  <div class="cb-field-error"><i class="bi bi-exclamation-circle"></i>Doit contenir une majuscule, une minuscule et un chiffre.</div>
+                  <div class="cb-field-error">
+                    <i class="bi bi-exclamation-circle"></i>{{ 'register.passwordComplexity' | translate }}
+                  </div>
                 } @else if (!form.controls.password.touched) {
-                  <div class="small mt-1 cb-muted-text">12 caractères minimum, avec majuscule, minuscule et chiffre.</div>
+                  <div class="small mt-1 cb-muted-text">{{ 'register.passwordHint' | translate }}</div>
                 }
               </div>
 
-              <div class="mb-4">
+              <div class="mb-3">
                 <label for="role" class="cb-label">
-                  <i class="bi bi-shield-check"></i>Rôle
+                  <i class="bi bi-shield-check"></i>{{ 'users.form.role' | translate }}
                 </label>
                 <select id="role" class="form-select" formControlName="role">
                   @for (role of roles; track role) {
@@ -149,8 +236,33 @@
                 </select>
               </div>
 
+              <div class="row g-2 mb-4">
+                <div class="col-6">
+                  <label for="gradeCode" class="cb-label">
+                    <i class="bi bi-diagram-2"></i>{{ 'users.form.grade' | translate }}
+                  </label>
+                  <select id="gradeCode" class="form-select" formControlName="gradeCode">
+                    <option value="">{{ 'users.none' | translate }}</option>
+                    @for (grade of grades(); track grade.code) {
+                      <option [value]="grade.code">{{ grade.name }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="col-6">
+                  <label for="teamCode" class="cb-label">
+                    <i class="bi bi-people"></i>{{ 'users.form.team' | translate }}
+                  </label>
+                  <select id="teamCode" class="form-select" formControlName="teamCode">
+                    <option value="">{{ 'users.none' | translate }}</option>
+                    @for (team of teams(); track team.code) {
+                      <option [value]="team.code">{{ team.name }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+
               <button type="submit" class="cb-btn cb-btn--primary w-100 justify-content-center" [disabled]="loading()">
-                <i class="bi bi-person-plus"></i>Créer l'utilisateur
+                <i class="bi bi-person-plus"></i>{{ 'users.form.submit' | translate }}
               </button>
             </form>
           </div>

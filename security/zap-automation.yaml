@@ -34,7 +34,7 @@ jobs:
       template: "traditional-html"
       reportDir: "/zap/wrk"
       reportFile: "zap-report"
-      reportTitle: "Credit Bladi UI — ASVS DAST report"
+      reportTitle: "Credit Bladi UI: ASVS DAST report"
 
   - type: exitStatus
     parameters:

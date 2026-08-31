@@ -1,0 +1,34 @@
+{
+  "earlyRepayment": {
+    "title": "Remboursement anticipé",
+    "subtitleClient": "Simulez un remboursement anticipé de votre crédit à la date du jour",
+    "subtitleManager": "Simulez puis enregistrez un remboursement anticipé reçu par la banque",
+    "amount": "Capital à rembourser (MAD)",
+    "amountPlaceholder": "Laisser vide pour un remboursement total",
+    "amountInvalid": "Le montant doit être supérieur à 0.",
+    "quoteAction": "Simuler",
+    "quoting": "Calcul en cours...",
+    "kind": "Type",
+    "full": "Total",
+    "partial": "Partiel",
+    "outstandingBefore": "Capital restant dû avant",
+    "repaidPrincipal": "Capital remboursé",
+    "accruedInterest": "Intérêts courus",
+    "indemnity": "Indemnité (loi 31-08)",
+    "totalToPay": "Total à payer",
+    "outstandingAfter": "Capital restant dû après",
+    "newMonthlyPayment": "Nouvelle mensualité",
+    "valueDate": "Date de valeur",
+    "recordAction": "Enregistrer le remboursement reçu",
+    "recording": "Enregistrement...",
+    "clientHint": "Pour effectuer ce remboursement, rapprochez-vous de votre gestionnaire : il sera enregistré à réception des fonds.",
+    "history": "Remboursements anticipés enregistrés",
+    "col": {
+      "performedAt": "Date",
+      "totalPaid": "Total payé",
+      "performedBy": "Enregistré par"
+    },
+    "quoteErrorFallback": "Impossible de simuler le remboursement anticipé.",
+    "recordErrorFallback": "Erreur lors de l'enregistrement du remboursement anticipé."
+  }
+}

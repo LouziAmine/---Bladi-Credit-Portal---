@@ -1,0 +1,27 @@
+{
+  "invitations": {
+    "eyebrow": "Invitation",
+    "title": "Join your company on Credit Bladi",
+    "subtitle": "Create your account to follow the progress of your credit cases.",
+    "loadingPreview": "Checking the invitation...",
+    "previewErrorFallback": "This invitation link is no longer valid.",
+    "invitedAs": "Invitation sent to",
+    "submitting": "Creating your account...",
+    "usernameLabel": "Desired username",
+    "usernameRequired": "Username is required.",
+    "usernameMinLength": "Username must be at least 3 characters.",
+    "passwordLabel": "Password",
+    "passwordRequired": "Password is required.",
+    "passwordMinLength": "Password must be at least 12 characters.",
+    "passwordComplexity": "Password must contain an uppercase letter, a lowercase letter and a digit.",
+    "passwordHint": "At least 12 characters, with uppercase, lowercase and a digit.",
+    "submit": "Create my account",
+    "success": "Your account was created and you now have access to the portfolio. You can log in now.",
+    "errorFallback": "Error while creating the account.",
+    "loginLink": "Go to login",
+    "mortgageDossier": "Your mortgage dossier",
+    "titleMortgage": "Follow your mortgage on Credit Bladi",
+    "subtitleMortgage": "Create your account to follow your dossier, see your repayment schedule and declare your payments.",
+    "successMortgage": "Your account was created and you now have access to your dossier. You can log in now."
+  }
+}

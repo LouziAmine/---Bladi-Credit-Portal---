@@ -17,7 +17,7 @@ test.describe('Admin - parameter management', () => {
     await expect(page.locator('#processingFeesRatio')).not.toHaveValue('');
     await page.getByRole('button', { name: /mettre à jour/i }).click();
 
-    await expect(page.getByText('mis à jour avec succès')).toBeVisible();
+    await expect(page.getByText('Mise à jour effectuée avec succès.')).toBeVisible();
     await page.screenshot({ path: `${SHOT}/01-bam-update-success.png`, fullPage: true, animations: 'disabled' });
   });
 
@@ -28,7 +28,7 @@ test.describe('Admin - parameter management', () => {
     await expect(page.locator('#rateMin')).not.toHaveValue('');
     await page.getByRole('button', { name: /mettre à jour/i }).click();
 
-    await expect(page.getByText('Taux mis à jour avec succès.')).toBeVisible();
+    await expect(page.getByText('Mise à jour effectuée avec succès.')).toBeVisible();
     await page.screenshot({ path: `${SHOT}/02-credit-rates-update-success.png`, fullPage: true, animations: 'disabled' });
   });
 
@@ -51,7 +51,7 @@ test.describe('Admin - parameter management', () => {
     await expect(page.locator('#profitRate')).not.toHaveValue('');
     await page.getByRole('button', { name: /mettre à jour/i }).click();
 
-    await expect(page.getByText('mis à jour avec succès')).toBeVisible();
+    await expect(page.getByText('Mise à jour effectuée avec succès.')).toBeVisible();
     await page.screenshot({ path: `${SHOT}/04-mourabaha-update-success.png`, fullPage: true, animations: 'disabled' });
   });
 
@@ -79,7 +79,7 @@ test.describe('Admin - parameter management', () => {
     await page.getByRole('button', { name: /mettre à jour/i }).click();
 
     expect(patchSent).toBe(false);
-    await expect(page.getByText('mis à jour avec succès')).toHaveCount(0);
+    await expect(page.getByText('Mise à jour effectuée avec succès.')).toHaveCount(0);
     await page.screenshot({ path: `${SHOT}/06-bam-negative-value-validation.png`, fullPage: true, animations: 'disabled' });
   });
 
@@ -96,7 +96,7 @@ test.describe('Admin - parameter management', () => {
     await page.getByRole('button', { name: /mettre à jour/i }).click();
 
     expect(patchSent).toBe(false);
-    await expect(page.getByText('Taux mis à jour avec succès.')).toHaveCount(0);
+    await expect(page.getByText('Mise à jour effectuée avec succès.')).toHaveCount(0);
     await page.screenshot({ path: `${SHOT}/07-credit-rates-negative-value-validation.png`, fullPage: true, animations: 'disabled' });
   });
 
@@ -124,7 +124,7 @@ test.describe('Admin - parameter management', () => {
     await page.getByRole('button', { name: /mettre à jour/i }).click();
 
     expect(patchSent).toBe(false);
-    await expect(page.getByText('mis à jour avec succès')).toHaveCount(0);
+    await expect(page.getByText('Mise à jour effectuée avec succès.')).toHaveCount(0);
     await page.screenshot({ path: `${SHOT}/09-mourabaha-negative-value-validation.png`, fullPage: true, animations: 'disabled' });
   });
 });

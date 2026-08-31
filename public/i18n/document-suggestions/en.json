@@ -1,0 +1,33 @@
+{
+  "documentSuggestions": {
+    "title": "Document suggestions",
+    "subtitle": "Manage the one-click suggested documents shown when requesting a document, per enterprise type.",
+    "form": {
+      "title": "Add a suggestion",
+      "subtitle": "Shown as a quick tag for the chosen enterprise type (or for every type if none is chosen).",
+      "adding": "Adding...",
+      "scope": "Scope",
+      "enterpriseType": "Enterprise type",
+      "cspCode": "Socio-professional category (mortgage)",
+      "common": "Common to every type",
+      "label": "Document name",
+      "labelPlaceholder": "e.g. Commercial register extract"
+    },
+    "loading": "Loading suggestions...",
+    "loadErrorFallback": "Unable to load document suggestions.",
+    "addSuccess": "Suggestion added successfully.",
+    "addErrorFallback": "Error adding the suggestion.",
+    "deleteErrorFallback": "Error deleting the suggestion.",
+    "list": {
+      "title": "Saved suggestions",
+      "subtitle": "Used as quick tags on the document-request form."
+    },
+    "col": {
+      "scope": "Scope",
+      "enterpriseType": "Enterprise type",
+      "label": "Document",
+      "addedOn": "Added on"
+    },
+    "empty": "No document suggestion saved yet."
+  }
+}

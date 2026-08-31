@@ -1,0 +1,73 @@
+# Production server for the Angular build: serves the SPA and reverse-proxies /api/ to the backend, so the
+# browser only ever talks to one origin (auth cookies stay SameSite=Strict, no CORS in production).
+# Rendered at container start by the nginx image (envsubst): ${NGINX_PORT}, ${API_UPSTREAM}.
+
+server {
+    listen ${NGINX_PORT};
+    server_name _;
+    root /usr/share/nginx/html;
+    server_tokens off;
+
+    # Uploads are capped at 15 MB by the backend; leave headroom for the multipart envelope.
+    client_max_body_size 16m;
+
+    gzip on;
+    gzip_types text/plain text/css application/javascript application/json image/svg+xml;
+    gzip_min_length 1024;
+
+    # A fresh nonce per response for the inline styles Angular injects (index.html carries ngCspNonce).
+    set $csp_nonce $request_id;
+    sub_filter_once off;
+    sub_filter_types text/html;
+    sub_filter 'CSP_NONCE_PLACEHOLDER' '$csp_nonce';
+
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'nonce-$csp_nonce'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self'; frame-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+
+    location /api/ {
+        proxy_pass ${API_UPSTREAM};
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        # Overwrite (not append) the client address chain: the backend trusts this header for rate limiting.
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Connection "";
+
+        # Server-Sent Events (/api/v1/notifications/stream): no buffering, long-lived connection.
+        proxy_buffering off;
+        proxy_cache off;
+        proxy_read_timeout 1h;
+    }
+
+    location = /index.html {
+        add_header Cache-Control "no-cache" always;
+        add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'nonce-$csp_nonce'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self'; frame-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
+        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-Frame-Options "DENY" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    }
+
+    # Angular emits content-hashed file names (main-ABC123.js, chunk-XyZ.js): safe to cache forever.
+    location ~* "-[A-Za-z0-9]{8,}\.(js|css|woff2?|ttf)$" {
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        try_files $uri =404;
+    }
+
+    # Translation files and other un-hashed assets: revalidate so a new release is picked up.
+    location ~* \.(json|svg|png|ico|webp)$ {
+        add_header Cache-Control "no-cache" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        try_files $uri =404;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}

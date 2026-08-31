@@ -1,0 +1,94 @@
+{
+  "creditFile": {
+    "client": {
+      "title": "Dossier de crédit",
+      "subtitle": "Versement effectué et échéancier de remboursement de votre crédit",
+      "loading": "Chargement du dossier de crédit...",
+      "reference": "Référence dossier",
+      "disbursedAmount": "Montant versé",
+      "disbursedAt": "Date du versement",
+      "status": "Statut du dossier",
+      "fileStatus": {
+        "ACTIVE": "Actif",
+        "CLOSED": "Soldé"
+      },
+      "beneficiary": "Compte à créditer",
+      "beneficiaryHint": "Effectuez votre versement sur ce RIB, puis déclarez-le ci-dessous pour chaque échéance.",
+      "col": {
+        "sequenceNumber": "N°",
+        "dueDate": "Échéance",
+        "amount": "Montant",
+        "status": "Statut",
+        "action": "Action"
+      },
+      "installmentStatus": {
+        "PENDING": "À venir",
+        "DECLARED": "Déclarée",
+        "PAID": "Payée",
+        "LATE": "En retard",
+        "REPAID_EARLY": "Remboursée par anticipation"
+      },
+      "paidOn": "Payée le",
+      "declaredOn": "Déclarée le",
+      "declaredWaiting": "En attente de validation par notre gestionnaire",
+      "payAction": "J'ai payé",
+      "paying": "Enregistrement...",
+      "sourceRibLabel": "RIB utilisé pour le versement",
+      "sourceRibPlaceholder": "ex : 230 780 0123456789012345 67",
+      "sourceRibRequired": "Le RIB est obligatoire (10 caractères minimum).",
+      "confirmDeclare": "Confirmer",
+      "cancelDeclare": "Annuler",
+      "latePenaltyIncluded": "dont pénalité de retard",
+      "repaidEarly": "Soldée par remboursement anticipé",
+      "loadErrorFallback": "Impossible de charger le dossier de crédit.",
+      "payErrorFallback": "Erreur lors de l'enregistrement du paiement.",
+      "showAllInstallments": "Afficher tout l'échéancier ({{count}} échéances)",
+      "showNextInstallments": "Afficher seulement les prochaines échéances"
+    },
+    "admin": {
+      "title": "Dossier de crédit",
+      "subtitle": "Versement et échéancier de remboursement",
+      "loading": "Chargement du dossier de crédit...",
+      "reference": "Référence dossier",
+      "disbursedAmount": "Montant versé",
+      "disbursedAt": "Date du versement",
+      "status": "Statut du dossier",
+      "fileStatus": {
+        "ACTIVE": "Actif",
+        "CLOSED": "Soldé"
+      },
+      "beneficiary": "Compte à créditer",
+      "clientRib": "RIB du client (déclaré à la classification)",
+      "col": {
+        "sequenceNumber": "N°",
+        "dueDate": "Échéance",
+        "amount": "Montant",
+        "status": "Statut",
+        "paidAt": "Payée le"
+      },
+      "installmentStatus": {
+        "PENDING": "À venir",
+        "DECLARED": "Déclarée",
+        "PAID": "Payée",
+        "LATE": "En retard",
+        "REPAID_EARLY": "Remboursée par anticipation"
+      },
+      "declaredOn": "Déclarée le",
+      "declaredBy": "Déclarée par",
+      "declaredSourceRib": "RIB déclaré par le client",
+      "validateAction": "Valider",
+      "validating": "Validation...",
+      "rejectAction": "Rejeter",
+      "rejecting": "Rejet...",
+      "rejectReasonPlaceholder": "Motif du rejet",
+      "confirmReject": "Confirmer le rejet",
+      "cancelReject": "Annuler",
+      "validateErrorFallback": "Erreur lors de la validation du paiement.",
+      "rejectErrorFallback": "Erreur lors du rejet du paiement.",
+      "empty": "Aucun dossier de crédit n'a encore été ouvert pour cette demande.",
+      "latePenaltyIncluded": "dont pénalité de retard",
+      "loadErrorFallback": "Impossible de charger le dossier de crédit.",
+      "scheduleLabel": "Échéancier"
+    }
+  }
+}

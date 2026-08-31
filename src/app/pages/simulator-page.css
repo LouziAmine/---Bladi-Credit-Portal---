@@ -1,0 +1,15 @@
+.cb-schedule-table-wrap {
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.cb-card-header-clickable {
+  cursor: pointer;
+}
+
+.cb-empty-card {
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

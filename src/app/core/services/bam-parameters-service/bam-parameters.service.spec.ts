@@ -4,23 +4,25 @@ import { provideHttpClient } from '@angular/common/http';
 import { BamParametersService } from './bam-parameters.service';
 import { BamParametersResponse, PatchBamParametersRequest } from '../../models/bam-parameters.model';
 import { CreditPage } from '../../models/page.model';
+import { AMOUNT_20000, AMOUNT_5000, DECIMAL_0_0004, DECIMAL_0_01, DECIMAL_0_015, DECIMAL_0_4, DECIMAL_0_9 } from '../../../testing/mocks/mock-amounts';
+import { PERSON_NO_CONTENT } from '../../../testing/mocks/mock-contacts';
 
 describe('BamParametersService', () => {
   let service: BamParametersService;
   let httpMock: HttpTestingController;
 
   const mockRecord: BamParametersResponse = {
-    id: 1,
-    processingFeesRatio: 0.01,
-    minProcessingFees: 5000,
-    maxProcessingFees: 20000,
-    registrationFeeRatio: 0.015,
-    landConservationRatio: 0.015,
-    notaryFeeRatio: 0.01,
-    ltvRatio: 0.9,
-    maxDebtRatio: 0.4,
+    id: '1',
+    processingFeesRatio: DECIMAL_0_01,
+    minProcessingFees: AMOUNT_5000,
+    maxProcessingFees: AMOUNT_20000,
+    registrationFeeRatio: DECIMAL_0_015,
+    landConservationRatio: DECIMAL_0_015,
+    notaryFeeRatio: DECIMAL_0_01,
+    ltvRatio: DECIMAL_0_9,
+    maxDebtRatio: DECIMAL_0_4,
     maxAgeAtMaturity: 75,
-    adiMonthlyRate: 0.0004,
+    adiMonthlyRate: DECIMAL_0_0004,
     active: true,
   };
 
@@ -71,7 +73,7 @@ describe('BamParametersService', () => {
 
   describe('getById', () => {
     it('should GET a single BAM parameters record by id', () => {
-      service.getById(1).subscribe((record) => {
+      service.getById('1').subscribe((record) => {
         expect(record).toEqual(mockRecord);
       });
 
@@ -85,12 +87,12 @@ describe('BamParametersService', () => {
     it('should PATCH BAM parameters by id', () => {
       const patchRequest: PatchBamParametersRequest = { active: false };
 
-      service.patch(1, patchRequest).subscribe();
+      service.patch('1', patchRequest).subscribe();
 
       const req = httpMock.expectOne('http://localhost:8080/api/v1/bam-parameters/1');
       expect(req.request.method).toBe('PATCH');
       expect(req.request.body).toEqual(patchRequest);
-      req.flush(null, { status: 204, statusText: 'No Content' });
+      req.flush(null, { status: 204, statusText: PERSON_NO_CONTENT });
     });
   });
 });

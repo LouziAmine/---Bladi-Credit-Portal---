@@ -1,0 +1,249 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-gear-fill"></i> {{ 'nav.administration' | translate }}
+    </div>
+    <h1 class="cb-hero__title">{{ 'enterpriseLinks.title' | translate }}</h1>
+    <p class="cb-hero__subtitle">{{ 'enterpriseLinks.subtitle' | translate }}</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+
+    <div class="cb-card mb-4">
+      <div class="cb-card__header cb-card__header--amber">
+        <div class="cb-card__header-icon cb-card__header-icon--amber">
+          <i class="bi bi-person-plus-fill"></i>
+        </div>
+        <div>
+          <p class="cb-card__header-title">{{ 'enterpriseLinks.invite.title' | translate }}</p>
+          <p class="cb-card__header-sub">{{ 'enterpriseLinks.invite.subtitle' | translate }}</p>
+        </div>
+      </div>
+      <div class="cb-card__body">
+        <app-loading-spinner [loading]="loading()" [message]="'enterpriseLinks.invite.submitting' | translate" />
+
+        @if (successMessage()) {
+          <div class="cb-alert cb-alert--success">
+            <i class="bi bi-check-circle-fill"></i>
+            <span>{{ successMessage() }}</span>
+          </div>
+        }
+        <app-error-message [message]="errorMessage()" />
+
+        <form [formGroup]="inviteForm" (ngSubmit)="submitInvite()" novalidate>
+          <div class="row g-3">
+            <div class="col-md-3">
+              <label class="cb-label" for="linkEnterpriseId">
+                <i class="bi bi-building"></i>{{ 'enterpriseLinks.invite.enterpriseId' | translate }}
+              </label>
+              <input id="linkEnterpriseId" type="text" class="form-control" formControlName="enterpriseId" />
+            </div>
+            <div class="col-md-4">
+              <label class="cb-label" for="linkUsername">
+                <i class="bi bi-person"></i>{{ 'enterpriseLinks.invite.username' | translate }}
+              </label>
+              <input id="linkUsername" type="text" class="form-control" formControlName="username" />
+            </div>
+            <div class="col-md-3">
+              <label class="cb-label" for="linkRole">
+                <i class="bi bi-person-badge"></i>{{ 'enterpriseLinks.invite.role' | translate }}
+              </label>
+              <select id="linkRole" class="form-select" formControlName="role">
+                @for (option of roleOptions; track option) {
+                  <option [value]="option">{{ 'enterpriseLinks.role.' + option | translate }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="cb-btn cb-btn--amber" [disabled]="loading() || inviteForm.invalid">
+              <i class="bi bi-send-plus"></i>{{ 'enterpriseLinks.invite.submit' | translate }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="cb-card mb-4">
+      <div class="cb-card__header cb-card__header--indigo">
+        <div class="cb-card__header-icon cb-card__header-icon--indigo">
+          <i class="bi bi-hourglass-split"></i>
+        </div>
+        <div>
+          <p class="cb-card__header-title">{{ 'enterpriseLinks.pending.title' | translate }} ({{ pendingTotal() }})</p>
+          <p class="cb-card__header-sub">{{ 'enterpriseLinks.pending.subtitle' | translate }}</p>
+        </div>
+      </div>
+      <div class="cb-card__body cb-card__body--flush">
+        <app-loading-spinner [loading]="loadingPending()" [message]="'enterpriseLinks.pending.loading' | translate" />
+        <app-error-message [message]="pendingErrorMessage()" />
+
+        @if (!loadingPending() && pendingLinks().length > 0) {
+          <div class="table-responsive">
+            <table class="cb-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>{{ 'enterpriseLinks.col.enterpriseId' | translate }}</th>
+                  <th>{{ 'enterpriseLinks.col.requestedBy' | translate }}</th>
+                  <th>{{ 'enterpriseLinks.col.role' | translate }}</th>
+                  <th>{{ 'enterpriseLinks.col.createdOn' | translate }}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (link of pendingLinks(); track link.id) {
+                  <tr>
+                    <td><span class="fw-semibold">#{{ link.id }}</span></td>
+                    <td>#{{ link.enterpriseId }}</td>
+                    <td>{{ link.requestedByUsername }}</td>
+                    <td>{{ 'enterpriseLinks.role.' + link.role | translate }}</td>
+                    <td class="text-nowrap">{{ link.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+                    <td>
+                      @if (rejectingLinkId() === link.id) {
+                        <div class="d-flex flex-column gap-2" style="min-width: 220px;">
+                          <input type="text" class="form-control form-control-sm"
+                            [formControl]="rejectReasonControl"
+                            [placeholder]="'enterpriseLinks.pending.reasonPlaceholder' | translate" />
+                          <div class="d-flex gap-2">
+                            <button type="button" class="cb-btn cb-btn--red cb-btn--sm"
+                              [disabled]="actingLinkId() === link.id" (click)="confirmReject(link)">
+                              <i class="bi bi-x-lg"></i>{{ 'enterpriseLinks.pending.confirmReject' | translate }}
+                            </button>
+                            <button type="button" class="cb-btn cb-btn--ghost cb-btn--sm" (click)="cancelReject()">
+                              {{ 'enterpriseLinks.pending.cancel' | translate }}
+                            </button>
+                          </div>
+                        </div>
+                      } @else {
+                        <div class="d-flex gap-2">
+                          <button type="button" class="cb-btn cb-btn--primary cb-btn--sm"
+                            [disabled]="actingLinkId() === link.id" (click)="approve(link)">
+                            <i class="bi bi-check-lg"></i>{{ 'enterpriseLinks.pending.approve' | translate }}
+                          </button>
+                          <button type="button" class="cb-btn cb-btn--ghost cb-btn--sm"
+                            [disabled]="actingLinkId() === link.id" (click)="startReject(link)">
+                            <i class="bi bi-x-lg"></i>{{ 'enterpriseLinks.pending.reject' | translate }}
+                          </button>
+                        </div>
+                      }
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="d-flex align-items-center justify-content-between p-3 border-top">
+            <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button"
+              [disabled]="pendingCurrentPage() <= 1" (click)="previousPendingPage()">
+              <i class="bi bi-chevron-left"></i>{{ 'adminCommon.previous' | translate }}
+            </button>
+            <span class="small cb-muted-text">
+              {{ 'adminCommon.page' | translate }} {{ pendingCurrentPage() }} / {{ pendingLastPage() }}
+            </span>
+            <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button"
+              [disabled]="pendingCurrentPage() >= pendingLastPage()" (click)="nextPendingPage()">
+              {{ 'adminCommon.next' | translate }}<i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+        } @else if (!loadingPending() && pendingLinks().length === 0) {
+          <div class="cb-empty">
+            <div class="cb-empty__icon"><i class="bi bi-hourglass"></i></div>
+            <p class="cb-empty__title">{{ 'enterpriseLinks.pending.empty' | translate }}</p>
+          </div>
+        }
+      </div>
+    </div>
+
+    @if (enterpriseId() !== null) {
+      <div class="cb-card">
+        <div class="cb-card__header cb-card__header--indigo">
+          <div class="cb-card__header-icon cb-card__header-icon--indigo">
+            <i class="bi bi-diagram-3"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">
+              {{ 'enterpriseLinks.forEnterprise.title' | translate }}
+              @if (enterpriseName()) { · {{ enterpriseName() }} }
+              ({{ enterpriseLinksTotal() }})
+            </p>
+            <p class="cb-card__header-sub">{{ 'enterpriseLinks.forEnterprise.subtitle' | translate }}</p>
+          </div>
+        </div>
+        <div class="cb-card__body cb-card__body--flush">
+          <app-loading-spinner [loading]="loadingEnterpriseLinks()"
+            [message]="'enterpriseLinks.forEnterprise.loading' | translate" />
+          <app-error-message [message]="enterpriseLinksErrorMessage()" />
+
+          @if (!loadingEnterpriseLinks() && enterpriseLinks().length > 0) {
+            <div class="table-responsive">
+              <table class="cb-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>{{ 'enterpriseLinks.col.userId' | translate }}</th>
+                    <th>{{ 'enterpriseLinks.col.role' | translate }}</th>
+                    <th>{{ 'adminCommon.status' | translate }}</th>
+                    <th>{{ 'enterpriseLinks.col.origin' | translate }}</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (link of enterpriseLinks(); track link.id) {
+                    <tr>
+                      <td><span class="fw-semibold">#{{ link.id }}</span></td>
+                      <td>{{ link.username ?? ('#' + link.userId) }}</td>
+                      <td>{{ 'enterpriseLinks.role.' + link.role | translate }}</td>
+                      <td>
+                        @if (link.status === 'APPROVED') {
+                          <span class="cb-badge cb-badge--green">{{ 'enterpriseLinks.status.APPROVED' | translate }}</span>
+                        } @else if (link.status === 'PENDING') {
+                          <span class="cb-badge cb-badge--amber">{{ 'enterpriseLinks.status.PENDING' | translate }}</span>
+                        } @else if (link.status === 'REJECTED') {
+                          <span class="cb-badge cb-badge--red">{{ 'enterpriseLinks.status.REJECTED' | translate }}</span>
+                        } @else {
+                          <span class="cb-badge cb-badge--gray">{{ 'enterpriseLinks.status.REVOKED' | translate }}</span>
+                        }
+                      </td>
+                      <td>{{ 'enterpriseLinks.origin.' + link.origin | translate }}</td>
+                      <td>
+                        @if (link.status === 'APPROVED') {
+                          <button type="button" class="cb-btn cb-btn--red cb-btn--sm"
+                            [disabled]="actingLinkId() === link.id" (click)="revoke(link)">
+                            <i class="bi bi-slash-circle"></i>{{ 'enterpriseLinks.forEnterprise.revoke' | translate }}
+                          </button>
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex align-items-center justify-content-between p-3 border-top">
+              <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button"
+                [disabled]="enterpriseLinksCurrentPage() <= 1" (click)="previousEnterpriseLinksPage()">
+                <i class="bi bi-chevron-left"></i>{{ 'adminCommon.previous' | translate }}
+              </button>
+              <span class="small cb-muted-text">
+                {{ 'adminCommon.page' | translate }} {{ enterpriseLinksCurrentPage() }} / {{ enterpriseLinksLastPage() }}
+              </span>
+              <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button"
+                [disabled]="enterpriseLinksCurrentPage() >= enterpriseLinksLastPage()" (click)="nextEnterpriseLinksPage()">
+                {{ 'adminCommon.next' | translate }}<i class="bi bi-chevron-right"></i>
+              </button>
+            </div>
+          } @else if (!loadingEnterpriseLinks() && enterpriseLinks().length === 0) {
+            <div class="cb-empty">
+              <div class="cb-empty__icon"><i class="bi bi-diagram-3"></i></div>
+              <p class="cb-empty__title">{{ 'enterpriseLinks.forEnterprise.empty' | translate }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

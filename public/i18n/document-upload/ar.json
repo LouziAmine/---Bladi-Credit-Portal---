@@ -1,0 +1,44 @@
+{
+  "documentUpload": {
+    "title": "المستندات",
+    "subtitle": "المرفقات الخاصة بالملف، حسب المرحلة",
+    "loading": "جارٍ تحميل المستندات...",
+    "empty": "لا يوجد أي مستند لهذا الملف.",
+    "col": {
+      "file": "الملف",
+      "type": "النوع",
+      "step": "المرحلة",
+      "status": "الحالة",
+      "antivirus": "فحص مكافحة الفيروسات",
+      "uploadedBy": "أضيف من طرف"
+    },
+    "status": {
+      "active": "نشط",
+      "superseded": "مستبدل"
+    },
+    "scan": {
+      "clean": "سليم",
+      "skipped": "لم يُفحص (تطوير)",
+      "pending": "الفحص جارٍ",
+      "infected": "مصاب"
+    },
+    "view": "عرض",
+    "viewAria": "عرض المستند",
+    "file": "الملف",
+    "fileHint": "PDF، JPEG، PNG، DOCX، XLSX: بحد أقصى 15 ميغابايت.",
+    "documentType": "نوع المستند (اختياري)",
+    "documentTypePlaceholder": "مثال: بطاقة الهوية",
+    "submit": "إرسال",
+    "uploading": "جارٍ إرسال المستند...",
+    "fileTooLarge": "يتجاوز هذا الملف الحجم الأقصى المسموح به (15 ميغابايت).",
+    "fileTypeNotAllowed": "نوع الملف غير مسموح به (PDF، JPEG، PNG، DOCX، XLSX فقط).",
+    "loadErrorFallback": "تعذر تحميل المستندات.",
+    "uploadErrorFallback": "خطأ أثناء إرسال المستند.",
+    "viewErrorFallback": "تعذر فتح هذا المستند.",
+    "unit": {
+      "bytes": "بايت",
+      "kilobytes": "ك.بايت",
+      "megabytes": "م.بايت"
+    }
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "demandDetail": {
+    "backToCases": "Back to cases",
+    "loading": "Loading case...",
+    "case": "Case",
+    "enterpriseCategory": "Enterprise category",
+    "contact": "Contact",
+    "initialSimulation": {
+      "title": "Client's initial simulation",
+      "subtitle": "Figures as simulated when the case was created: kept even after a rate/amount/duration change"
+    },
+    "pipeline": {
+      "title": "Processing pipeline",
+      "stepsTotal": "steps in total"
+    },
+    "step": {
+      "final": "Final step",
+      "current": "Current step"
+    },
+    "requiredProfile": "Required profile",
+    "assignedTo": "Assigned to",
+    "assignedBy": "Assigned by",
+    "unassigned": "Unassigned (team pool)",
+    "enteredOn": "Entered on",
+    "actionToPerform": "Action to perform",
+    "assignReassign": "Assign / reassign",
+    "classifyCase": "Classify the case",
+    "advanceReturnCase": "Advance / return the case",
+    "addRemark": "Add a remark",
+    "assigning": "Assigning...",
+    "savingComment": "Saving the remark...",
+    "classifying": "Classifying...",
+    "advancing": "Advancing...",
+    "assignReassignTo": "Assign / reassign to",
+    "selectEligibleUser": "Select an eligible user",
+    "noEligibleUser": "No eligible user (required grade/team not filled).",
+    "remark": "Remark",
+    "commentHint": "Does not advance or assign the case: visible in the comments below.",
+    "classify": {
+      "legend": "Initial validation with the client",
+      "legendHint": "The account officer contacts the client to confirm the request is genuine before attaching it to their portfolio.",
+      "searchingMatch": "Searching for an existing enterprise matching",
+      "alreadyExists": "This enterprise already exists:",
+      "useThisEnterprise": "Use this enterprise",
+      "noMatch": "No existing enterprise matches",
+      "createAndAttach": "Create and attach",
+      "clientEnterprise": "Client enterprise",
+      "selectEnterprise": "Select an enterprise",
+      "createOne": "create one",
+      "initiationOwner": "Initiation owner",
+      "clientRib": "Client's RIB",
+      "clientRibPlaceholder": "e.g. 230 780 0123456789012345 67",
+      "clientRibHint": "Optional: will pre-fill the RIB suggested to the client when they declare a payment (they can still change it)."
+    },
+    "note": "Note",
+    "advance": {
+      "assignedToOther1": "This step is assigned to",
+      "assignedToOther2": "only that person can advance or return it. Switch to \"Assign / reassign\" mode to assign it to yourself first.",
+      "newStepOwner": "Owner of the new step",
+      "mandatory": "Required: designate who takes ownership of the case at",
+      "previousStep": "the previous step",
+      "nextStep": "the next step",
+      "lastStepHint": "Last step: the case will be closed, no owner to designate.",
+      "rateDecision": "Interest rate decision",
+      "rateDecisionHint": "Keep preserves the case's current rate. Manual entry applies a value chosen by the person holding the profile required at this step.",
+      "noRateYet": "This case does not have a known applicable rate yet: \"Keep\" is unavailable; choose \"Manual entry\".",
+      "manualRate": "Manually entered rate (%)",
+      "amountDecision": "Amount decision",
+      "amountDecisionHint": "A manual entry automatically re-checks the financing ratio (amount/revenue), guarantee coverage and the client's debt ratio: the change is rejected if it exceeds these limits. Only the profile required at this step can advance the case.",
+      "manualAmount": "Manually entered amount (MAD)",
+      "durationDecision": "Duration decision",
+      "durationDecisionHint": "A manual entry must stay between 12 and 300 months. Like the amount, it affects the debt ratio, which is re-checked on every change.",
+      "manualDuration": "Manually entered duration (months)",
+      "decision": "Decision",
+      "onlyDecisionStep": "Only available at the Committee Decision step.",
+      "committeeType": "Committee type",
+      "onlyCommitteeProgStep": "Only available at the Committee Scheduling step.",
+      "insurance": {
+        "title": "Insurance",
+        "adiSubscribed": "ADI (death/disability insurance) subscribed for the guarantor",
+        "adiHint": "Required to advance this demand: covers the guarantor/company director in case of death or disability (BAM/ACAPS).",
+        "coverageType": "Coverage type",
+        "damageSubscribed": "Damage / multi-risk insurance on real guarantees subscribed",
+        "damageHint": "Required because this demand carries real guarantees (pledge/mortgage/lien): the policy must name the bank as beneficiary.",
+        "onlyInsuranceStep": "Only available at the Insurance Validation step."
+      },
+      "returnReason": "Return reason",
+      "noPreviousStep": "No previous step: returning is not possible from the first step.",
+      "returnHint": "If filled in, the case is sent back to the previous step instead of advancing.",
+      "reserves": "Reserves",
+      "recommendations": "Recommendations"
+    },
+    "assign": "Assign",
+    "addRemarkSubmit": "Add remark",
+    "returnCase": "Return the case",
+    "advanceCase": "Advance the case",
+    "history": {
+      "title": "History",
+      "stepsCount": "step(s) gone through",
+      "col": {
+        "process": "Process",
+        "assignment": "Assignment",
+        "simulation": "Simulation",
+        "exitedOn": "Exited on",
+        "rate": "Rate"
+      },
+      "notAvailable": "Not available for this step",
+      "returned": "Returned",
+      "by": "by"
+    },
+    "assignmentHistory": {
+      "title": "Assignment history",
+      "count": "assignment(s)",
+      "col": {
+        "previousUsername": "Previously assigned",
+        "newUsername": "Newly assigned",
+        "assignedBy": "Assigned by",
+        "assignedAt": "On"
+      }
+    },
+    "comments": {
+      "title": "Comments",
+      "count": "remark(s)"
+    },
+    "loadErrorFallback": "Unable to load the case.",
+    "advanceErrorFallback": "Error while advancing the case.",
+    "classifyErrorFallback": "Error while classifying the case.",
+    "matchCheckErrorFallback": "Unable to check whether this enterprise already exists.",
+    "createEnterpriseErrorFallback": "Error while creating the enterprise.",
+    "assignErrorFallback": "Error while assigning the case.",
+    "scheduleErrorFallback": "Unable to generate the amortization schedule.",
+    "initialSimulationErrorFallback": "Unable to generate the initial simulation.",
+    "commentErrorFallback": "Error while adding the remark.",
+    "choices": {
+      "rateOption": {
+        "KEEP": { "label": "Keep", "description": "Keep the case's current applicable rate, without changing it." },
+        "MANUAL": { "label": "Manual entry", "description": "Directly enter a rate value." }
+      },
+      "amountOption": {
+        "KEEP": { "label": "Keep", "description": "Keep the case's current amount, without changing it." },
+        "MANUAL": { "label": "Manual entry", "description": "Directly enter a new amount." }
+      },
+      "durationOption": {
+        "KEEP": { "label": "Keep", "description": "Keep the case's current duration, without changing it." },
+        "MANUAL": { "label": "Manual entry", "description": "Directly enter a new duration." }
+      },
+      "classificationOutcome": {
+        "REAL": { "label": "Real", "description": "The client confirms their request: the case joins their portfolio and enters the pipeline." },
+        "FAKE": { "label": "Fake", "description": "Fraudulent or non-genuine request: the case is rejected, no portfolio." },
+        "SIMULATION_ONLY": { "label": "Simulation only", "description": "The client was just testing the simulator, no real request: the case is rejected." }
+      },
+      "decisionOutcome": {
+        "APPROVED": "Approved",
+        "DEFERRED": "Deferred",
+        "REJECTED": "Rejected"
+      },
+      "committeeType": {
+        "ROTATING": "Rotating committee",
+        "STANDING_SESSION": "Standing session committee"
+      },
+      "insuranceCoverageType": {
+        "BANK_GROUP_POLICY": "Bank's group policy",
+        "EXTERNAL_DELEGATION": "External insurance delegation"
+      }
+    }
+  }
+}

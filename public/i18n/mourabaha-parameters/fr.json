@@ -1,0 +1,18 @@
+{
+  "mourabahaParameters": {
+    "title": "Paramètres Mourabaha",
+    "subtitle": "Gérez le taux de profit, la TVA et la contribution Takaful appliqués au financement participatif.",
+    "loading": "Chargement des paramètres...",
+    "col": {
+      "profitRate": "Taux de profit (%)",
+      "vatRate": "TVA sur marge",
+      "takafulMonthlyRate": "Taux Takaful mensuel"
+    },
+    "editHint": "Les modifications s'appliquent aux nouvelles simulations Mourabaha",
+    "form": {
+      "profitRate": "Taux de profit annuel (%)",
+      "takafulMonthlyRate": "Taux de contribution Takaful mensuel"
+    },
+    "loadErrorFallback": "Impossible de charger les paramètres. Serveur indisponible."
+  }
+}

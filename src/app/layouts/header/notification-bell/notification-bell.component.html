@@ -1,0 +1,57 @@
+<div class="nav-item dropdown" [class.show]="isOpen()">
+  <button
+    type="button"
+    class="btn btn-sm fw-medium px-2 position-relative cb-header-btn-outline"
+    (click)="toggle($event)"
+    [attr.aria-expanded]="isOpen()"
+    [attr.aria-label]="'notifications.open' | translate"
+  >
+    <i class="bi bi-bell fs-6"></i>
+    @if (unreadCount() > 0) {
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        {{ unreadCount() > 9 ? '9+' : unreadCount() }}
+      </span>
+    }
+  </button>
+  <div class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 p-0 cb-notification-menu"
+       [class.show]="isOpen()">
+    <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+      <span class="fw-semibold small">{{ 'notifications.title' | translate }}</span>
+      @if (notifications().length > 0) {
+        <button type="button" class="btn btn-link btn-sm p-0 small" (click)="markAllRead($event)">
+          {{ 'notifications.markAllRead' | translate }}
+        </button>
+      }
+    </div>
+    @if (notifications().length === 0) {
+      <div class="px-3 py-3 small text-muted text-center">{{ 'notifications.empty' | translate }}</div>
+    } @else {
+      <ul class="list-unstyled mb-0 cb-notification-list">
+        @for (item of notifications(); track item.id) {
+          <li>
+            <button type="button" class="dropdown-item py-2 px-3 border-bottom"
+                    [class.fw-semibold]="!item.read"
+                    [attr.aria-label]="(item.read
+                      ? ('notifications.read' | translate) : ('notifications.unread' | translate))"
+                    (click)="open(item)">
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi cb-notification-status-icon"
+                   [class.bi-envelope-fill]="!item.read"
+                   [class.text-primary]="!item.read"
+                   [class.bi-envelope-open]="item.read"
+                   [class.text-muted]="item.read"
+                   [title]="item.read ? ('notifications.read' | translate) : ('notifications.unread' | translate)">
+                </i>
+                <div class="flex-grow-1">
+                  <div class="small">{{ item.title }}</div>
+                  <div class="small text-muted text-wrap">{{ item.body }}</div>
+                  <div class="small text-muted">{{ item.createdAt | date:'dd/MM/yyyy HH:mm' }}</div>
+                </div>
+              </div>
+            </button>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</div>

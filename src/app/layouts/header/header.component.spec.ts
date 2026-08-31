@@ -5,6 +5,10 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
 import { HeaderComponent as Header } from './header.component';
 import { AuthService, TokenService } from '../../core/services';
+import { NotificationService } from '../../core/services/notification-service/notification.service';
+import { provideTranslateTesting } from '../../testing/translate-testing.providers';
+import { CODE_CLIENT, CODE_MANAGER } from '../../testing/mocks/mock-codes';
+import { USER_ADMIN } from '../../testing/mocks/mock-users';
 
 describe('Header', () => {
   let fixture: ComponentFixture<Header>;
@@ -16,7 +20,12 @@ describe('Header', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Header],
-      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideTranslateTesting(),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Header);
@@ -24,6 +33,10 @@ describe('Header', () => {
     authService = TestBed.inject(AuthService);
     tokenService = TestBed.inject(TokenService);
     router = TestBed.inject(Router);
+    const notificationService = TestBed.inject(NotificationService);
+    vi.spyOn(notificationService, 'openStream').mockReturnValue(
+      { addEventListener: vi.fn(), close: vi.fn() } as unknown as EventSource);
+    vi.spyOn(notificationService, 'getUnreadCount').mockReturnValue(of(0));
     tokenService.clearAuthState();
     fixture.detectChanges();
   });
@@ -107,15 +120,15 @@ describe('Header', () => {
     });
 
     it('should show simulation link and logout button when authenticated as client', () => {
-      tokenService.setAuthState('user', 'CLIENT');
+      tokenService.setAuthState('user', CODE_CLIENT);
       fixture.detectChanges();
       const compiled = fixture.nativeElement as HTMLElement;
-      expect(compiled.querySelector('a[routerLink="/simulation"]')).toBeTruthy();
+      expect(compiled.querySelector('a[routerLink="/mortgage-credit"]')).toBeTruthy();
       expect(compiled.textContent).toContain('Déconnexion');
     });
 
     it('should show admin menu when authenticated as manager', () => {
-      tokenService.setAuthState('admin', 'MANAGER');
+      tokenService.setAuthState(USER_ADMIN, CODE_MANAGER);
       fixture.detectChanges();
       const compiled = fixture.nativeElement as HTMLElement;
       expect(compiled.querySelector('.dropdown-menu')).toBeTruthy();

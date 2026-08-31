@@ -7,6 +7,8 @@ import { BamParametersComponent as BamParameters } from './bam-parameters.compon
 import { BamParametersService } from '../../../core/services';
 import { BamParametersResponse } from '../../../core/models/bam-parameters.model';
 import { CreditPage } from '../../../core/models/page.model';
+import { provideTranslateTesting } from '../../../testing/translate-testing.providers';
+import { AMOUNT_20000, AMOUNT_5000, DECIMAL_0_0004, DECIMAL_0_01, DECIMAL_0_015, DECIMAL_0_4, DECIMAL_0_9 } from '../../../testing/mocks/mock-amounts';
 
 describe('BamParameters', () => {
   let fixture: ComponentFixture<BamParameters>;
@@ -14,9 +16,9 @@ describe('BamParameters', () => {
   let bamService: BamParametersService;
 
   const mockRecord: BamParametersResponse = {
-    id: 1, processingFeesRatio: 0.01, minProcessingFees: 5000, maxProcessingFees: 20000,
-    registrationFeeRatio: 0.015, landConservationRatio: 0.015, notaryFeeRatio: 0.01,
-    ltvRatio: 0.9, maxDebtRatio: 0.4, maxAgeAtMaturity: 75, adiMonthlyRate: 0.0004, active: true,
+    id: '1', processingFeesRatio: DECIMAL_0_01, minProcessingFees: AMOUNT_5000, maxProcessingFees: AMOUNT_20000,
+    registrationFeeRatio: DECIMAL_0_015, landConservationRatio: DECIMAL_0_015, notaryFeeRatio: DECIMAL_0_01,
+    ltvRatio: DECIMAL_0_9, maxDebtRatio: DECIMAL_0_4, maxAgeAtMaturity: 75, adiMonthlyRate: DECIMAL_0_0004, active: true,
   };
 
   const mockPage: CreditPage<BamParametersResponse> = {
@@ -26,7 +28,7 @@ describe('BamParameters', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [BamParameters],
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideTranslateTesting()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BamParameters);
@@ -59,7 +61,7 @@ describe('BamParameters', () => {
       vi.spyOn(bamService, 'getAll').mockReturnValue(of(mockPage));
       fixture.detectChanges();
       component.selectRecord(mockRecord);
-      expect(component['selectedId']()).toBe(1);
+      expect(component['selectedId']()).toBe('1');
       expect(component['form'].value.processingFeesRatio).toBe(0.01);
     });
   });
@@ -166,7 +168,7 @@ describe('BamParameters', () => {
 
       component.submit();
 
-      expect(patchSpy).toHaveBeenCalledWith(1, {
+      expect(patchSpy).toHaveBeenCalledWith('1', {
         processingFeesRatio: undefined,
         minProcessingFees: undefined,
         maxProcessingFees: undefined,
@@ -199,7 +201,7 @@ describe('BamParameters', () => {
       const compiled = fixture.nativeElement as HTMLElement;
       const btn = compiled.querySelector<HTMLButtonElement>('.cb-btn--ghost.cb-btn--sm');
       btn?.click();
-      expect(component['selectedId']()).toBe(1);
+      expect(component['selectedId']()).toBe('1');
     });
 
     it('should show inactive badge for inactive record', () => {
