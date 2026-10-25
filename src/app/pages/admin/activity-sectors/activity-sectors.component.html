@@ -1,0 +1,100 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-gear-fill"></i> {{ 'nav.administration' | translate }}
+    </div>
+    <h1 class="cb-hero__title">{{ 'activitySectors.title' | translate }}</h1>
+    <p class="cb-hero__subtitle">{{ 'activitySectors.subtitle' | translate }}</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+
+    <div class="cb-card mb-4">
+      <div class="cb-card__header cb-card__header--amber">
+        <div class="cb-card__header-icon cb-card__header-icon--amber">
+          <i class="bi bi-tag"></i>
+        </div>
+        <div>
+          <p class="cb-card__header-title">{{ 'activitySectors.form.title' | translate }}</p>
+          <p class="cb-card__header-sub">{{ 'activitySectors.form.subtitle' | translate }}</p>
+        </div>
+      </div>
+      <div class="cb-card__body">
+        <app-loading-spinner [loading]="loading()" [message]="'activitySectors.form.adding' | translate" />
+
+        @if (successMessage()) {
+          <div class="cb-alert cb-alert--success">
+            <i class="bi bi-check-circle-fill"></i>
+            <span>{{ successMessage() }}</span>
+          </div>
+        }
+
+        <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="cb-label" for="name">
+                <i class="bi bi-tag"></i>{{ 'activitySectors.form.name' | translate }}
+              </label>
+              <input id="name" type="text" class="form-control" formControlName="name" placeholder="Textile" />
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="cb-btn cb-btn--amber" [disabled]="loading() || form.invalid">
+              <i class="bi bi-plus-lg"></i>{{ 'adminCommon.add' | translate }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <app-loading-spinner [loading]="loadingList()" [message]="'activitySectors.loading' | translate" />
+    <app-error-message [message]="errorMessage()" />
+
+    @if (!loadingList() && activitySectors().length > 0) {
+      <div class="cb-card">
+        <div class="cb-card__header cb-card__header--indigo">
+          <div class="cb-card__header-icon cb-card__header-icon--indigo">
+            <i class="bi bi-tags"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">{{ 'activitySectors.list.title' | translate }} ({{ activitySectors().length }})</p>
+            <p class="cb-card__header-sub">{{ 'activitySectors.list.subtitle' | translate }}</p>
+          </div>
+        </div>
+        <div class="cb-card__body cb-card__body--flush">
+          <div class="table-responsive">
+            <table class="cb-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>{{ 'activitySectors.col.name' | translate }}</th>
+                  <th>{{ 'activitySectors.col.addedOn' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (activitySector of activitySectors(); track activitySector.id) {
+                  <tr>
+                    <td><span class="fw-semibold">#{{ activitySector.id }}</span></td>
+                    <td>{{ activitySector.name }}</td>
+                    <td class="text-nowrap">{{ activitySector.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    } @else if (!loadingList() && activitySectors().length === 0) {
+      <div class="cb-card cb-empty-card">
+        <div class="cb-empty">
+          <div class="cb-empty__icon"><i class="bi bi-tags"></i></div>
+          <p class="cb-empty__title">{{ 'activitySectors.empty' | translate }}</p>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

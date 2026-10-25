@@ -1,0 +1,40 @@
+{
+  "demands": {
+    "title": "Case tracking",
+    "subtitle": "Mortgage and enterprise credit cases tracked through the processing pipeline.",
+    "portfolioOf": "Portfolio of",
+    "enterpriseHash": "enterprise #",
+    "removeFilter": "Remove filter",
+    "import": "Import demands",
+    "loading": "Loading cases...",
+    "search": {
+      "companyNameLabel": "Client or company",
+      "companyNamePlaceholder": "Search by name...",
+      "statusAll": "All statuses",
+      "minAmountLabel": "Min amount (MAD)",
+      "maxAmountLabel": "Max amount (MAD)",
+      "reset": "Reset"
+    },
+    "list": {
+      "title": "Cases",
+      "subtitle": "Click a case to see its details"
+    },
+    "col": {
+      "reference": "Reference",
+      "enterprise": "Client",
+      "category": "Category",
+      "amount": "Amount",
+      "duration": "Duration",
+      "createdOn": "Created on"
+    },
+    "status": {
+      "rejected": "Rejected",
+      "completed": "Completed",
+      "inProgress": "In progress"
+    },
+    "currentStepTitle": "Current step of the processing pipeline",
+    "view": "View",
+    "empty": "No case registered",
+    "loadErrorFallback": "Unable to load cases."
+  }
+}

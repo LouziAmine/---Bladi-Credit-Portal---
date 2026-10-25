@@ -18,13 +18,13 @@ export class BamParametersService {
     );
   }
 
-  getById(id: number): Observable<BamParametersResponse> {
+  getById(id: string): Observable<BamParametersResponse> {
     return this.http.get<BamParametersResponse>(`${this.apiUrl}/${id}`).pipe(
       catchError(handleHttpError('BamParametersService', 'getById')),
     );
   }
 
-  patch(id: number, request: PatchBamParametersRequest): Observable<void> {
+  patch(id: string, request: PatchBamParametersRequest): Observable<void> {
     return this.http.patch<void>(`${this.apiUrl}/${id}`, request).pipe(
       catchError(handleHttpError('BamParametersService', 'patch')),
     );

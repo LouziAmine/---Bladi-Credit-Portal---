@@ -1,0 +1,200 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-gear-fill"></i> {{ 'nav.administration' | translate }}
+    </div>
+    <h1 class="cb-hero__title">{{ 'demandImport.title' | translate }}</h1>
+    <p class="cb-hero__subtitle">{{ 'demandImport.subtitle' | translate }}</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+
+    <a class="cb-btn cb-btn--ghost cb-btn--sm mb-4" routerLink="/admin/demands">
+      <i class="bi bi-arrow-left"></i>{{ 'demandImport.backToDemands' | translate }}
+    </a>
+
+    <div class="cb-card mb-4">
+      <div class="cb-card__header cb-card__header--indigo">
+        <div class="cb-card__header-icon cb-card__header-icon--indigo"><i class="bi bi-file-earmark-spreadsheet"></i></div>
+        <div>
+          <p class="cb-card__header-title">{{ 'demandImport.upload.title' | translate }}</p>
+          <p class="cb-card__header-sub">{{ 'demandImport.upload.subtitle' | translate }}</p>
+        </div>
+      </div>
+      <div class="cb-card__body">
+        <form (ngSubmit)="startImport()" novalidate>
+          <label for="demandImportFile" class="cb-label">
+            <i class="bi bi-paperclip"></i>{{ 'demandImport.file' | translate }}
+          </label>
+
+          <div
+            class="cb-dropzone"
+            [class.cb-dropzone--dragover]="dragOver()"
+            [class.cb-dropzone--has-file]="selectedFile()"
+            [class.cb-dropzone--error]="selectedFileError()"
+            [class.cb-dropzone--disabled]="uploading() || polling()"
+            role="button"
+            tabindex="0"
+            [attr.aria-label]="'demandImport.file' | translate"
+            (click)="openFilePicker()"
+            (keydown.enter)="openFilePicker()"
+            (keydown.space)="$event.preventDefault(); openFilePicker()"
+            (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)"
+            (drop)="onDrop($event)"
+          >
+            <input #fileInput id="demandImportFile" type="file" class="visually-hidden" accept=".xlsx"
+                   [disabled]="uploading() || polling()"
+                   (click)="$event.stopPropagation()"
+                   (change)="onFileSelected($event)"/>
+
+            @if (selectedFile(); as file) {
+              <div class="cb-dropzone__file">
+                <div class="cb-dropzone__file-icon"><i class="bi bi-file-earmark-check-fill"></i></div>
+                <div class="cb-dropzone__file-info">
+                  <p class="cb-dropzone__file-name">{{ file.name }}</p>
+                  <p class="cb-dropzone__file-size">{{ formatSize(file.size) }}</p>
+                </div>
+                <button type="button" class="cb-dropzone__remove"
+                        [attr.aria-label]="'demandImport.removeFile' | translate"
+                        (click)="removeFile($event)">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </div>
+            } @else {
+              <div class="cb-dropzone__idle">
+                <div class="cb-dropzone__icon">
+                  <i class="bi bi-cloud-arrow-up-fill"></i>
+                </div>
+                <p class="cb-dropzone__title">
+                  {{ (dragOver() ? 'demandImport.dropzone.drop' : 'demandImport.dropzone.idle') | translate }}
+                </p>
+                <p class="cb-dropzone__hint">{{ 'demandImport.dropzone.browse' | translate }}</p>
+              </div>
+            }
+          </div>
+
+          @if (selectedFileError()) {
+            <div class="small mt-2 text-danger">{{ selectedFileError() }}</div>
+          } @else {
+            <div class="small mt-2 cb-muted-text">{{ 'demandImport.fileHint' | translate }}</div>
+          }
+
+          <button type="submit" class="cb-btn cb-btn--indigo mt-3"
+                  [disabled]="uploading() || polling() || !selectedFile()">
+            @if (uploading()) {
+              <span class="cb-spinner" aria-hidden="true"></span>{{ 'demandImport.uploading' | translate }}
+            } @else {
+              <i class="bi bi-upload"></i>{{ 'demandImport.submit' | translate }}
+            }
+          </button>
+        </form>
+
+        <app-error-message [message]="uploadErrorMessage()" />
+      </div>
+    </div>
+
+    @if (report(); as r) {
+      <div class="cb-card cb-report-enter">
+        <div class="cb-card__header cb-card__header--indigo">
+          <div class="cb-card__header-icon cb-card__header-icon--indigo"><i class="bi bi-kanban"></i></div>
+          <div>
+            <p class="cb-card__header-title">
+              {{ 'demandImport.report.title' | translate }} #{{ r.jobExecutionId }}
+            </p>
+            <p class="cb-card__header-sub">{{ 'demandImport.report.subtitle' | translate }}</p>
+          </div>
+        </div>
+        <div class="cb-card__body">
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            @switch (r.status) {
+              @case ('COMPLETED') {
+                <span class="cb-badge cb-badge--green">
+                  <i class="bi bi-check-circle-fill"></i>{{ 'demandImport.status.completed' | translate }}
+                </span>
+              }
+              @case ('FAILED') {
+                <span class="cb-badge cb-badge--red">
+                  <i class="bi bi-x-circle-fill"></i>{{ 'demandImport.status.failed' | translate }}
+                </span>
+              }
+              @case ('STOPPED') {
+                <span class="cb-badge cb-badge--gray">{{ 'demandImport.status.stopped' | translate }}</span>
+              }
+              @case ('ABANDONED') {
+                <span class="cb-badge cb-badge--gray">{{ 'demandImport.status.abandoned' | translate }}</span>
+              }
+              @default {
+                <span class="cb-badge cb-badge--amber">
+                  <i class="bi bi-hourglass-split"></i>{{ 'demandImport.status.running' | translate }}
+                </span>
+              }
+            }
+            @if (polling()) {
+              <span class="small cb-muted-text d-inline-flex align-items-center gap-1">
+                <span class="cb-live-dot" aria-hidden="true"></span>{{ 'demandImport.report.polling' | translate }}
+              </span>
+            }
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-4">
+              <div class="cb-stat">
+                <p class="cb-stat__value">{{ r.readCount }}</p>
+                <p class="cb-stat__label">{{ 'demandImport.report.read' | translate }}</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="cb-stat">
+                <p class="cb-stat__value text-success">{{ r.writeCount }}</p>
+                <p class="cb-stat__label">{{ 'demandImport.report.created' | translate }}</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="cb-stat">
+                <p class="cb-stat__value" [class.text-danger]="r.skipCount > 0">{{ r.skipCount }}</p>
+                <p class="cb-stat__label">{{ 'demandImport.report.skipped' | translate }}</p>
+              </div>
+            </div>
+          </div>
+
+          <app-error-message [message]="pollErrorMessage()" />
+
+          @if (r.rowErrors.length > 0) {
+            <hr class="my-3"/>
+            <p class="fw-semibold mb-2">{{ 'demandImport.report.errorsTitle' | translate }}</p>
+            <div class="table-responsive">
+              <table class="table table-sm align-middle">
+                <thead>
+                  <tr>
+                    <th>{{ 'demandImport.report.col.row' | translate }}</th>
+                    <th>{{ 'demandImport.report.col.company' | translate }}</th>
+                    <th>{{ 'demandImport.report.col.reason' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (rowError of r.rowErrors; track rowError.rowNumber) {
+                    <tr>
+                      <td>{{ rowError.rowNumber }}</td>
+                      <td>{{ rowError.companyName ?? '-' }}</td>
+                      <td class="text-danger">{{ rowError.errorMessage }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+
+          @if (isTerminal(r.status)) {
+            <button type="button" class="cb-btn cb-btn--ghost mt-3" (click)="startOver()">
+              <i class="bi bi-arrow-repeat"></i>{{ 'demandImport.report.startOver' | translate }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

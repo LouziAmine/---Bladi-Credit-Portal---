@@ -1,0 +1,234 @@
+@if (result()) {
+  <div class="cb-animate">
+    <div class="d-flex align-items-center gap-2 mb-3">
+      <p class="cb-section-title mb-0">
+        <span class="cb-step">2</span>{{ 'mortgageCredit.results.title' | translate }}
+      </p>
+      <span class="cb-badge cb-badge--green ms-auto">
+        <i class="bi bi-shield-check"></i>{{ 'mortgageCredit.results.bamCompliant' | translate }}
+      </span>
+    </div>
+
+    <div class="cb-alert cb-alert--success mb-3">
+      <i class="bi bi-file-earmark-check-fill"></i>
+      <span>
+        {{ 'mortgageCredit.results.caseCreated' | translate }}
+        <strong>{{ result()!.demandReference }}</strong>,
+        {{ 'mortgageCredit.results.caseCreatedSuffix' | translate }}
+      </span>
+    </div>
+
+    <p class="small mb-3 cb-muted-text">
+      <i class="bi bi-info-circle me-1"></i>{{ 'mortgageCredit.results.taeg' | translate }}
+      <strong>{{ formatPercent(result()!.taeg) }}</strong>
+    </p>
+
+    @if (result()!.conventional; as conventional) {
+      <div class="row g-3 mb-3">
+        <div class="col-6">
+          <div class="cb-stat cb-stat--green">
+            <div class="cb-stat__icon"><i class="bi bi-percent"></i></div>
+            <div class="cb-stat__label">{{ 'mortgageCredit.results.annualRate' | translate }}</div>
+            <div class="cb-stat__value">{{ formatPercent(conventional.rateMin!) }}</div>
+            <div class="cb-stat__sub">
+              {{ 'mortgageCredit.results.to' | translate }} {{ formatPercent(conventional.rateMax!) }}
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="cb-stat cb-stat--amber">
+            <div class="cb-stat__icon"><i class="bi bi-calendar-check"></i></div>
+            <div class="cb-stat__label">{{ 'mortgageCredit.results.allInMonthlyPayment' | translate }}</div>
+            <div class="cb-stat__value">{{ formatAmount(conventional.allInMonthlyPaymentMin!) }}</div>
+            <div class="cb-stat__sub">
+              {{ 'mortgageCredit.results.to' | translate }} {{ formatAmount(conventional.allInMonthlyPaymentMax!) }}
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="cb-stat cb-stat--red">
+            <div class="cb-stat__icon"><i class="bi bi-graph-up-arrow"></i></div>
+            <div class="cb-stat__label">{{ 'mortgageCredit.results.totalInterest' | translate }}</div>
+            <div class="cb-stat__value">{{ formatAmount(conventional.totalInterestMin!) }}</div>
+            <div class="cb-stat__sub">
+              {{ 'mortgageCredit.results.to' | translate }} {{ formatAmount(conventional.totalInterestMax!) }}
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="cb-stat cb-stat--indigo">
+            <div class="cb-stat__icon"><i class="bi bi-wallet2"></i></div>
+            <div class="cb-stat__label">{{ 'mortgageCredit.results.totalCost' | translate }}</div>
+            <div class="cb-stat__value">{{ formatAmount(conventional.totalCostMin!) }}</div>
+            <div class="cb-stat__sub">
+              {{ 'mortgageCredit.results.to' | translate }} {{ formatAmount(conventional.totalCostMax!) }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cb-card mb-3">
+        <div class="cb-card__body">
+          <div class="cb-fees-row">
+            <span class="cb-fees-row__label">
+              <i class="bi bi-heart-pulse me-1"></i>{{ 'mortgageCredit.results.adiInsurance' | translate }}
+            </span>
+            <span class="cb-fees-row__value">
+              {{ formatAmount(conventional.adiMonthlyPremiumMin!) }} {{ 'mortgageCredit.results.to' | translate }}
+              {{ formatAmount(conventional.adiMonthlyPremiumMax!) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    } @else if (result()!.mourabaha; as mourabaha) {
+      <div class="row g-3 mb-3">
+        <div class="col-6">
+          <div class="cb-stat cb-stat--green">
+            <div class="cb-stat__icon"><i class="bi bi-percent"></i></div>
+            <div class="cb-stat__label">{{ 'mortgageCredit.results.mourabahaRate' | translate }}</div>
+            <div class="cb-stat__value">{{ formatPercent(result()!.applicableRate) }}</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="cb-stat cb-stat--amber">
+            <div class="cb-stat__icon"><i class="bi bi-calendar-check"></i></div>
+            <div class="cb-stat__label">{{ 'mortgageCredit.results.installmentTtc' | translate }}</div>
+            <div class="cb-stat__value">{{ formatAmount(mourabaha.monthlyPaymentTtc) }}</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="cb-stat cb-stat--red">
+            <div class="cb-stat__icon"><i class="bi bi-graph-up-arrow"></i></div>
+            <div class="cb-stat__label">{{ 'mortgageCredit.results.marginTtc' | translate }}</div>
+            <div class="cb-stat__value">{{ formatAmount(mourabaha.marginTtc) }}</div>
+            <div class="cb-stat__sub">
+              {{ 'mortgageCredit.results.includingVat' | translate }} {{ formatAmount(mourabaha.vatOnMargin) }}
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="cb-stat cb-stat--indigo">
+            <div class="cb-stat__icon"><i class="bi bi-wallet2"></i></div>
+            <div class="cb-stat__label">{{ 'mortgageCredit.results.totalCost' | translate }}</div>
+            <div class="cb-stat__value">{{ formatAmount(mourabaha.totalCostTtc) }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cb-card mb-3">
+        <div class="cb-card__body">
+          <div class="cb-fees-row">
+            <span class="cb-fees-row__label">
+              <i class="bi bi-shield-check me-1"></i>{{ 'mortgageCredit.results.takafulInsurance' | translate }}
+            </span>
+            <span class="cb-fees-row__value">
+              {{ formatAmount(mourabaha.takafulMonthlyContribution) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="cb-card mb-3">
+      <div class="cb-card__header cb-card__header--green">
+        <div class="cb-card__header-icon cb-card__header-icon--green">
+          <i class="bi bi-receipt"></i>
+        </div>
+        <div>
+          <p class="cb-card__header-title">{{ 'mortgageCredit.fees.title' | translate }}</p>
+          <p class="cb-card__header-sub">{{ 'mortgageCredit.fees.subtitle' | translate }}</p>
+        </div>
+      </div>
+      <div class="cb-card__body">
+        <div class="cb-fees-row">
+          <span class="cb-fees-row__label">{{ 'mortgageCredit.fees.registration' | translate }}</span>
+          <span class="cb-fees-row__value">{{ formatAmount(result()!.registrationFees) }}</span>
+        </div>
+        <div class="cb-fees-row">
+          <span class="cb-fees-row__label">{{ 'mortgageCredit.fees.landConservation' | translate }}</span>
+          <span class="cb-fees-row__value">{{ formatAmount(result()!.landConservationFees) }}</span>
+        </div>
+        <div class="cb-fees-row">
+          <span class="cb-fees-row__label">{{ 'mortgageCredit.fees.notary' | translate }}</span>
+          <span class="cb-fees-row__value">{{ formatAmount(result()!.notaryFees) }}</span>
+        </div>
+        <div class="cb-fees-row">
+          <span class="cb-fees-row__label">{{ 'mortgageCredit.fees.processing' | translate }}</span>
+          <span class="cb-fees-row__value">{{ formatAmount(result()!.processingFees) }}</span>
+        </div>
+        <div class="cb-fees-row cb-fees-row--total">
+          <span class="cb-fees-row__label">{{ 'mortgageCredit.fees.total' | translate }}</span>
+          <span class="cb-fees-row__value">{{ formatAmount(result()!.totalFees) }}</span>
+        </div>
+      </div>
+    </div>
+
+    @if (result()!.amortizationSchedule.length > 0) {
+      <div class="cb-card">
+        <button type="button" class="cb-card__header cb-card__header--indigo w-100 border-0 text-start cb-card-header-clickable" (click)="toggleSchedule()">
+          <div class="cb-card__header-icon cb-card__header-icon--indigo">
+            <i class="bi bi-table"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">{{ 'mortgageCredit.schedule.title' | translate }}</p>
+            <p class="cb-card__header-sub">
+              {{ result()!.amortizationSchedule.length }} {{ 'mortgageCredit.schedule.installments' | translate }}
+              -
+              {{ 'mortgageCredit.schedule.clickToToggle' | translate }}
+              {{ (showSchedule() ? 'mortgageCredit.schedule.hide' : 'mortgageCredit.schedule.show') | translate }}
+            </p>
+          </div>
+          <i class="bi ms-auto" [class.bi-chevron-down]="!showSchedule()" [class.bi-chevron-up]="showSchedule()"></i>
+        </button>
+        @if (showSchedule()) {
+          <div class="cb-card__body cb-card__body--flush">
+            <div class="table-responsive cb-schedule-table-wrap">
+              <table class="cb-table">
+                <thead>
+                  <tr>
+                    <th>{{ 'mortgageCredit.schedule.col.num' | translate }}</th>
+                    <th>{{ 'mortgageCredit.schedule.col.beginningBalance' | translate }}</th>
+                    @if (result()!.productType === 'CONVENTIONAL') {
+                      <th>{{ 'mortgageCredit.schedule.col.interest' | translate }}</th>
+                    } @else {
+                      <th>{{ 'mortgageCredit.schedule.col.marginHt' | translate }}</th>
+                      <th>{{ 'mortgageCredit.schedule.col.vat' | translate }}</th>
+                    }
+                    <th>{{ 'mortgageCredit.schedule.col.principal' | translate }}</th>
+                    <th>{{ 'mortgageCredit.schedule.col.installment' | translate }}</th>
+                    <th>{{ 'mortgageCredit.schedule.col.endingBalance' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of result()!.amortizationSchedule; track row.installmentNumber) {
+                    <tr>
+                      <td>{{ row.installmentNumber }}</td>
+                      <td>{{ formatAmount(row.beginningBalance) }}</td>
+                      @if (result()!.productType === 'CONVENTIONAL') {
+                        <td>{{ formatAmount(row.interest!) }}</td>
+                      } @else {
+                        <td>{{ formatAmount(row.marginHt!) }}</td>
+                        <td>{{ formatAmount(row.vatOnMargin!) }}</td>
+                      }
+                      <td>{{ formatAmount(row.principal) }}</td>
+                      <td class="fw-semibold">{{ formatAmount(row.payment) }}</td>
+                      <td>{{ formatAmount(row.endingBalance) }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+} @else {
+  <div class="cb-card cb-empty-card">
+    <div class="cb-empty">
+      <div class="cb-empty__icon"><i class="bi bi-house-door"></i></div>
+      <p class="cb-empty__title">{{ 'mortgageCredit.empty.title' | translate }}</p>
+      <p class="cb-empty__sub">{{ 'mortgageCredit.empty.subtitle' | translate }}</p>
+    </div>
+  </div>
+}

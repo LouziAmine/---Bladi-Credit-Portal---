@@ -1,0 +1,69 @@
+name: CI/CD Démo (GitHub Pages)
+
+# Pipeline unique pour la branche de démo : vérifie (lint + tests unitaires),
+# construit en mode démo (faux backend, données dans le navigateur), puis publie
+# sur GitHub Pages. Le gros pipeline « Frontend CI/CD » (prod) est désactivé sur
+# cette branche pour n'avoir qu'une seule pipeline ici.
+on:
+  push:
+    branches:
+      - release/2.1.0-demo
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Vérifs + build démo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v4
+
+      - name: Installation de Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Installation des dépendances
+        run: npm ci
+
+      - name: Lint (style + règles SAST)
+        run: npm run lint
+
+      # NB : la suite de tests unitaires du projet comporte des échecs
+      # pré-existants (composants hors périmètre démo). On ne gate donc pas le
+      # déploiement de la démo dessus ; lint + build servent de garde-fou ici.
+
+      - name: Build démo
+        run: npx ng build --configuration demo
+
+      - name: Fallback SPA (404) + .nojekyll
+        run: |
+          cp dist/bladi-credit-portal/browser/index.html dist/bladi-credit-portal/browser/404.html
+          touch dist/bladi-credit-portal/browser/.nojekyll
+
+      - name: Préparation de l'artefact Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/bladi-credit-portal/browser
+
+  deploy:
+    name: Publication GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publication sur GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

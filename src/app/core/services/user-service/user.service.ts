@@ -2,7 +2,12 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { CreateUserRequest, UpdateUserRoleRequest, UserResponse } from '../../models/user.model';
+import {
+  CreateUserRequest,
+  UpdateUserProfileRequest,
+  UpdateUserRoleRequest,
+  UserResponse,
+} from '../../models/user.model';
 import { CreditPage } from '../../models/page.model';
 import { handleHttpError } from '../../utils/http-error.handler';
 
@@ -24,9 +29,15 @@ export class UserService {
     );
   }
 
-  updateUserRole(id: number, request: UpdateUserRoleRequest): Observable<void> {
+  updateUserRole(id: string, request: UpdateUserRoleRequest): Observable<void> {
     return this.http.patch<void>(`${this.apiUrl}/${id}/role`, request).pipe(
       catchError(handleHttpError('UserService', 'updateUserRole')),
+    );
+  }
+
+  updateUserProfile(id: string, request: UpdateUserProfileRequest): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/${id}/profile`, request).pipe(
+      catchError(handleHttpError('UserService', 'updateUserProfile')),
     );
   }
 }

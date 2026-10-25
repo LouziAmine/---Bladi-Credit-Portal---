@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "mortgageCredit": "Mortgage Credit",
+    "investmentCredit": "Investment Credit",
+    "administration": "Administration",
+    "admin": {
+      "gestion": "Management",
+      "parametres": "Settings",
+      "suiviAudit": "Tracking & Audit",
+      "users": "Users",
+      "enterprises": "Enterprises",
+      "activitySectors": "Activity Sectors",
+      "documentSuggestions": "Document Suggestions",
+      "bamParameters": "BAM Parameters",
+      "creditRates": "Credit Rates",
+      "mourabahaParameters": "Mourabaha Parameters",
+      "investmentCreditParameters": "Investment Credit Parameters",
+      "demands": "Case Tracking",
+      "demandImport": "Import Demands",
+      "auditLog": "Audit Log",
+      "enterpriseLinks": "Portfolio Access"
+    },
+    "login": "Log in",
+    "register": "Sign up",
+    "logout": "Log out",
+    "myPortfolio": "My Portfolio",
+    "toggleMenu": "Open or close the menu"
+  },
+  "role": {
+    "CLIENT": "Client",
+    "MANAGER": "Manager"
+  },
+  "language": {
+    "fr": "Français",
+    "en": "English",
+    "ar": "العربية",
+    "select": "Change language"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "empty": "No notifications",
+    "open": "Notifications",
+    "read": "Read",
+    "unread": "Unread"
+  }
+}

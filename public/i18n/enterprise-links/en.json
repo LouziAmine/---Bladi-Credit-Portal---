@@ -1,0 +1,64 @@
+{
+  "enterpriseLinks": {
+    "title": "Enterprise Portfolio Access",
+    "subtitle": "Manage the links between client accounts and enterprise portfolios.",
+    "invite": {
+      "title": "Invite a client",
+      "subtitle": "Directly grant portfolio access to an already-registered client",
+      "submitting": "Inviting...",
+      "enterpriseId": "Enterprise ID",
+      "username": "Client username",
+      "role": "Role",
+      "submit": "Invite",
+      "success": "{{username}} was invited successfully.",
+      "errorFallback": "Error while inviting."
+    },
+    "role": {
+      "RESPONSABLE": "Responsable",
+      "DELEGUE": "Delegate"
+    },
+    "pending": {
+      "title": "Pending requests",
+      "subtitle": "Portfolio claims submitted by clients, across every enterprise",
+      "loading": "Loading pending requests...",
+      "loadErrorFallback": "Unable to load pending requests.",
+      "approveErrorFallback": "Error while approving.",
+      "rejectErrorFallback": "Error while rejecting.",
+      "reasonPlaceholder": "Rejection reason (optional)",
+      "confirmReject": "Confirm",
+      "cancel": "Cancel",
+      "approve": "Approve",
+      "reject": "Reject",
+      "empty": "No pending requests"
+    },
+    "col": {
+      "enterpriseId": "Enterprise",
+      "requestedBy": "Requested by",
+      "role": "Role",
+      "createdOn": "Created on",
+      "userId": "Client",
+      "origin": "Origin"
+    },
+    "forEnterprise": {
+      "title": "This enterprise's links",
+      "subtitle": "Every client account linked to this enterprise, regardless of status",
+      "loading": "Loading links...",
+      "loadErrorFallback": "Unable to load this enterprise's links.",
+      "revokeErrorFallback": "Error while revoking.",
+      "revoke": "Revoke",
+      "empty": "No links for this enterprise"
+    },
+    "status": {
+      "APPROVED": "Approved",
+      "PENDING": "Pending",
+      "REJECTED": "Rejected",
+      "REVOKED": "Revoked"
+    },
+    "origin": {
+      "MANAGER_INVITE": "Manager invite",
+      "CLIENT_CLAIM": "Client claim",
+      "AUTO_MATCHED_ON_CLASSIFICATION": "Auto-matched at classification",
+      "EMAIL_INVITATION": "Email invitation"
+    }
+  }
+}

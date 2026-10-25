@@ -67,6 +67,10 @@ export class AuthService {
     return this.tokenService.getUserRole() === 'MANAGER';
   }
 
+  isClient(): boolean {
+    return this.tokenService.getUserRole() === 'CLIENT';
+  }
+
   getCurrentUsername(): string | null {
     return this.tokenService.getUsername();
   }

@@ -1,0 +1,27 @@
+{
+  "invitations": {
+    "eyebrow": "Invitation",
+    "title": "Rejoignez votre entreprise sur Credit Bladi",
+    "subtitle": "Créez votre compte pour suivre l'avancement de vos dossiers de crédit.",
+    "loadingPreview": "Vérification de l'invitation...",
+    "previewErrorFallback": "Ce lien d'invitation n'est plus valable.",
+    "invitedAs": "Invitation envoyée à",
+    "submitting": "Création du compte en cours...",
+    "usernameLabel": "Nom d'utilisateur souhaité",
+    "usernameRequired": "Le nom d'utilisateur est obligatoire.",
+    "usernameMinLength": "Le nom d'utilisateur doit contenir au moins 3 caractères.",
+    "passwordLabel": "Mot de passe",
+    "passwordRequired": "Le mot de passe est obligatoire.",
+    "passwordMinLength": "Le mot de passe doit contenir au moins 12 caractères.",
+    "passwordComplexity": "Le mot de passe doit contenir une majuscule, une minuscule et un chiffre.",
+    "passwordHint": "Au moins 12 caractères, avec majuscule, minuscule et chiffre.",
+    "submit": "Créer mon compte",
+    "success": "Votre compte a été créé et vous avez accès au portefeuille. Vous pouvez maintenant vous connecter.",
+    "errorFallback": "Erreur lors de la création du compte.",
+    "loginLink": "Aller à la connexion",
+    "mortgageDossier": "Votre dossier de crédit immobilier",
+    "titleMortgage": "Suivez votre crédit immobilier sur Credit Bladi",
+    "subtitleMortgage": "Créez votre compte pour suivre votre dossier, consulter votre échéancier et déclarer vos paiements.",
+    "successMortgage": "Votre compte a été créé et vous avez accès à votre dossier. Vous pouvez maintenant vous connecter."
+  }
+}

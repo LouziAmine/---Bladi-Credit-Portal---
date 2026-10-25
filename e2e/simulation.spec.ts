@@ -6,7 +6,10 @@ const SHOT = 'docs/screenshots/e2e/simulation';
 test.describe('Simulation scenarios', () => {
   test.beforeEach(async ({ page }) => {
     test.skip(!(await backendIsUp(page)), 'Backend API not running on :8080 - start it first (see README).');
-    await page.goto('/simulation');
+    await page.goto('/mortgage-credit');
+    await page.getByLabel(/nom complet/i).fill('Karim Benali');
+    await page.getByLabel(/email de contact/i).fill(`karim.${Date.now()}@example.ma`);
+    await page.getByLabel(/téléphone de contact/i).fill('0612345678');
   });
 
   test('conventional loan (SALA profile) returns a full BAM-compliant breakdown', async ({ page }) => {
@@ -16,7 +19,7 @@ test.describe('Simulation scenarios', () => {
     await page.getByLabel(/revenu mensuel net/i).fill('20000');
     await page.getByRole('button', { name: /simuler/i }).click();
 
-    await expect(page.getByText('BAM conforme')).toBeVisible();
+    await expect(page.getByText('Paramètres BAM appliqués')).toBeVisible();
     await expect(page.getByText('Taux annuel')).toBeVisible();
     await expect(page.getByText('Mensualité tout compris')).toBeVisible();
     await expect(page.getByText('Intérêts totaux')).toBeVisible();
@@ -28,7 +31,7 @@ test.describe('Simulation scenarios', () => {
 
   test('Mourabaha (participative) financing shows margin/VAT, not an interest rate', async ({ page }) => {
     await page.locator('label[for="productMourabaha"]').click();
-    await expect(page.getByText(/financement participatif conforme à la charia/i)).toBeVisible();
+    await expect(page.getByText(/financement participatif \(mourabaha\)/i)).toBeVisible();
 
     await page.locator('#amount').fill('240000');
     await page.locator('#duration').fill('60');
@@ -38,7 +41,7 @@ test.describe('Simulation scenarios', () => {
     await page.getByLabel(/revenu mensuel net/i).fill('20000');
     await page.getByRole('button', { name: /simuler/i }).click();
 
-    await expect(page.getByText('BAM conforme')).toBeVisible();
+    await expect(page.getByText('Paramètres BAM appliqués')).toBeVisible();
     await expect(page.getByText('Taux de profit (Mourabaha)')).toBeVisible();
     await expect(page.getByText('Marge TTC')).toBeVisible();
     await expect(page.getByText('Échéance TTC')).toBeVisible();
@@ -61,7 +64,7 @@ test.describe('Simulation scenarios', () => {
     await page.getByLabel(/revenu mensuel net/i).fill('20000');
     await page.getByRole('button', { name: /simuler/i }).click();
 
-    await expect(page.getByText('BAM conforme')).toBeVisible();
+    await expect(page.getByText('Paramètres BAM appliqués')).toBeVisible();
   });
 
   test('amortization schedule table expands and collapses after a successful simulation', async ({ page }) => {
@@ -70,7 +73,7 @@ test.describe('Simulation scenarios', () => {
     await page.getByLabel(/valeur du bien/i).fill('600000');
     await page.getByLabel(/revenu mensuel net/i).fill('20000');
     await page.getByRole('button', { name: /simuler/i }).click();
-    await expect(page.getByText('BAM conforme')).toBeVisible();
+    await expect(page.getByText('Paramètres BAM appliqués')).toBeVisible();
 
     const toggle = page.getByRole('button', { name: /tableau d'amortissement/i });
     await expect(page.locator('table.cb-table')).toHaveCount(0);
@@ -96,7 +99,7 @@ test.describe('Simulation scenarios', () => {
     await expect(page.locator('.cb-alert--danger')).not.toBeEmpty();
     await expect(page.locator('body')).not.toContainText('Exception');
     await expect(page.locator('body')).not.toContainText('"errorCode"');
-    await expect(page.getByText('BAM conforme')).toHaveCount(0);
+    await expect(page.getByText('Paramètres BAM appliqués')).toHaveCount(0);
     await page.screenshot({ path: `${SHOT}/05-rejected-age-at-maturity.png`, fullPage: true, animations: 'disabled' });
   });
 
@@ -106,18 +109,18 @@ test.describe('Simulation scenarios', () => {
     await page.getByLabel(/valeur du bien/i).fill('600000');
     await page.getByLabel(/revenu mensuel net/i).fill('20000');
     await page.getByRole('button', { name: /simuler/i }).click();
-    await expect(page.getByText('BAM conforme')).toBeVisible();
+    await expect(page.getByText('Paramètres BAM appliqués')).toBeVisible();
 
     await page.getByRole('button', { name: /réinitialiser/i }).click();
 
     await expect(page.getByText('Votre simulation apparaîtra ici')).toBeVisible();
-    await expect(page.getByText('BAM conforme')).toHaveCount(0);
+    await expect(page.getByText('Paramètres BAM appliqués')).toHaveCount(0);
     await page.screenshot({ path: `${SHOT}/06-reset-form.png`, fullPage: true, animations: 'disabled' });
   });
 
   test('client-side validation blocks submission until required fields are filled', async ({ page }) => {
     let simulationRequestSent = false;
-    await page.route('**/api/v1/simulation', (route) => {
+    await page.route('**/api/v1/mortgage-credit', (route) => {
       simulationRequestSent = true;
       return route.continue();
     });
@@ -145,7 +148,7 @@ test.describe('Simulation scenarios', () => {
       await page.getByLabel(/revenu mensuel net/i).fill('15000');
       await page.getByRole('button', { name: /simuler/i }).click();
 
-      await expect(page.getByText('BAM conforme')).toBeVisible();
+      await expect(page.getByText('Paramètres BAM appliqués')).toBeVisible();
       await expect(page.getByText('Taux annuel')).toBeVisible();
       await page.screenshot({ path: `${SHOT}/${shotIndex}-csp-${csp.toLowerCase()}.png`, fullPage: true, animations: 'disabled' });
     });
@@ -161,7 +164,7 @@ test.describe('Simulation scenarios', () => {
 
     await expect(page.locator('.cb-alert--danger')).toBeVisible();
     await expect(page.locator('.cb-alert--danger')).not.toBeEmpty();
-    await expect(page.getByText('BAM conforme')).toHaveCount(0);
+    await expect(page.getByText('Paramètres BAM appliqués')).toHaveCount(0);
     await page.screenshot({ path: `${SHOT}/12-mourabaha-rejected-age-at-maturity.png`, fullPage: true, animations: 'disabled' });
   });
 
@@ -175,7 +178,7 @@ test.describe('Simulation scenarios', () => {
 
     await expect(page.locator('.cb-alert--danger')).toBeVisible();
     await expect(page.locator('.cb-alert--danger')).not.toBeEmpty();
-    await expect(page.getByText('BAM conforme')).toHaveCount(0);
+    await expect(page.getByText('Paramètres BAM appliqués')).toHaveCount(0);
     await page.screenshot({ path: `${SHOT}/13-rejected-ltv-deposit-insufficient.png`, fullPage: true, animations: 'disabled' });
   });
 
@@ -190,7 +193,7 @@ test.describe('Simulation scenarios', () => {
 
     await expect(page.locator('.cb-alert--danger')).toBeVisible();
     await expect(page.locator('.cb-alert--danger')).not.toBeEmpty();
-    await expect(page.getByText('BAM conforme')).toHaveCount(0);
+    await expect(page.getByText('Paramètres BAM appliqués')).toHaveCount(0);
     await page.screenshot({ path: `${SHOT}/14-rejected-debt-ratio-exceeded.png`, fullPage: true, animations: 'disabled' });
   });
 
@@ -205,13 +208,13 @@ test.describe('Simulation scenarios', () => {
 
     await expect(page.locator('.cb-alert--danger')).toBeVisible();
     await expect(page.locator('.cb-alert--danger')).not.toBeEmpty();
-    await expect(page.getByText('BAM conforme')).toHaveCount(0);
+    await expect(page.getByText('Paramètres BAM appliqués')).toHaveCount(0);
     await page.screenshot({ path: `${SHOT}/15-rejected-duration-out-of-range.png`, fullPage: true, animations: 'disabled' });
   });
 
   test('co-borrower monthly income is optional and does not block submission when left empty', async ({ page }) => {
     let simulationRequestSent = false;
-    await page.route('**/api/v1/simulation', (route) => {
+    await page.route('**/api/v1/mortgage-credit', (route) => {
       simulationRequestSent = true;
       return route.continue();
     });
@@ -225,7 +228,7 @@ test.describe('Simulation scenarios', () => {
     await page.getByLabel(/revenu mensuel net/i).fill('20000');
     await page.getByRole('button', { name: /simuler/i }).click();
 
-    await expect(page.getByText('BAM conforme')).toBeVisible();
+    await expect(page.getByText('Paramètres BAM appliqués')).toBeVisible();
     await page.screenshot({ path: `${SHOT}/16-coborrower-income-optional.png`, fullPage: true, animations: 'disabled' });
     expect(simulationRequestSent).toBe(true);
   });
@@ -264,7 +267,7 @@ test.describe('Simulation scenarios', () => {
     await page.getByLabel(/valeur du bien/i).fill('300000');
     await page.getByLabel(/revenu mensuel net/i).fill('20000');
     await page.getByRole('button', { name: /simuler/i }).click();
-    await expect(page.getByText('BAM conforme')).toBeVisible();
+    await expect(page.getByText('Paramètres BAM appliqués')).toBeVisible();
 
     const toggle = page.getByRole('button', { name: /tableau d'amortissement/i });
     await expect(page.locator('table.cb-table')).toHaveCount(0);

@@ -1,0 +1,111 @@
+<div class="cb-card mb-4">
+  <div class="cb-card__header cb-card__header--amber">
+    <div class="cb-card__header-icon cb-card__header-icon--amber"><i class="bi bi-tag"></i></div>
+    <div>
+      <p class="cb-card__header-title">{{ 'documentRequests.admin.title' | translate }}</p>
+      <p class="cb-card__header-sub">{{ 'documentRequests.admin.subtitle' | translate }}</p>
+    </div>
+  </div>
+  <div class="cb-card__body">
+    <app-loading-spinner [loading]="loading()" [message]="'documentRequests.admin.loading' | translate" />
+    <app-error-message [message]="errorMessage()" />
+
+    @if (!loading() && requests().length === 0) {
+      <p class="cb-muted-text mb-3">{{ 'documentRequests.admin.empty' | translate }}</p>
+    }
+
+    @if (requests().length > 0) {
+      <div class="table-responsive mb-3">
+        <table class="table table-sm align-middle">
+          <thead>
+            <tr>
+              <th>{{ 'documentRequests.admin.col.documentType' | translate }}</th>
+              <th>{{ 'documentRequests.admin.col.status' | translate }}</th>
+              <th>{{ 'documentRequests.admin.col.requestedBy' | translate }}</th>
+              <th>{{ 'documentRequests.admin.col.createdAt' | translate }}</th>
+              <th>{{ 'documentRequests.admin.col.fulfilledAt' | translate }}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (request of requests(); track request.id) {
+              <tr>
+                <td><i class="bi bi-file-earmark-text"></i> {{ request.documentType }}</td>
+                <td>
+                  @if (request.status === 'FULFILLED') {
+                    <span class="cb-badge cb-badge--green">
+                      <i class="bi bi-check-circle-fill"></i>{{ 'documentRequests.admin.status.fulfilled' | translate }}
+                    </span>
+                  } @else {
+                    <span class="cb-badge cb-badge--amber">
+                      <i class="bi bi-hourglass-split"></i>{{ 'documentRequests.admin.status.pending' | translate }}
+                    </span>
+                  }
+                </td>
+                <td>{{ request.requestedByUsername }}</td>
+                <td>{{ request.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+                <td>{{ request.fulfilledAt ? (request.fulfilledAt | date: 'dd/MM/yyyy HH:mm') : '-' }}</td>
+                <td>
+                  @if (request.fulfilledDocumentId) {
+                    <button type="button" class="cb-btn cb-btn--ghost cb-btn--sm"
+                            [disabled]="viewingId() === request.fulfilledDocumentId"
+                            (click)="view(request.fulfilledDocumentId)"
+                            [attr.aria-label]="('documentRequests.admin.viewAria' | translate) + ' ' + request.documentType">
+                      <i class="bi bi-eye"></i>{{ 'documentRequests.admin.view' | translate }}
+                    </button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    @if (suggestions().length > 0) {
+      <p class="cb-label mb-2">
+        <i class="bi bi-tags"></i>{{ 'documentRequests.admin.suggestions.title' | translate }}
+      </p>
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        @for (suggestion of suggestions(); track suggestion.id) {
+          <button
+            type="button"
+            class="cb-btn cb-btn--ghost cb-btn--sm"
+            [disabled]="submitting() || isRequested(suggestion)"
+            (click)="quickAdd(suggestion)"
+          >
+            <i class="bi" [class.bi-check-lg]="isRequested(suggestion)" [class.bi-plus-lg]="!isRequested(suggestion)"></i>
+            {{ suggestion.label }}
+          </button>
+        }
+      </div>
+    }
+
+    <hr class="my-3" />
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="row g-3 align-items-end">
+        <div class="col-md-8">
+          <label for="requestDocumentType" class="cb-label">
+            <i class="bi bi-tag"></i>{{ 'documentRequests.admin.documentType' | translate }}
+          </label>
+          <input
+            id="requestDocumentType"
+            type="text"
+            class="form-control"
+            formControlName="documentType"
+            [placeholder]="'documentRequests.admin.documentTypePlaceholder' | translate"
+          />
+        </div>
+        <div class="col-md-4">
+          <button type="submit" class="cb-btn cb-btn--amber w-100" [disabled]="submitting() || form.invalid">
+            <i class="bi bi-plus-circle"></i>{{ 'documentRequests.admin.submit' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <app-loading-spinner [loading]="submitting()" [message]="'documentRequests.admin.submitting' | translate" />
+    <app-error-message [message]="submitErrorMessage()" />
+  </div>
+</div>

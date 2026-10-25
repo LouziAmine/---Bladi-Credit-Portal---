@@ -1,13 +1,14 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { clientGuard } from './core/guards/client.guard';
 import { guestGuard } from './core/guards/guest.guard';
 import { managerGuard } from './core/guards/manager.guard';
-import { SimulationComponent } from './pages/simulation/simulation.component';
+import { MortgageCreditComponent } from './pages/mortgage-credit/mortgage-credit.component';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'simulation',
+    redirectTo: 'mortgage-credit',
     pathMatch: 'full',
   },
   {
@@ -21,8 +22,18 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/register/register.component').then((m) => m.RegisterComponent),
   },
   {
-    path: 'simulation',
-    component: SimulationComponent,
+    path: 'invitations/:token',
+    loadComponent: () =>
+      import('./pages/invitations/invitations.component').then((m) => m.InvitationsComponent),
+  },
+  {
+    path: 'mortgage-credit',
+    component: MortgageCreditComponent,
+  },
+  {
+    path: 'investment-credit',
+    loadComponent: () =>
+      import('./pages/investment-credit/investment-credit.component').then((m) => m.InvestmentCreditComponent),
   },
   {
     path: 'admin',
@@ -55,6 +66,58 @@ export const routes: Routes = [
           import('./pages/admin/audit-log/audit-log.component').then((m) => m.AuditLogComponent),
       },
       {
+        path: 'investment-credit-parameters',
+        loadComponent: () =>
+          import('./pages/admin/investment-credit-parameters/investment-credit-parameters.component').then(
+            (m) => m.InvestmentCreditParametersComponent,
+          ),
+      },
+      {
+        path: 'enterprises',
+        loadComponent: () =>
+          import('./pages/admin/enterprises/enterprises.component').then((m) => m.EnterprisesComponent),
+      },
+      {
+        path: 'enterprise-links',
+        loadComponent: () =>
+          import('./pages/admin/enterprise-links/enterprise-links.component').then(
+            (m) => m.EnterpriseLinksComponent,
+          ),
+      },
+      {
+        path: 'activity-sectors',
+        loadComponent: () =>
+          import('./pages/admin/activity-sectors/activity-sectors.component').then(
+            (m) => m.ActivitySectorsComponent,
+          ),
+      },
+      {
+        path: 'document-suggestions',
+        loadComponent: () =>
+          import('./pages/admin/document-suggestions/document-suggestions.component').then(
+            (m) => m.DocumentSuggestionsComponent,
+          ),
+      },
+      {
+        path: 'demands',
+        loadComponent: () =>
+          import('./pages/admin/demands/demands.component').then((m) => m.DemandsComponent),
+      },
+      {
+        path: 'demands/import',
+        loadComponent: () =>
+          import('./pages/admin/demands/demand-import/demand-import.component').then(
+            (m) => m.DemandImportComponent,
+          ),
+      },
+      {
+        path: 'demands/:id',
+        loadComponent: () =>
+          import('./pages/admin/demands/demand-detail/demand-detail.component').then(
+            (m) => m.DemandDetailComponent,
+          ),
+      },
+      {
         path: '',
         redirectTo: 'users',
         pathMatch: 'full',
@@ -62,7 +125,39 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'portal',
+    canActivate: [authGuard, clientGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./pages/portal/portfolio/portfolio.component').then((m) => m.PortfolioComponent),
+      },
+      {
+        path: 'mortgage/:demandId',
+        loadComponent: () =>
+          import('./pages/portal/portal-demand-detail/portal-demand-detail.component').then(
+            (m) => m.PortalDemandDetailComponent,
+          ),
+      },
+      {
+        path: ':enterpriseId/demands',
+        loadComponent: () =>
+          import('./pages/portal/portfolio-demands/portfolio-demands.component').then(
+            (m) => m.PortfolioDemandsComponent,
+          ),
+      },
+      {
+        path: ':enterpriseId/demands/:demandId',
+        loadComponent: () =>
+          import('./pages/portal/portal-demand-detail/portal-demand-detail.component').then(
+            (m) => m.PortalDemandDetailComponent,
+          ),
+      },
+    ],
+  },
+  {
     path: '**',
-    redirectTo: 'simulation',
+    redirectTo: 'mortgage-credit',
   },
 ];

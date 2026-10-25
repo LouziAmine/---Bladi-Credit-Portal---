@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "mortgageCredit": "القرض العقاري",
+    "investmentCredit": "قرض الاستثمار",
+    "administration": "الإدارة",
+    "admin": {
+      "gestion": "التسيير",
+      "parametres": "المعايير",
+      "suiviAudit": "المتابعة والتدقيق",
+      "users": "المستخدمون",
+      "enterprises": "الشركات",
+      "activitySectors": "قطاعات النشاط",
+      "documentSuggestions": "اقتراحات المستندات",
+      "bamParameters": "معايير بنك المغرب",
+      "creditRates": "معدلات القروض",
+      "mourabahaParameters": "معايير المرابحة",
+      "investmentCreditParameters": "معايير قرض الاستثمار",
+      "demands": "متابعة الملفات",
+      "demandImport": "استيراد الطلبات",
+      "auditLog": "سجل التدقيق",
+      "enterpriseLinks": "الوصول إلى المحافظ"
+    },
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "logout": "تسجيل الخروج",
+    "myPortfolio": "محفظتي",
+    "toggleMenu": "فتح القائمة أو إغلاقها"
+  },
+  "role": {
+    "CLIENT": "عميل",
+    "MANAGER": "مدير"
+  },
+  "language": {
+    "fr": "Français",
+    "en": "English",
+    "ar": "العربية",
+    "select": "تغيير اللغة"
+  },
+  "notifications": {
+    "title": "الإشعارات",
+    "markAllRead": "تعليم الكل كمقروء",
+    "empty": "لا توجد إشعارات",
+    "open": "الإشعارات",
+    "read": "مقروء",
+    "unread": "غير مقروء"
+  }
+}

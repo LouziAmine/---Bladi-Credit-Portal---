@@ -1,0 +1,31 @@
+{
+  "register": {
+    "hero": {
+      "titleLine1": "Rejoignez",
+      "titleLine3": "dès aujourd'hui.",
+      "subtitle": "Accédez gratuitement à notre simulateur de crédit immobilier marocain.",
+      "instantTitle": "Simulation instantanée",
+      "instantSubtitle": "Résultat en temps réel",
+      "bamTitle": "Paramètres BAM",
+      "bamSubtitle": "Ratios et frais réglementaires paramétrables",
+      "freeTitle": "100% gratuit",
+      "freeSubtitle": "Sans engagement"
+    },
+    "heading": "Créer un compte",
+    "subheading": "Rejoignez Credit Bladi en quelques secondes.",
+    "creating": "Création du compte...",
+    "usernameLabel": "Nom d'utilisateur",
+    "usernameRequired": "Le nom d'utilisateur est requis.",
+    "usernameMinLength": "Minimum 3 caractères.",
+    "passwordLabel": "Mot de passe",
+    "passwordRequired": "Le mot de passe est requis.",
+    "passwordMinLength": "Minimum 12 caractères.",
+    "passwordComplexity": "Doit contenir une majuscule, une minuscule et un chiffre.",
+    "passwordHint": "12 caractères minimum, avec majuscule, minuscule et chiffre.",
+    "submit": "Créer mon compte",
+    "alreadyAccount": "Déjà un compte ?",
+    "loginLink": "Se connecter",
+    "success": "Compte créé avec succès ! Vous pouvez maintenant vous connecter.",
+    "errorFallback": "Erreur lors de la création du compte."
+  }
+}

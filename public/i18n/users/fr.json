@@ -1,0 +1,43 @@
+{
+  "users": {
+    "title": "Gestion des utilisateurs",
+    "subtitle": "Consultez les comptes existants, gérez les rôles et créez de nouveaux accès.",
+    "loading": "Chargement des utilisateurs...",
+    "list": {
+      "title": "Comptes existants",
+      "subtitle": "Basculez le rôle d'un utilisateur en un clic"
+    },
+    "col": {
+      "fullName": "Nom complet",
+      "username": "Nom d'utilisateur",
+      "email": "Email",
+      "role": "Rôle",
+      "profile": "Profil (grade / équipe)"
+    },
+    "you": "Vous",
+    "noGrade": "Aucun grade",
+    "noTeam": "Aucune équipe",
+    "none": "Aucun",
+    "cannotModifyOwnRole": "Un manager ne peut pas modifier son propre rôle",
+    "cannotModifyOwnProfile": "Un manager ne peut pas modifier son propre grade, sa propre équipe ni son propre e-mail",
+    "demoteToClient": "Rétrograder en CLIENT",
+    "promoteToManager": "Promouvoir en MANAGER",
+    "form": {
+      "title": "Créer un utilisateur",
+      "managerRequired": "Rôle MANAGER requis",
+      "creating": "Création en cours...",
+      "fullName": "Nom complet",
+      "email": "Email",
+      "emailInvalid": "L'adresse email n'est pas valide.",
+      "role": "Rôle",
+      "grade": "Grade",
+      "team": "Équipe",
+      "submit": "Créer l'utilisateur"
+    },
+    "createSuccess": "Utilisateur \"{{ username }}\" créé avec succès.",
+    "loadErrorFallback": "Impossible de charger les utilisateurs.",
+    "roleChangeErrorFallback": "Erreur lors du changement de rôle de l'utilisateur.",
+    "profileUpdateErrorFallback": "Erreur lors de la mise à jour du profil.",
+    "createErrorFallback": "Erreur lors de la création de l'utilisateur."
+  }
+}

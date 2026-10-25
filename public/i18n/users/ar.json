@@ -1,0 +1,43 @@
+{
+  "users": {
+    "title": "إدارة المستخدمين",
+    "subtitle": "اطّلع على الحسابات الحالية، أدر الأدوار، وأنشئ وصولاً جديدًا.",
+    "loading": "جارٍ تحميل المستخدمين...",
+    "list": {
+      "title": "الحسابات الحالية",
+      "subtitle": "بدّل دور المستخدم بنقرة واحدة"
+    },
+    "col": {
+      "fullName": "الاسم الكامل",
+      "username": "اسم المستخدم",
+      "email": "البريد الإلكتروني",
+      "role": "الدور",
+      "profile": "الملف (الرتبة / الفريق)"
+    },
+    "you": "أنت",
+    "noGrade": "بدون رتبة",
+    "noTeam": "بدون فريق",
+    "none": "بدون",
+    "cannotModifyOwnRole": "لا يمكن للمدير تعديل دوره الخاص",
+    "cannotModifyOwnProfile": "لا يمكن للمدير تعديل درجته أو فريقه أو بريده الإلكتروني",
+    "demoteToClient": "تخفيض إلى CLIENT",
+    "promoteToManager": "ترقية إلى MANAGER",
+    "form": {
+      "title": "إنشاء مستخدم",
+      "managerRequired": "دور MANAGER مطلوب",
+      "creating": "جارٍ الإنشاء...",
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "emailInvalid": "عنوان البريد الإلكتروني غير صالح.",
+      "role": "الدور",
+      "grade": "الرتبة",
+      "team": "الفريق",
+      "submit": "إنشاء المستخدم"
+    },
+    "createSuccess": "تم إنشاء المستخدم \"{{ username }}\" بنجاح.",
+    "loadErrorFallback": "تعذر تحميل المستخدمين.",
+    "roleChangeErrorFallback": "خطأ أثناء تغيير دور المستخدم.",
+    "profileUpdateErrorFallback": "خطأ أثناء تحديث الملف الشخصي.",
+    "createErrorFallback": "خطأ أثناء إنشاء المستخدم."
+  }
+}

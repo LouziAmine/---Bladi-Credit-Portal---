@@ -1,0 +1,30 @@
+{
+  "investmentCreditParameters": {
+    "title": "Enterprise credit parameters",
+    "subtitle": "Manage eligibility and pricing criteria per enterprise category.",
+    "loading": "Loading parameters...",
+    "col": {
+      "category": "Category",
+      "rateMin": "Min rate (%)",
+      "rateMax": "Max rate (%)",
+      "minAge": "Min age",
+      "financingRatio": "Financing/revenue ratio",
+      "guaranteeCoverage": "Guarantee coverage",
+      "debtServiceRatio": "Max debt service ratio",
+      "processingFees": "Processing fees (%)",
+      "insurancePremium": "Insurance (%/month)"
+    },
+    "editHint": "Changes apply to new simulations",
+    "form": {
+      "rateMin": "Min rate",
+      "rateMax": "Max rate",
+      "minCompanyAgeYears": "Min company age",
+      "maxFinancingToRevenueRatio": "Max financing/revenue ratio",
+      "minGuaranteeCoverageRatio": "Min guarantee coverage",
+      "maxDebtServiceRatio": "Max debt service ratio",
+      "processingFeesRatio": "Processing fees ratio",
+      "insurancePremiumRatio": "Monthly insurance ratio (ADI/damage)"
+    },
+    "loadErrorFallback": "Unable to load parameters. Server unavailable."
+  }
+}

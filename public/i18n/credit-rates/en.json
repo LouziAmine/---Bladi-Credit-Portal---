@@ -1,0 +1,26 @@
+{
+  "creditRates": {
+    "title": "Credit rates",
+    "subtitle": "Manage the interest rates applied to each socio-professional category.",
+    "loading": "Loading rates...",
+    "list": {
+      "title": "Existing rates"
+    },
+    "col": {
+      "rateMin": "Min rate (%)",
+      "rateMax": "Max rate (%)",
+      "minDuration": "Min duration (months)",
+      "maxDuration": "Max duration (months)"
+    },
+    "editHint": "Changes apply immediately to new simulations",
+    "durationRangeMismatch": "Min duration and max duration must be provided together.",
+    "form": {
+      "rateMin": "Minimum rate (%)",
+      "rateMax": "Maximum rate (%)",
+      "minDuration": "Minimum duration (months)",
+      "maxDuration": "Maximum duration (months)"
+    },
+    "setActiveForCsp": "Set as active rate for this CSP",
+    "loadErrorFallback": "Unable to load rates. Server unavailable."
+  }
+}

@@ -1,0 +1,92 @@
+<div class="cb-page">
+  <div class="container">
+
+    <a class="cb-btn cb-btn--ghost cb-btn--sm mb-3" routerLink="/admin/demands">
+      <i class="bi bi-arrow-left"></i>{{ 'demandDetail.backToCases' | translate }}
+    </a>
+
+    <app-loading-spinner [loading]="loading()" [message]="'demandDetail.loading' | translate" />
+    <app-error-message [message]="errorMessage()" />
+
+    @if (!loading() && demand()) {
+      <app-demand-summary [demand]="demand()!" [currentStep]="currentStep()" />
+
+      @if (hasCurrentRate()) {
+        <div class="cb-card mb-4">
+          <app-simulation-details
+            [amortization]="amortization()"
+            [loading]="loadingAmortization()"
+            [errorMessage]="amortizationErrorMessage()" />
+        </div>
+      }
+
+      @if (demand()!.completed) {
+        <app-demand-credit-file [demandId]="demand()!.id"
+                                [productType]="demand()!.mortgage?.productType ?? null" />
+      }
+
+      @if (initialAmortization() || loadingInitialAmortization() || initialAmortizationErrorMessage()) {
+        <div class="cb-card mb-4">
+          <app-simulation-details
+            title="demandDetail.initialSimulation.title"
+            subtitle="demandDetail.initialSimulation.subtitle"
+            icon="bi-bookmark-star"
+            [compact]="true"
+            [amortization]="initialAmortization()"
+            [loading]="loadingInitialAmortization()"
+            [errorMessage]="initialAmortizationErrorMessage()" />
+        </div>
+      }
+
+      @if (pipeline().length > 0) {
+        <div class="cb-card mb-4">
+          <div class="cb-card__header cb-card__header--green">
+            <div class="cb-card__header-icon cb-card__header-icon--green">
+              <i class="bi bi-diagram-3"></i>
+            </div>
+            <div>
+              <p class="cb-card__header-title">{{ 'demandDetail.pipeline.title' | translate }}</p>
+              <p class="cb-card__header-sub">
+                {{ pipeline().length }} {{ 'demandDetail.pipeline.stepsTotal' | translate }}
+              </p>
+            </div>
+          </div>
+          <div class="cb-card__body">
+            <app-demand-pipeline [steps]="pipeline()" />
+          </div>
+        </div>
+      }
+
+      @if (currentStep()) {
+        <app-demand-step-actions
+          [demand]="demand()!"
+          [currentStep]="currentStep()!"
+          [pipeline]="pipeline()"
+          [eligibleAssignees]="eligibleAssignees()"
+          [nextEligibleAssignees]="nextEligibleAssignees()"
+          [previousEligibleAssignees]="previousEligibleAssignees()"
+          (changed)="onStepChanged()"
+        />
+      }
+
+      <app-document-request-list [demandId]="demand()!.id"
+                                 [enterpriseType]="demand()!.enterprise?.enterpriseType ?? null"
+                                 [cspCode]="demand()!.mortgage?.cspCode ?? null" />
+
+      <app-document-upload [demandId]="demand()!.id" />
+
+      @if (history().length > 0) {
+        <app-demand-history [demandId]="demand()!.id" [history]="history()" />
+      }
+
+      @if (assignmentHistory().length > 0) {
+        <app-demand-assignment-history [assignmentHistory]="assignmentHistory()" />
+      }
+
+      @if (comments().length > 0) {
+        <app-demand-comments [comments]="comments()" />
+      }
+    }
+
+  </div>
+</div>

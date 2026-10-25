@@ -1,0 +1,55 @@
+{
+  "documentRequests": {
+    "admin": {
+      "title": "Documents demandés au client",
+      "subtitle": "Demandez un document précis: le client le voit comme une étiquette à remplir",
+      "loading": "Chargement des demandes...",
+      "empty": "Aucun document demandé pour ce dossier.",
+      "col": {
+        "documentType": "Document",
+        "status": "Statut",
+        "requestedBy": "Demandé par",
+        "createdAt": "Demandé le",
+        "fulfilledAt": "Fourni le"
+      },
+      "status": {
+        "pending": "En attente",
+        "fulfilled": "Fourni"
+      },
+      "suggestions": {
+        "title": "Suggestions"
+      },
+      "documentType": "Nom du document",
+      "documentTypePlaceholder": "ex : Pièce d'identité",
+      "submit": "Demander",
+      "submitting": "Envoi de la demande...",
+      "view": "Voir",
+      "viewAria": "Voir le document",
+      "loadErrorFallback": "Impossible de charger les demandes de documents.",
+      "createErrorFallback": "Erreur lors de la création de la demande.",
+      "viewErrorFallback": "Impossible d'ouvrir ce document."
+    },
+    "client": {
+      "title": "Documents demandés",
+      "subtitle": "Fournissez les documents demandés par votre chargé d'affaires",
+      "loading": "Chargement des demandes...",
+      "empty": "Aucun document demandé pour ce dossier.",
+      "status": {
+        "pending": "En attente",
+        "fulfilled": "Fourni"
+      },
+      "upload": "Fournir ce document",
+      "uploading": "Envoi en cours...",
+      "view": "Voir",
+      "viewAria": "Voir le document fourni",
+      "fileHint": "PDF, JPEG, PNG, DOCX, XLSX: 15 Mo max.",
+      "fileTooLarge": "Ce fichier dépasse la taille maximale autorisée (15 Mo).",
+      "fileTypeNotAllowed": "Type de fichier non autorisé (PDF, JPEG, PNG, DOCX, XLSX uniquement).",
+      "loadErrorFallback": "Impossible de charger les demandes de documents.",
+      "uploadErrorFallback": "Erreur lors de l'envoi du document.",
+      "viewErrorFallback": "Impossible d'ouvrir ce document.",
+      "backToDemands": "Retour aux dossiers",
+      "backToPortfolio": "Retour à mon portefeuille"
+    }
+  }
+}

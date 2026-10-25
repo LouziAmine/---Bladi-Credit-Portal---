@@ -1,0 +1,154 @@
+<div class="cb-card mb-4">
+  <div class="cb-card__header cb-card__header--indigo">
+    <div class="cb-card__header-icon cb-card__header-icon--indigo"><i class="bi bi-wallet2"></i></div>
+    <div>
+      <p class="cb-card__header-title">{{ 'creditFile.admin.title' | translate }}</p>
+      <p class="cb-card__header-sub">{{ 'creditFile.admin.subtitle' | translate }}</p>
+    </div>
+  </div>
+  <div class="cb-card__body">
+    <app-loading-spinner [loading]="loadingCreditFile() && !creditFile()"
+                          [message]="'creditFile.admin.loading' | translate" />
+    <app-error-message [message]="creditFileErrorMessage()" />
+
+    @if (creditFile(); as file) {
+      <div class="row g-3 mb-3">
+        <div class="col-md-4 col-lg-3">
+          <p class="cb-label mb-1">{{ 'creditFile.admin.reference' | translate }}</p>
+          <p class="fw-semibold mb-0">{{ file.reference }}</p>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <p class="cb-label mb-1">{{ 'creditFile.admin.disbursedAmount' | translate }}</p>
+          <p class="fw-semibold mb-0">{{ formatAmount(file.disbursedAmount) }}</p>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <p class="cb-label mb-1">{{ 'creditFile.admin.disbursedAt' | translate }}</p>
+          <p class="fw-semibold mb-0">{{ file.disbursedAt | date: 'dd/MM/yyyy' }}</p>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <p class="cb-label mb-1">{{ 'creditFile.admin.status' | translate }}</p>
+          <span class="cb-badge" [class.cb-badge--green]="file.status === 'ACTIVE'"
+                [class.cb-badge--gray]="file.status === 'CLOSED'">
+            {{ ('creditFile.admin.fileStatus.' + file.status) | translate }}
+          </span>
+        </div>
+      </div>
+
+      <div class="cb-alert cb-alert--indigo mb-3">
+        <p class="cb-label mb-1">{{ 'creditFile.admin.beneficiary' | translate }}</p>
+        <p class="fw-semibold mb-0">{{ file.beneficiaryName }} · {{ file.beneficiaryRib }}</p>
+        @if (file.clientRib) {
+          <p class="small cb-muted-text mt-2 mb-0">
+            {{ 'creditFile.admin.clientRib' | translate }} : {{ file.clientRib }}
+          </p>
+        }
+      </div>
+
+      <hr class="my-3"/>
+
+      <button type="button" class="cb-btn cb-btn--ghost cb-btn--sm" (click)="toggleInstallments()">
+        <i class="bi" [class.bi-chevron-down]="!showInstallments()" [class.bi-chevron-up]="showInstallments()"></i>
+        {{ 'creditFile.admin.scheduleLabel' | translate }}
+        ({{ file.installments.length }} {{ 'mortgageCredit.schedule.installments' | translate }}) -
+        {{ (showInstallments() ? 'mortgageCredit.schedule.hide' : 'mortgageCredit.schedule.show') | translate }}
+      </button>
+
+      @if (showInstallments()) {
+        <div class="table-responsive mt-3">
+          <table class="cb-table">
+            <thead>
+              <tr>
+                <th>{{ 'creditFile.admin.col.sequenceNumber' | translate }}</th>
+                <th>{{ 'creditFile.admin.col.dueDate' | translate }}</th>
+                <th>{{ 'creditFile.admin.col.amount' | translate }}</th>
+                <th>{{ 'creditFile.admin.col.status' | translate }}</th>
+                <th>{{ 'creditFile.admin.col.paidAt' | translate }}</th>
+                <th>{{ 'creditFile.admin.declaredSourceRib' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (installment of file.installments; track installment.id) {
+                <tr>
+                  <td>{{ installment.sequenceNumber }}</td>
+                  <td>{{ installment.dueDate | date: 'dd/MM/yyyy' }}</td>
+                  <td class="fw-semibold">
+                    {{ formatAmount(installment.totalDue) }}
+                    @if (installment.latePenalty > 0) {
+                      <span class="d-block small text-danger">
+                        {{ 'creditFile.admin.latePenaltyIncluded' | translate }} {{ formatAmount(installment.latePenalty) }}
+                      </span>
+                    }
+                  </td>
+                  <td>
+                    <span class="cb-badge" [class.cb-badge--green]="installment.status === 'PAID'"
+                          [class.cb-badge--indigo]="installment.status === 'DECLARED'"
+                          [class.cb-badge--amber]="installment.status === 'PENDING'"
+                          [class.cb-badge--red]="installment.status === 'LATE'"
+                          [class.cb-badge--green]="installment.status === 'REPAID_EARLY'">
+                      {{ ('creditFile.admin.installmentStatus.' + installment.status) | translate }}
+                    </span>
+                  </td>
+                  <td>{{ installment.paidAt ? (installment.paidAt | date: 'dd/MM/yyyy') : '-' }}</td>
+                  <td>
+                    @if (installment.declaredSourceRib) {
+                      <div class="d-flex flex-column gap-2" style="min-width: 200px;">
+                        <span class="small" [class.cb-muted-text]="installment.status !== 'DECLARED'">
+                          {{ installment.declaredSourceRib }}
+                        </span>
+                        @if (installment.status === 'DECLARED') {
+                          @if (rejectingInstallmentId() === installment.id) {
+                            <input type="text" class="form-control form-control-sm"
+                              [formControl]="rejectPaymentReasonControl"
+                              [placeholder]="'creditFile.admin.rejectReasonPlaceholder' | translate" />
+                            <div class="d-flex gap-2">
+                              <button type="button" class="cb-btn cb-btn--red cb-btn--sm"
+                                [disabled]="payingInstallmentId() === installment.id"
+                                (click)="confirmRejectPayment(installment.id)">
+                                <i class="bi bi-x-lg"></i>
+                                {{ 'creditFile.admin.confirmReject' | translate }}
+                              </button>
+                              <button type="button" class="cb-btn cb-btn--ghost cb-btn--sm"
+                                (click)="cancelRejectPayment()">
+                                {{ 'creditFile.admin.cancelReject' | translate }}
+                              </button>
+                            </div>
+                          } @else {
+                            <div class="d-flex gap-2">
+                              <button type="button" class="cb-btn cb-btn--primary cb-btn--sm"
+                                [disabled]="payingInstallmentId() === installment.id"
+                                (click)="validatePayment(installment.id)">
+                                <i class="bi bi-check-lg"></i>
+                                {{ (payingInstallmentId() === installment.id
+                                  ? 'creditFile.admin.validating' : 'creditFile.admin.validateAction')
+                                  | translate }}
+                              </button>
+                              <button type="button" class="cb-btn cb-btn--red cb-btn--sm"
+                                [disabled]="payingInstallmentId() === installment.id"
+                                (click)="startRejectPayment(installment.id)">
+                                <i class="bi bi-x-lg"></i>
+                                {{ 'creditFile.admin.rejectAction' | translate }}
+                              </button>
+                            </div>
+                          }
+                        }
+                      </div>
+                    } @else {
+                      -
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    } @else if (!loadingCreditFile() && !creditFileErrorMessage()) {
+      <p class="cb-muted-text mb-0">{{ 'creditFile.admin.empty' | translate }}</p>
+    }
+  </div>
+</div>
+
+@if (creditFile()?.status === 'ACTIVE' && productType() !== 'MOURABAHA') {
+  <app-early-repayment-panel [demandId]="demandId()" mode="MANAGER"
+                             (repaid)="load()" />
+}

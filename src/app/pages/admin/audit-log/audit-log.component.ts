@@ -1,21 +1,25 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuditLogService } from '../../../core/services/audit-log-service/audit-log.service';
 import { AuditLogEntry } from '../../../core/models/audit-log.model';
-import { ApiError } from '../../../core/models/api-error.model';
 import { ErrorMessageComponent } from '../../../shared/components/error-message/error-message.component';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ApiErrorMessageService } from '../../../core/services/api-error-message-service/api-error-message.service';
 
 const PAGE_SIZE = 20;
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-audit-log',
-  imports: [ErrorMessageComponent, LoadingSpinnerComponent],
+  imports: [DatePipe, ErrorMessageComponent, LoadingSpinnerComponent, TranslatePipe],
   templateUrl: './audit-log.component.html',
   styleUrl: './audit-log.component.css',
 })
 export class AuditLogComponent implements OnInit {
   private readonly auditLogService = inject(AuditLogService);
+  private readonly apiErrors = inject(ApiErrorMessageService);
 
   protected readonly loading = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
@@ -41,8 +45,7 @@ export class AuditLogComponent implements OnInit {
       },
       error: (err: HttpErrorResponse) => {
         this.loading.set(false);
-        const apiError = err.error as ApiError;
-        this.errorMessage.set(apiError?.description ?? "Impossible de charger le journal d'audit.");
+        this.errorMessage.set(this.apiErrors.describe(err, 'auditLog.loadErrorFallback'));
       },
     });
   }

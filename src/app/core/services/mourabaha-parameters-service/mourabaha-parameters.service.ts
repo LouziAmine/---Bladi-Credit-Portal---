@@ -21,13 +21,13 @@ export class MourabahaParametersService {
     );
   }
 
-  getById(id: number): Observable<MourabahaParametersResponse> {
+  getById(id: string): Observable<MourabahaParametersResponse> {
     return this.http.get<MourabahaParametersResponse>(`${this.apiUrl}/${id}`).pipe(
       catchError(handleHttpError('MourabahaParametersService', 'getById')),
     );
   }
 
-  patch(id: number, request: PatchMourabahaParametersRequest): Observable<void> {
+  patch(id: string, request: PatchMourabahaParametersRequest): Observable<void> {
     return this.http.patch<void>(`${this.apiUrl}/${id}`, request).pipe(
       catchError(handleHttpError('MourabahaParametersService', 'patch')),
     );

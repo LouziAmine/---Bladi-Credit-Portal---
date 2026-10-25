@@ -1,0 +1,53 @@
+{
+  "demandImport": {
+    "title": "Demand import",
+    "subtitle": "Bulk-create demands from an Excel file of existing dossiers.",
+    "backToDemands": "Back to demands",
+    "upload": {
+      "title": "Excel file",
+      "subtitle": "One row per demand, columns in the standard template order."
+    },
+    "file": "File (.xlsx)",
+    "fileHint": "Maximum size 15 MB. Single sheet, first row is the header.",
+    "dropzone": {
+      "idle": "Drag your file here",
+      "drop": "Drop the file here",
+      "browse": "or click to browse"
+    },
+    "removeFile": "Remove selected file",
+    "unit": {
+      "bytes": "B",
+      "kilobytes": "KB",
+      "megabytes": "MB"
+    },
+    "submit": "Import",
+    "uploading": "Uploading file...",
+    "fileEmpty": "The selected file is empty.",
+    "fileTooLarge": "This file exceeds the maximum allowed size (15 MB).",
+    "fileTypeNotAllowed": "Only .xlsx files are accepted.",
+    "startErrorFallback": "Unable to start the import.",
+    "pollErrorFallback": "Unable to fetch the import status.",
+    "status": {
+      "completed": "Completed",
+      "failed": "Failed",
+      "stopped": "Stopped",
+      "abandoned": "Abandoned",
+      "running": "Running"
+    },
+    "report": {
+      "title": "Import",
+      "subtitle": "Status refreshes automatically.",
+      "polling": "Refreshing...",
+      "read": "Rows read",
+      "created": "Demands created",
+      "skipped": "Rows skipped",
+      "errorsTitle": "Skipped rows and why",
+      "col": {
+        "row": "Row",
+        "company": "Company",
+        "reason": "Reason"
+      },
+      "startOver": "New import"
+    }
+  }
+}

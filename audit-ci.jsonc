@@ -3,5 +3,10 @@
   "high": true,
   "skip-dev": true,
   "report-type": "important",
-  "allowlist": []
+  // xlsx (SheetJS) : advisories prototype-pollution (GHSA-4r6h-8v6p-xvw6) et ReDoS
+  // (GHSA-5pgg-2g8v-p4x9). La version npm 0.18.5 est la dernière publiée sur le
+  // registre et n'est pas patchée. Utilisée uniquement pour l'import Excel de la
+  // démo, côté navigateur, sur des fichiers fournis par le manager lui-même
+  // (aucune entrée non fiable). Risque accepté pour la démo.
+  "allowlist": ["GHSA-4r6h-8v6p-xvw6", "GHSA-5pgg-2g8v-p4x9"]
 }

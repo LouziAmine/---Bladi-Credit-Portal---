@@ -1,0 +1,31 @@
+{
+  "register": {
+    "hero": {
+      "titleLine1": "انضم إلى",
+      "titleLine3": "ابتداءً من اليوم.",
+      "subtitle": "احصل على وصول مجاني إلى محاكي القروض العقارية المغربي.",
+      "instantTitle": "محاكاة فورية",
+      "instantSubtitle": "نتيجة في الوقت الفعلي",
+      "bamTitle": "معايير بنك المغرب",
+      "bamSubtitle": "نسب ورسوم تنظيمية قابلة للضبط",
+      "freeTitle": "مجاني 100%",
+      "freeSubtitle": "بدون التزام"
+    },
+    "heading": "إنشاء حساب",
+    "subheading": "انضم إلى Credit Bladi في ثوانٍ معدودة.",
+    "creating": "جارٍ إنشاء الحساب...",
+    "usernameLabel": "اسم المستخدم",
+    "usernameRequired": "اسم المستخدم مطلوب.",
+    "usernameMinLength": "3 أحرف كحد أدنى.",
+    "passwordLabel": "كلمة المرور",
+    "passwordRequired": "كلمة المرور مطلوبة.",
+    "passwordMinLength": "12 حرفًا كحد أدنى.",
+    "passwordComplexity": "يجب أن تحتوي على حرف كبير وحرف صغير ورقم.",
+    "passwordHint": "12 حرفًا كحد أدنى، مع حرف كبير وحرف صغير ورقم.",
+    "submit": "إنشاء حسابي",
+    "alreadyAccount": "لديك حساب بالفعل؟",
+    "loginLink": "تسجيل الدخول",
+    "success": "تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول.",
+    "errorFallback": "خطأ أثناء إنشاء الحساب."
+  }
+}

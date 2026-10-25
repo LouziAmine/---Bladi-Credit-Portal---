@@ -1,0 +1,31 @@
+{
+  "bamParameters": {
+    "title": "Paramètres BAM",
+    "subtitle": "Gérez les ratios et frais appliqués aux simulations de crédit.",
+    "loading": "Chargement des paramètres...",
+    "col": {
+      "processingFees": "Frais dossier (%)",
+      "registration": "Enregistrement (%)",
+      "conservation": "Conservation (%)",
+      "notary": "Notaire (%)",
+      "ltvMax": "LTV max (%)",
+      "debtMax": "Endettement max (%)",
+      "maxAge": "Âge max maturité",
+      "adi": "ADI mensuel (%)"
+    },
+    "editHint": "Les modifications s'appliquent aux nouvelles simulations",
+    "form": {
+      "processingFeesRatio": "Ratio frais dossier",
+      "minProcessingFees": "Min frais dossier",
+      "maxProcessingFees": "Max frais dossier",
+      "registrationFeeRatio": "Ratio enregistrement",
+      "landConservationRatio": "Ratio conservation foncière",
+      "notaryFeeRatio": "Ratio notaire",
+      "ltvRatio": "Ratio LTV max (dépôt min. 10%)",
+      "maxDebtRatio": "Taux d'endettement max",
+      "maxAgeAtMaturity": "Âge max à maturité",
+      "adiMonthlyRate": "Taux ADI mensuel (assurance)"
+    },
+    "loadErrorFallback": "Impossible de charger les paramètres. Serveur indisponible."
+  }
+}

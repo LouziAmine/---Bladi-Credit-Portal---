@@ -1,0 +1,126 @@
+<div class="cb-card mb-4">
+  <div class="cb-card__header cb-card__header--indigo">
+    <div class="cb-card__header-icon cb-card__header-icon--indigo"><i class="bi bi-shield-check"></i></div>
+    <div>
+      <p class="cb-card__header-title">{{ 'bamVerification.title' | translate }}</p>
+      <p class="cb-card__header-sub">{{ 'bamVerification.subtitle' | translate }}</p>
+    </div>
+  </div>
+  <div class="cb-card__body">
+    <form [formGroup]="form" (ngSubmit)="verify()" novalidate>
+      <div class="row g-3 align-items-end">
+        <div class="col-md-5">
+          <label for="bamIdentifiant" class="cb-label">
+            <i class="bi bi-hash"></i>{{ 'bamVerification.identifiant' | translate }}
+          </label>
+          <input
+            id="bamIdentifiant"
+            type="text"
+            class="form-control"
+            formControlName="identifier"
+            [placeholder]="'bamVerification.identifiantPlaceholder' | translate"
+          />
+        </div>
+        <div class="col-md-4">
+          <label for="bamScenario" class="cb-label">
+            <i class="bi bi-sliders"></i>{{ 'bamVerification.scenario' | translate }}
+          </label>
+          <select id="bamScenario" class="form-select" formControlName="scenario">
+            <option value="">{{ 'bamVerification.scenarioAuto' | translate }}</option>
+            @for (scenario of scenarioOptions; track scenario) {
+              <option [value]="scenario">{{ 'bamVerification.scenarios.' + scenario | translate }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-3">
+          <button type="submit" class="cb-btn cb-btn--indigo w-100" [disabled]="loading() || form.invalid">
+            <i class="bi bi-search"></i>{{ 'bamVerification.submit' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <app-loading-spinner [loading]="loading()" [message]="'bamVerification.loading' | translate" />
+    <app-error-message [message]="errorMessage()" />
+
+    @if (result(); as r) {
+      <div class="cb-alert cb-alert--amber mt-3 d-flex align-items-start gap-2">
+        <i class="bi bi-exclamation-triangle-fill mt-1"></i>
+        <span>
+          <strong>{{ 'bamVerification.mockBadge' | translate }}</strong> · {{ r.disclaimer }}
+        </span>
+      </div>
+
+      <div class="row g-3 mt-1">
+        <div class="col-md-4">
+          <p class="cb-label mb-1">{{ 'bamVerification.recommandation' | translate }}</p>
+          @switch (r.simulatedRecommendation) {
+            @case ('FAVORABLE') {
+              <span class="cb-badge cb-badge--green">
+                <i class="bi bi-check-circle-fill"></i>{{ 'bamVerification.recommandations.FAVORABLE' | translate }}
+              </span>
+            }
+            @case ('TO_REVIEW') {
+              <span class="cb-badge cb-badge--amber">
+                <i class="bi bi-question-circle-fill"></i>{{ 'bamVerification.recommandations.TO_REVIEW' | translate }}
+              </span>
+            }
+            @case ('UNFAVORABLE') {
+              <span class="cb-badge cb-badge--red">
+                <i class="bi bi-x-circle-fill"></i>{{ 'bamVerification.recommandations.UNFAVORABLE' | translate }}
+              </span>
+            }
+          }
+        </div>
+        <div class="col-md-4">
+          <p class="cb-label mb-1">{{ 'bamVerification.identifiantVerifie' | translate }}</p>
+          <p class="fw-semibold mb-0">{{ r.verifiedIdentifier }} <span class="cb-muted-text">({{ r.identifierType }})</span></p>
+        </div>
+        <div class="col-md-4">
+          <p class="cb-label mb-1">{{ 'bamVerification.timestamp' | translate }}</p>
+          <p class="fw-semibold mb-0">{{ r.timestamp | date: 'dd/MM/yyyy HH:mm' }}</p>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-1">
+        <div class="col-md-6">
+          <p class="cb-label mb-1">{{ 'bamVerification.scip.title' | translate }}</p>
+          @if (r.scipResult.status === 'CLEAR') {
+            <span class="cb-badge cb-badge--green">{{ 'bamVerification.scip.ras' | translate }}</span>
+          } @else {
+            <span class="cb-badge cb-badge--red mb-2">{{ 'bamVerification.scip.incidentDetecte' | translate }}</span>
+            <ul class="mb-0 ps-3">
+              @for (incident of r.scipResult.incidents; track $index) {
+                <li>
+                  {{ incident.type }} · {{ incident.amount | number: '1.0-0' }} MAD
+                  ({{ incident.date | date: 'dd/MM/yyyy' }})
+                  @if (incident.resolved) {
+                    <span class="cb-badge cb-badge--green">{{ 'bamVerification.scip.regularise' | translate }}</span>
+                  } @else {
+                    <span class="cb-badge cb-badge--red">{{ 'bamVerification.scip.nonRegularise' | translate }}</span>
+                  }
+                </li>
+              }
+            </ul>
+          }
+        </div>
+        <div class="col-md-6">
+          <p class="cb-label mb-1">{{ 'bamVerification.centraleRisques.title' | translate }}</p>
+          @if (r.centraleRisquesResult.status === 'CLEAR') {
+            <span class="cb-badge cb-badge--green">{{ 'bamVerification.centraleRisques.ras' | translate }}</span>
+          } @else {
+            <span class="cb-badge cb-badge--amber mb-2">{{ 'bamVerification.centraleRisques.encoursDetecte' | translate }}</span>
+            <ul class="mb-0 ps-3">
+              @for (line of r.centraleRisquesResult.outstandingLoans; track $index) {
+                <li>
+                  {{ line.creditType }} · {{ line.institution }} · {{ line.amount | number: '1.0-0' }} MAD
+                  ({{ 'bamVerification.repaymentStatus.' + line.repaymentStatus | translate }})
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

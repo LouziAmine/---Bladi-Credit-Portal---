@@ -10,5 +10,5 @@ export const guestGuard: CanActivateFn = () => {
     return true;
   }
 
-  return router.createUrlTree(['/simulation']);
+  return router.createUrlTree(['/mortgage-credit']);
 };

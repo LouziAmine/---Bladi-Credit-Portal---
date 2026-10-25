@@ -1,10 +1,10 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-loading-spinner',
   imports: [],
   templateUrl: './loading-spinner.component.html',
-  styleUrl: './loading-spinner.component.css',
 })
 export class LoadingSpinnerComponent {
   readonly loading = input(false);

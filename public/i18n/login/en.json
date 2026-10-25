@@ -1,0 +1,27 @@
+{
+  "login": {
+    "hero": {
+      "titleLine1": "Your mortgage",
+      "titleAccent": "loan",
+      "titleLine3": "at the best rate.",
+      "subtitle": "Simulate in seconds, using the BAM parameters configured by the bank.",
+      "secureTitle": "100% secure",
+      "secureSubtitle": "SSL-encrypted data",
+      "instantTitle": "Instant result",
+      "instantSubtitle": "One-click simulation"
+    },
+    "heading": "Welcome back!",
+    "subheading": "Log in to your personal space.",
+    "loggingIn": "Logging in...",
+    "usernameLabel": "Username",
+    "usernameRequired": "Username is required.",
+    "usernameMinLength": "Minimum 3 characters.",
+    "passwordLabel": "Password",
+    "passwordRequired": "Password is required.",
+    "passwordMinLength": "Minimum 6 characters.",
+    "submit": "Log in",
+    "noAccount": "Don't have an account yet?",
+    "registerLink": "Sign up for free",
+    "invalidCredentialsFallback": "Invalid credentials."
+  }
+}

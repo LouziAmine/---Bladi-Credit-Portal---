@@ -1,5 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { FooterComponent as Footer } from './footer.component';
+import { provideTranslateTesting } from '../../testing/translate-testing.providers';
+import { PERSON_CREDIT_BLADI } from '../../testing/mocks/mock-contacts';
 
 describe('Footer', () => {
   let fixture: ComponentFixture<Footer>;
@@ -8,6 +10,7 @@ describe('Footer', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Footer],
+      providers: [provideTranslateTesting()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Footer);
@@ -27,6 +30,6 @@ describe('Footer', () => {
 
   it('should display Credit Bladi branding', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toContain('Credit Bladi');
+    expect(compiled.textContent).toContain(PERSON_CREDIT_BLADI);
   });
 });

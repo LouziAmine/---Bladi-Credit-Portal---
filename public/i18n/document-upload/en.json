@@ -1,0 +1,44 @@
+{
+  "documentUpload": {
+    "title": "Documents",
+    "subtitle": "Files attached to the case, per step",
+    "loading": "Loading documents...",
+    "empty": "No document for this case.",
+    "col": {
+      "file": "File",
+      "type": "Type",
+      "step": "Step",
+      "status": "Status",
+      "antivirus": "Antivirus scan",
+      "uploadedBy": "Uploaded by"
+    },
+    "status": {
+      "active": "Active",
+      "superseded": "Superseded"
+    },
+    "scan": {
+      "clean": "Clean",
+      "skipped": "Not scanned (dev)",
+      "pending": "Scanning in progress",
+      "infected": "Infected"
+    },
+    "view": "View",
+    "viewAria": "View document",
+    "file": "File",
+    "fileHint": "PDF, JPEG, PNG, DOCX, XLSX: 15 MB max.",
+    "documentType": "Document type (optional)",
+    "documentTypePlaceholder": "e.g. ID document",
+    "submit": "Upload",
+    "uploading": "Uploading document...",
+    "fileTooLarge": "This file exceeds the maximum allowed size (15 MB).",
+    "fileTypeNotAllowed": "File type not allowed (PDF, JPEG, PNG, DOCX, XLSX only).",
+    "loadErrorFallback": "Unable to load documents.",
+    "uploadErrorFallback": "Error while uploading the document.",
+    "viewErrorFallback": "Unable to open this document.",
+    "unit": {
+      "bytes": "B",
+      "kilobytes": "KB",
+      "megabytes": "MB"
+    }
+  }
+}
