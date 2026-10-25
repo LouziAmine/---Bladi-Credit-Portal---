@@ -1,0 +1,55 @@
+{
+  "documentRequests": {
+    "admin": {
+      "title": "Documents requested from client",
+      "subtitle": "Ask for a specific document: the client sees it as a tag to fulfil",
+      "loading": "Loading requests...",
+      "empty": "No document requested for this demand.",
+      "col": {
+        "documentType": "Document",
+        "status": "Status",
+        "requestedBy": "Requested by",
+        "createdAt": "Requested on",
+        "fulfilledAt": "Provided on"
+      },
+      "status": {
+        "pending": "Pending",
+        "fulfilled": "Fulfilled"
+      },
+      "suggestions": {
+        "title": "Suggestions"
+      },
+      "documentType": "Document name",
+      "documentTypePlaceholder": "e.g. Proof of identity",
+      "submit": "Request",
+      "submitting": "Sending request...",
+      "view": "View",
+      "viewAria": "View document",
+      "loadErrorFallback": "Unable to load document requests.",
+      "createErrorFallback": "Error creating the request.",
+      "viewErrorFallback": "Unable to open this document."
+    },
+    "client": {
+      "title": "Documents requested",
+      "subtitle": "Provide the documents requested by your account manager",
+      "loading": "Loading requests...",
+      "empty": "No document requested for this demand.",
+      "status": {
+        "pending": "Pending",
+        "fulfilled": "Fulfilled"
+      },
+      "upload": "Provide this document",
+      "uploading": "Uploading...",
+      "view": "View",
+      "viewAria": "View the provided document",
+      "fileHint": "PDF, JPEG, PNG, DOCX, XLSX: 15 MB max.",
+      "fileTooLarge": "This file exceeds the maximum allowed size (15 MB).",
+      "fileTypeNotAllowed": "File type not allowed (PDF, JPEG, PNG, DOCX, XLSX only).",
+      "loadErrorFallback": "Unable to load document requests.",
+      "uploadErrorFallback": "Error uploading the document.",
+      "viewErrorFallback": "Unable to open this document.",
+      "backToDemands": "Back to demands",
+      "backToPortfolio": "Back to my portfolio"
+    }
+  }
+}

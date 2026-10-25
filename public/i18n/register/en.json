@@ -1,0 +1,31 @@
+{
+  "register": {
+    "hero": {
+      "titleLine1": "Join",
+      "titleLine3": "today.",
+      "subtitle": "Get free access to our Moroccan mortgage simulator.",
+      "instantTitle": "Instant simulation",
+      "instantSubtitle": "Real-time result",
+      "bamTitle": "BAM parameters",
+      "bamSubtitle": "Configurable regulatory ratios and fees",
+      "freeTitle": "100% free",
+      "freeSubtitle": "No commitment"
+    },
+    "heading": "Create an account",
+    "subheading": "Join Credit Bladi in seconds.",
+    "creating": "Creating account...",
+    "usernameLabel": "Username",
+    "usernameRequired": "Username is required.",
+    "usernameMinLength": "Minimum 3 characters.",
+    "passwordLabel": "Password",
+    "passwordRequired": "Password is required.",
+    "passwordMinLength": "Minimum 12 characters.",
+    "passwordComplexity": "Must contain an uppercase letter, a lowercase letter and a digit.",
+    "passwordHint": "12 characters minimum, with an uppercase letter, a lowercase letter and a digit.",
+    "submit": "Create my account",
+    "alreadyAccount": "Already have an account?",
+    "loginLink": "Log in",
+    "success": "Account created successfully! You can now log in.",
+    "errorFallback": "Error while creating the account."
+  }
+}

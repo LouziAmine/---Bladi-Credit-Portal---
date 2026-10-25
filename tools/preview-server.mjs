@@ -32,6 +32,7 @@ app.use(
         imgSrc: ["'self'", 'data:'],
         connectSrc: ["'self'", 'http://localhost:8080'],
         objectSrc: ["'none'"],
+        frameSrc: ["'self'", 'blob:'],
         baseUri: ["'self'"],
         formAction: ["'self'"],
         frameAncestors: ["'none'"],

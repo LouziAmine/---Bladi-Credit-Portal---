@@ -1,20 +1,23 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../core/services/auth-service/auth.service';
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
-import { ApiError } from '../../core/models/api-error.model';
+import { ApiErrorMessageService } from '../../core/services/api-error-message-service/api-error-message.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink, ErrorMessageComponent, LoadingSpinnerComponent],
+  imports: [ReactiveFormsModule, RouterLink, ErrorMessageComponent, LoadingSpinnerComponent, TranslatePipe],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
   private readonly fb = inject(FormBuilder);
+  private readonly apiErrors = inject(ApiErrorMessageService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
@@ -36,11 +39,10 @@ export class LoginComponent {
     this.errorMessage.set(null);
 
     this.authService.login(this.form.getRawValue()).subscribe({
-      next: () => void this.router.navigate(['/simulation']),
+      next: () => void this.router.navigate(['/mortgage-credit']),
       error: (err: HttpErrorResponse) => {
         this.loading.set(false);
-        const apiError = err.error as ApiError;
-        this.errorMessage.set(apiError?.description ?? 'Identifiants invalides.');
+        this.errorMessage.set(this.apiErrors.describe(err, 'login.invalidCredentialsFallback'));
       },
     });
   }

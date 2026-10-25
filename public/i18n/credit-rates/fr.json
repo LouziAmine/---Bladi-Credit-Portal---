@@ -1,0 +1,26 @@
+{
+  "creditRates": {
+    "title": "Taux de crédit",
+    "subtitle": "Gérez les taux d'intérêt appliqués à chaque catégorie socio-professionnelle.",
+    "loading": "Chargement des taux...",
+    "list": {
+      "title": "Taux existants"
+    },
+    "col": {
+      "rateMin": "Taux min (%)",
+      "rateMax": "Taux max (%)",
+      "minDuration": "Durée min (mois)",
+      "maxDuration": "Durée max (mois)"
+    },
+    "editHint": "Les modifications s'appliquent immédiatement aux nouvelles simulations",
+    "durationRangeMismatch": "Durée min et durée max doivent être renseignées ensemble.",
+    "form": {
+      "rateMin": "Taux minimum (%)",
+      "rateMax": "Taux maximum (%)",
+      "minDuration": "Durée minimum (mois)",
+      "maxDuration": "Durée maximum (mois)"
+    },
+    "setActiveForCsp": "Définir comme taux actif pour cette CSP",
+    "loadErrorFallback": "Impossible de charger les taux. Serveur indisponible."
+  }
+}

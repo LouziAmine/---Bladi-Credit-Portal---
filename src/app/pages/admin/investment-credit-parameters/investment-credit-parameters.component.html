@@ -1,0 +1,136 @@
+<app-versioned-parameters-layout
+  i18nPrefix="investmentCreditParameters"
+  [loadingList]="loadingList()"
+  [loading]="loading()"
+  [errorMessage]="errorMessage()"
+  [successMessage]="successMessage()"
+  [hasRecords]="parameters().length > 0"
+  [selectedId]="selectedId()"
+>
+  <table class="cb-table" parametersTable>
+    <thead>
+      <tr>
+        <th>{{ 'investmentCreditParameters.col.category' | translate }}</th>
+        <th>{{ 'investmentCreditParameters.col.rateMin' | translate }}</th>
+        <th>{{ 'investmentCreditParameters.col.rateMax' | translate }}</th>
+        <th>{{ 'investmentCreditParameters.col.minAge' | translate }}</th>
+        <th>{{ 'investmentCreditParameters.col.financingRatio' | translate }}</th>
+        <th>{{ 'investmentCreditParameters.col.guaranteeCoverage' | translate }}</th>
+        <th>{{ 'investmentCreditParameters.col.debtServiceRatio' | translate }}</th>
+        <th>{{ 'investmentCreditParameters.col.processingFees' | translate }}</th>
+        <th>{{ 'investmentCreditParameters.col.insurancePremium' | translate }}</th>
+        <th>{{ 'adminCommon.status' | translate }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (param of parameters(); track param.id) {
+        <tr [class.cb-table__row--active]="selectedId() === param.id">
+          <td><span class="cb-badge cb-badge--indigo">{{ param.enterpriseType }}</span></td>
+          <td>{{ param.rateMin }}</td>
+          <td>{{ param.rateMax }}</td>
+          <td>{{ param.minCompanyAgeYears }}</td>
+          <td>{{ param.maxFinancingToRevenueRatio }}</td>
+          <td>{{ param.minGuaranteeCoverageRatio }}</td>
+          <td>{{ param.maxDebtServiceRatio }}</td>
+          <td>{{ param.processingFeesRatio }}</td>
+          <td>{{ param.insurancePremiumRatio }}</td>
+          <td>
+            @if (param.active) {
+              <span class="cb-badge cb-badge--green">
+                <i class="bi bi-check-circle-fill"></i>{{ 'adminCommon.active' | translate }}
+              </span>
+            } @else {
+              <span class="cb-badge cb-badge--gray">
+                <i class="bi bi-dash-circle"></i>{{ 'adminCommon.inactive' | translate }}
+              </span>
+            }
+          </td>
+          <td>
+            <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button" (click)="selectRecord(param)">
+              <i class="bi bi-pencil"></i>{{ 'adminCommon.edit' | translate }}
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <div parametersEditor>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="cb-label" for="rateMin">
+            <i class="bi bi-percent"></i>{{ 'investmentCreditParameters.form.rateMin' | translate }}
+          </label>
+          <input id="rateMin" type="number" class="form-control" formControlName="rateMin" step="0.01"/>
+        </div>
+        <div class="col-md-4">
+          <label class="cb-label" for="rateMax">
+            <i class="bi bi-percent"></i>{{ 'investmentCreditParameters.form.rateMax' | translate }}
+          </label>
+          <input id="rateMax" type="number" class="form-control" formControlName="rateMax" step="0.01"/>
+        </div>
+        <div class="col-md-4">
+          <label class="cb-label" for="minCompanyAgeYears">
+            <i class="bi bi-calendar-event"></i>{{ 'investmentCreditParameters.form.minCompanyAgeYears' | translate }}
+          </label>
+          <div class="input-group">
+            <input id="minCompanyAgeYears" type="number" class="form-control" formControlName="minCompanyAgeYears"/>
+            <span class="input-group-text">{{ 'mortgageCredit.form.years' | translate }}</span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="cb-label" for="maxFinancingToRevenueRatio">
+            <i class="bi bi-graph-up"></i>{{ 'investmentCreditParameters.form.maxFinancingToRevenueRatio' | translate }}
+          </label>
+          <input id="maxFinancingToRevenueRatio" type="number" class="form-control" formControlName="maxFinancingToRevenueRatio" step="0.01" max="1"/>
+        </div>
+        <div class="col-md-4">
+          <label class="cb-label" for="minGuaranteeCoverageRatio">
+            <i class="bi bi-shield-lock"></i>{{ 'investmentCreditParameters.form.minGuaranteeCoverageRatio' | translate }}
+          </label>
+          <input id="minGuaranteeCoverageRatio" type="number" class="form-control" formControlName="minGuaranteeCoverageRatio" step="0.01" max="1"/>
+        </div>
+        <div class="col-md-4">
+          <label class="cb-label" for="maxDebtServiceRatio">
+            <i class="bi bi-graph-down"></i>{{ 'investmentCreditParameters.form.maxDebtServiceRatio' | translate }}
+          </label>
+          <input id="maxDebtServiceRatio" type="number" class="form-control" formControlName="maxDebtServiceRatio" step="0.01" max="1"/>
+        </div>
+        <div class="col-md-4">
+          <label class="cb-label" for="processingFeesRatio">
+            <i class="bi bi-receipt"></i>{{ 'investmentCreditParameters.form.processingFeesRatio' | translate }}
+          </label>
+          <input id="processingFeesRatio" type="number" class="form-control" formControlName="processingFeesRatio" step="0.001" max="1"/>
+        </div>
+        <div class="col-md-4">
+          <label class="cb-label" for="insurancePremiumRatio">
+            <i class="bi bi-shield-check"></i>{{ 'investmentCreditParameters.form.insurancePremiumRatio' | translate }}
+          </label>
+          <input id="insurancePremiumRatio" type="number" class="form-control" formControlName="insurancePremiumRatio" step="0.0001" max="1"/>
+        </div>
+        <div class="col-12">
+          <div class="cb-toggle-row">
+            <div class="form-check form-switch mb-0">
+              <input id="active" type="checkbox" class="form-check-input cb-toggle-switch" role="switch"
+                formControlName="active"/>
+            </div>
+            <label for="active" class="mb-0">
+              <i class="bi bi-lightning-charge-fill me-1"></i>{{ 'adminCommon.setActive' | translate }}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 mt-4">
+        <button type="submit" class="cb-btn cb-btn--amber" [disabled]="loading()">
+          <i class="bi bi-floppy"></i>{{ 'adminCommon.update' | translate }}
+        </button>
+        <button type="button" class="cb-btn cb-btn--ghost" (click)="clearSelection()">
+          <i class="bi bi-x-lg"></i>{{ 'adminCommon.cancel' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+</app-versioned-parameters-layout>

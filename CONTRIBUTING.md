@@ -1,79 +1,57 @@
 # Contributing to Credit Bladi Portal
 
-Thanks for taking the time to contribute. This document explains how to propose a change, what's
-expected before opening a pull request, and the coding standards enforced in this repository.
-
-## Code of Conduct
-
-This project and everyone participating in it is governed by the
-[Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold it.
+Thanks for taking the time to contribute. This page explains how to propose a change and what is checked
+before it is merged. Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Getting set up
 
-Follow the [Getting Started](README.md#getting-started) section of the README to install
-prerequisites and run the application locally. Most flows (login, register, simulation, admin)
-also need the [Credit-Bladi](../Credit-Bladi) backend running on `:8080`.
+Follow the [Quick Start](README.md#quick-start) of the README. Most screens (login, simulation, back office,
+portal) also need the [Credit Bladi API](https://github.com/LouziAmine/---Credit-Bladi---) on `:8080`.
 
 ## Workflow
 
-1. Fork the repository and create your branch from `master`.
-2. Name your branch after what it does, e.g. `feature/simulation-pdf-export` or
-   `fix/register-password-validator`.
-3. Make your change, keeping it focused on a single concern.
-4. Add or update tests that cover the change (unit and, if it touches a user flow, an
-   integration/E2E spec).
-5. Run the full check suite locally before opening a pull request (see below).
-6. Open a pull request against `master` with a clear description of the change and why it's
-   needed.
+1. Fork the repository and branch from `master`, named after what the change does, for example
+   `feature/early-repayment-history` or `fix/rib-validation`.
+2. Keep the change on one concern, and add or update its tests: a unit test, plus an end-to-end spec when it
+   changes a user flow.
+3. Run the checks below, then open a pull request against `master` that says what changed and why.
 
 ## Before opening a pull request
 
-Run these from the repository root; `./run-tests.sh` wraps all of them in an interactive menu:
-
 ```bash
-# Code style: must pass with zero violations
-npm run lint
-
-# Unit tests, 100% coverage threshold
-npm run test:coverage
-
-# Integration/E2E tests (starts the app automatically)
-npm run test:e2e
+npm run lint            # must pass with no error
+npm run test:coverage   # unit tests and the coverage thresholds
+npm run test:e2e        # end-to-end tests (needs the API, see docs/testing.md)
 ```
 
-A pull request that fails ESLint, drops unit coverage below 100%, or breaks a Playwright spec will
-not be merged until it's fixed.
+`./run-tests.sh` offers the same commands as a menu. A pull request that fails lint, lowers coverage below the
+thresholds in `angular.json`, or breaks a Playwright spec is not merged.
 
 ## Code style
 
-- TypeScript and templates follow the Angular ESLint + TypeScript ESLint rule sets
-  (`eslint.config.js`); run `npm run lint` to verify before pushing. Formatting is enforced by
-  Prettier (`.prettierrc`).
-- Keep the layered structure documented in [Architecture](docs/architecture.md): dependency
-  direction is strictly inward, `pages/`/`layouts/` depend on `core/`/`shared/`, never the reverse.
-  Don't add imports that violate that direction.
-- New HTTP calls belong behind a service in `core/services/`, never called directly from a
-  component; see [Design patterns actually in
-  use](docs/architecture.md#design-patterns-actually-in-use).
-- Follow the existing lazy-loading convention (`loadComponent()`) for any new route; only
-  `/simulation` is eager, and that's a deliberate, documented exception (see
-  [Architecture](docs/architecture.md#angular-architecture-conventions)); don't add a second one
-  without the same layout-shift evidence.
-- All code, comments, and commit messages must be in English.
+- ESLint (Angular, TypeScript and security rules) and Prettier define the style.
+- Dependencies point inward: `pages/` and `layouts/` use `core/` and `shared/`, never the reverse
+  ([Architecture](docs/architecture.md#folder-structure)).
+- HTTP calls live in a service under `core/services/`, never in a component
+  ([Patterns in use](docs/architecture.md#patterns-in-use)).
+- New routes are lazy (`loadComponent()`); only the landing page is eager, to avoid a layout shift
+  ([Conventions](docs/architecture.md#conventions)).
+- No comments in the source code: names carry the meaning, and explanations go in `docs/`.
+- No literal business values in specs: they come from `src/app/testing/mocks/`
+  ([Testing](docs/testing.md#unit-tests)).
+- Code and commit messages are in English. Every text shown to users goes through a translation key in
+  `public/i18n/` (French, English and Arabic).
 
 ## Commit messages
 
-Write commit messages that explain **why** a change was made, not just what changed. Keep the
-first line under ~70 characters; add a body if the reasoning needs more space.
+Say **why** the change was made, not only what changed. Keep the first line under about 70 characters and add
+a body when the reasoning needs it.
 
-## Reporting bugs / requesting features
+## Bugs and feature requests
 
-Open a GitHub issue with:
-- A clear description of the problem or the feature request
-- Steps to reproduce (for bugs), including which role (visitor/client/manager) and which screen
-- What you expected to happen vs. what actually happened
+Open a GitHub issue with a clear description, the role (visitor, client or manager) and the screen concerned,
+the steps to reproduce, and what you expected compared with what happened.
 
 ## Questions
 
-If anything in this guide is unclear, open an issue or reach out, see
-[README > Contact](README.md#contact).
+Open an issue, or write to the contact in the [README](README.md#license).

@@ -1,5 +1,5 @@
 export interface BamParametersResponse {
-  id: number;
+  id: string;
   processingFeesRatio: number;
   minProcessingFees: number;
   maxProcessingFees: number;

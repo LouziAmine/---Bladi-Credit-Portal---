@@ -1,0 +1,172 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-gear-fill"></i> {{ 'nav.administration' | translate }}
+    </div>
+    <h1 class="cb-hero__title">{{ 'demands.title' | translate }}</h1>
+    <p class="cb-hero__subtitle">{{ 'demands.subtitle' | translate }}</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+
+    <div class="d-flex justify-content-end mb-4">
+      <a class="cb-btn cb-btn--indigo" routerLink="/admin/demands/import">
+        <i class="bi bi-file-earmark-arrow-up"></i>{{ 'demands.import' | translate }}
+      </a>
+    </div>
+
+    @if (enterpriseId() !== null) {
+      <div class="cb-alert cb-alert--amber d-flex align-items-center justify-content-between mb-4">
+        <span>
+          <i class="bi bi-building me-1"></i>
+          {{ 'demands.portfolioOf' | translate }}
+          <strong>{{ enterpriseName() ?? ('demands.enterpriseHash' | translate) + enterpriseId() }}</strong>
+        </span>
+        <a class="cb-btn cb-btn--ghost cb-btn--sm" routerLink="/admin/demands">
+          <i class="bi bi-x-lg"></i>{{ 'demands.removeFilter' | translate }}
+        </a>
+      </div>
+    }
+
+    <div class="cb-card mb-4">
+      <div class="cb-card__body">
+        <form [formGroup]="searchForm" class="row g-2 align-items-end">
+          <div class="col-md-4">
+            <label for="demandCompanyName" class="form-label">{{ 'demands.search.companyNameLabel' | translate }}</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+              <input id="demandCompanyName" type="text" class="form-control" formControlName="companyName"
+                     [placeholder]="'demands.search.companyNamePlaceholder' | translate" />
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label for="demandStatus" class="form-label">{{ 'adminCommon.status' | translate }}</label>
+            <select id="demandStatus" class="form-select" formControlName="status">
+              <option value="">{{ 'demands.search.statusAll' | translate }}</option>
+              <option value="IN_PROGRESS">{{ 'demands.status.inProgress' | translate }}</option>
+              <option value="COMPLETED">{{ 'demands.status.completed' | translate }}</option>
+              <option value="REJECTED">{{ 'demands.status.rejected' | translate }}</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label for="demandMinAmount" class="form-label">{{ 'demands.search.minAmountLabel' | translate }}</label>
+            <input id="demandMinAmount" type="number" min="0" class="form-control" formControlName="minAmount" />
+          </div>
+          <div class="col-md-2">
+            <label for="demandMaxAmount" class="form-label">{{ 'demands.search.maxAmountLabel' | translate }}</label>
+            <input id="demandMaxAmount" type="number" min="0" class="form-control" formControlName="maxAmount" />
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="cb-btn cb-btn--ghost w-100" (click)="resetFilters()">
+              <i class="bi bi-x-lg"></i>{{ 'demands.search.reset' | translate }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <app-loading-spinner [loading]="loading()" [message]="'demands.loading' | translate" />
+    <app-error-message [message]="errorMessage()" />
+
+    @if (!loading() && demands().length > 0) {
+      <div class="cb-card">
+        <div class="cb-card__header cb-card__header--indigo">
+          <div class="cb-card__header-icon cb-card__header-icon--indigo">
+            <i class="bi bi-kanban"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">{{ 'demands.list.title' | translate }} ({{ total() }})</p>
+            <p class="cb-card__header-sub">{{ 'demands.list.subtitle' | translate }}</p>
+          </div>
+        </div>
+        <div class="cb-card__body cb-card__body--flush">
+          <div class="table-responsive">
+            <table class="cb-table">
+              <thead>
+                <tr>
+                  <th>{{ 'demands.col.reference' | translate }}</th>
+                  <th>{{ 'demands.col.enterprise' | translate }}</th>
+                  <th>{{ 'demands.col.category' | translate }}</th>
+                  <th>{{ 'demands.col.amount' | translate }}</th>
+                  <th>{{ 'demands.col.duration' | translate }}</th>
+                  <th>{{ 'demands.col.createdOn' | translate }}</th>
+                  <th>{{ 'adminCommon.status' | translate }}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (demand of demands(); track demand.id) {
+                  <tr>
+                    <td class="fw-semibold">{{ demand.reference }}</td>
+                    <td>{{ demand.contactName }}</td>
+                    <td>
+                      <span class="cb-badge cb-badge--indigo">
+                        @if (demand.mortgage; as mortgage) {
+                          {{ (mortgage.productType === 'MOURABAHA'
+                            ? 'mortgageCredit.form.productMourabaha' : 'mortgageCredit.form.productConventional') | translate }}
+                        } @else {
+                          {{ demand.enterprise?.enterpriseType }}
+                        }
+                      </span>
+                    </td>
+                    <td>{{ formatAmount(demand.amount) }}</td>
+                    <td>{{ demand.duration }} {{ 'mortgageCredit.form.months' | translate }}</td>
+                    <td class="text-nowrap">{{ demand.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+                    <td>
+                      <div class="d-flex flex-column gap-1">
+                        @if (demand.rejected) {
+                          <span class="cb-badge cb-badge--red">
+                            <i class="bi bi-x-circle-fill"></i>{{ 'demands.status.rejected' | translate }}
+                          </span>
+                        } @else if (demand.completed) {
+                          <span class="cb-badge cb-badge--green">
+                            <i class="bi bi-check-circle-fill"></i>{{ 'demands.status.completed' | translate }}
+                          </span>
+                        } @else {
+                          <span class="cb-badge cb-badge--amber">
+                            <i class="bi bi-hourglass-split"></i>{{ 'demands.status.inProgress' | translate }}
+                          </span>
+                        }
+                        @if (demand.currentStepName) {
+                          <span class="cb-badge cb-badge--indigo" [title]="'demands.currentStepTitle' | translate">
+                            <i class="bi bi-signpost-split"></i>{{ demand.currentStepName }}
+                          </span>
+                        }
+                      </div>
+                    </td>
+                    <td>
+                      <a class="cb-btn cb-btn--ghost cb-btn--sm" [routerLink]="['/admin/demands', demand.id]">
+                        <i class="bi bi-eye"></i>{{ 'demands.view' | translate }}
+                      </a>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between p-3 border-top">
+          <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button" [disabled]="currentPage() <= 1" (click)="previousPage()">
+            <i class="bi bi-chevron-left"></i>{{ 'adminCommon.previous' | translate }}
+          </button>
+          <span class="small cb-muted-text">
+            {{ 'adminCommon.page' | translate }} {{ currentPage() }} / {{ lastPage() }}
+          </span>
+          <button class="cb-btn cb-btn--ghost cb-btn--sm" type="button" [disabled]="currentPage() >= lastPage()" (click)="nextPage()">
+            {{ 'adminCommon.next' | translate }}<i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    } @else if (!loading() && demands().length === 0) {
+      <div class="cb-card cb-empty-card">
+        <div class="cb-empty">
+          <div class="cb-empty__icon"><i class="bi bi-kanban"></i></div>
+          <p class="cb-empty__title">{{ 'demands.empty' | translate }}</p>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

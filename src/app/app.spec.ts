@@ -5,12 +5,18 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { throwError } from 'rxjs';
 import { App } from './app';
 import { AuthService } from './core/services';
+import { provideTranslateTesting } from './testing/translate-testing.providers';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideTranslateTesting(),
+      ],
     }).compileComponents();
   });
 

@@ -18,13 +18,13 @@ export class CreditRateService {
     );
   }
 
-  getById(id: number): Observable<CreditRateResponse> {
+  getById(id: string): Observable<CreditRateResponse> {
     return this.http.get<CreditRateResponse>(`${this.apiUrl}/${id}`).pipe(
       catchError(handleHttpError('CreditRateService', 'getById')),
     );
   }
 
-  patch(id: number, request: PatchCreditRateRequest): Observable<void> {
+  patch(id: string, request: PatchCreditRateRequest): Observable<void> {
     return this.http.patch<void>(`${this.apiUrl}/${id}`, request).pipe(
       catchError(handleHttpError('CreditRateService', 'patch')),
     );

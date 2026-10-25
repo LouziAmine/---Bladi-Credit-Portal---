@@ -1,0 +1,44 @@
+{
+  "documentUpload": {
+    "title": "Documents",
+    "subtitle": "Pièces jointes au dossier, par étape",
+    "loading": "Chargement des documents...",
+    "empty": "Aucun document pour ce dossier.",
+    "col": {
+      "file": "Fichier",
+      "type": "Type",
+      "step": "Étape",
+      "status": "Statut",
+      "antivirus": "Analyse antivirus",
+      "uploadedBy": "Déposé par"
+    },
+    "status": {
+      "active": "Actif",
+      "superseded": "Remplacé"
+    },
+    "scan": {
+      "clean": "Sain",
+      "skipped": "Non scanné (dev)",
+      "pending": "En cours d'analyse",
+      "infected": "Infecté"
+    },
+    "view": "Voir",
+    "viewAria": "Voir le document",
+    "file": "Fichier",
+    "fileHint": "PDF, JPEG, PNG, DOCX, XLSX: 15 Mo max.",
+    "documentType": "Type de document (optionnel)",
+    "documentTypePlaceholder": "ex : Pièce d'identité",
+    "submit": "Envoyer",
+    "uploading": "Envoi du document...",
+    "fileTooLarge": "Ce fichier dépasse la taille maximale autorisée (15 Mo).",
+    "fileTypeNotAllowed": "Type de fichier non autorisé (PDF, JPEG, PNG, DOCX, XLSX uniquement).",
+    "loadErrorFallback": "Impossible de charger les documents.",
+    "uploadErrorFallback": "Erreur lors de l'envoi du document.",
+    "viewErrorFallback": "Impossible d'ouvrir ce document.",
+    "unit": {
+      "bytes": "o",
+      "kilobytes": "Ko",
+      "megabytes": "Mo"
+    }
+  }
+}

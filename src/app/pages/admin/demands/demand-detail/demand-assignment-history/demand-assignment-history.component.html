@@ -1,0 +1,45 @@
+<div class="cb-card mb-4">
+  <div class="cb-card__header cb-card__header--indigo">
+    <div class="cb-card__header-icon cb-card__header-icon--indigo">
+      <i class="bi bi-person-lines-fill"></i>
+    </div>
+    <div>
+      <p class="cb-card__header-title">{{ 'demandDetail.assignmentHistory.title' | translate }}</p>
+      <p class="cb-card__header-sub">
+        {{ assignmentHistory().length }} {{ 'demandDetail.assignmentHistory.count' | translate }}
+      </p>
+    </div>
+  </div>
+  <div class="cb-card__body cb-card__body--flush">
+    <div class="table-responsive">
+      <table class="cb-table">
+        <thead>
+          <tr>
+            <th>{{ 'demandPipeline.step' | translate }}</th>
+            <th>{{ 'demandDetail.assignmentHistory.col.previousUsername' | translate }}</th>
+            <th>{{ 'demandDetail.assignmentHistory.col.newUsername' | translate }}</th>
+            <th>{{ 'demandDetail.assignmentHistory.col.assignedBy' | translate }}</th>
+            <th>{{ 'demandDetail.assignmentHistory.col.assignedAt' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (entry of assignmentHistory(); track entry.id) {
+            <tr>
+              <td>{{ entry.stepName }}</td>
+              <td class="small">
+                @if (entry.previousUsername) {
+                  {{ entry.previousUsername }}
+                } @else {
+                  <span class="cb-muted-text">-</span>
+                }
+              </td>
+              <td class="fw-semibold">{{ entry.newUsername }}</td>
+              <td class="small">{{ entry.assignedBy }}</td>
+              <td class="text-nowrap">{{ entry.assignedAt | date:'dd/MM/yyyy HH:mm' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

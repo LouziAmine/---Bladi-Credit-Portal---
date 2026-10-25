@@ -1,0 +1,111 @@
+{
+  "investmentCredit": {
+    "hero": {
+      "eyebrow": "Crédit Entreprise",
+      "title": "Simulateur de crédit entreprise",
+      "subtitle": "Financement d'investissement pour TPE, auto-entrepreneurs, PME, ETI et grandes entreprises."
+    },
+    "form": {
+      "title": "Informations sur l'entreprise",
+      "subtitle": "Remplissez les champs ci-dessous",
+      "calculating": "Calcul en cours...",
+      "companyName": "Raison sociale",
+      "companyNameRequired": "La raison sociale est requise.",
+      "enterpriseType": "Catégorie d'entreprise",
+      "enterpriseTypeRequired": "La catégorie est requise.",
+      "selectPlaceholder": "Sélectionnez...",
+      "sector": "Secteur d'activité",
+      "sectorUnspecified": "Non précisé",
+      "email": "Email de contact",
+      "emailRequired": "L'email est requis.",
+      "emailInvalid": "Email invalide.",
+      "phone": "Téléphone de contact",
+      "phoneRequired": "Le téléphone est requis.",
+      "phoneInvalid": "Numéro de téléphone marocain invalide.",
+      "companyAgeYears": "Ancienneté de l'entreprise",
+      "companyAgeYearsRequired": "L'ancienneté est requise.",
+      "amount": "Montant du financement",
+      "amountRequired": "Le montant est requis.",
+      "amountRange": "Entre 50 000 et 100 000 000 MAD.",
+      "duration": "Durée du financement",
+      "annualRevenue": "Chiffre d'affaires annuel",
+      "annualRevenueRequired": "Le chiffre d'affaires est requis.",
+      "netAnnualResult": "Résultat net annuel",
+      "netAnnualResultRequired": "Le résultat net est requis.",
+      "existingAnnualDebtService": "Service de la dette existante",
+      "madPerYear": "MAD/an",
+      "existingDebtHint": "0 si l'entreprise n'a aucun crédit en cours.",
+      "guaranteesValue": "Valeur des garanties proposées",
+      "guaranteesValueRequired": "La valeur des garanties est requise.",
+      "submit": "Simuler",
+      "resetAria": "Réinitialiser le formulaire"
+    },
+    "type": {
+      "TPE": "Très petite entreprise (TPE)",
+      "AUTO_ENTREPRENEUR": "Auto-entrepreneur",
+      "PME": "Petite et moyenne entreprise (PME)",
+      "ETI": "Entreprise de taille intermédiaire (ETI)",
+      "GE": "Grande entreprise (GE)"
+    },
+    "results": {
+      "title": "Résultats",
+      "eligible": "Éligible",
+      "caseCreated": "Dossier créé : référence",
+      "caseCreatedSuffix": "suivi via le pipeline de traitement.",
+      "applicableRate": "Taux applicable",
+      "monthlyPayment": "Mensualité",
+      "totalInterest": "Intérêts totaux",
+      "totalCost": "Coût total"
+    },
+    "fees": {
+      "title": "Détail des frais",
+      "subtitle": "Frais liés à votre dossier",
+      "processing": "Frais de dossier",
+      "taeg": "TAEG"
+    },
+    "empty": {
+      "subtitle": "Remplissez le formulaire et cliquez sur \"Simuler\"."
+    },
+    "errorFallback": "Erreur lors de la simulation.",
+    "why": {
+      "label": "Nos atouts",
+      "title": "Pourquoi nous choisir ?",
+      "digital": {
+        "title": "Simulation instantanée, tous profils d'entreprise",
+        "text": "De l'auto-entrepreneur à la grande entreprise, simulez votre crédit d'investissement en ligne et obtenez une estimation immédiate, sans déplacement en agence."
+      },
+      "expertise": {
+        "title": "Tarification calibrée par profil",
+        "text": "Un barème de taux et des critères d'éligibilité ajustés par notre équipe selon la taille et la maturité de votre entreprise, pour une offre réellement adaptée à votre réalité."
+      },
+      "tracking": {
+        "title": "Suivi transparent de votre dossier",
+        "text": "Suivez chaque étape de l'instruction, classification, analyse, décision, contrat, directement depuis votre espace client, sans avoir à relancer votre banque."
+      }
+    },
+    "process": {
+      "label": "Le processus",
+      "title": "Je finance mon investissement en 5 étapes",
+      "step1": {
+        "num": "Étape 1",
+        "label": "Je simule<br>mon crédit"
+      },
+      "step2": {
+        "num": "Étape 2",
+        "label": "Mon dossier est<br>classifié"
+      },
+      "step3": {
+        "num": "Étape 3",
+        "label": "Mon dossier est<br>instruit et analysé"
+      },
+      "step4": {
+        "num": "Étape 4",
+        "label": "Le comité<br>statue"
+      },
+      "step5": {
+        "num": "Étape 5",
+        "label": "J'obtiens<br>mon financement"
+      }
+    }
+  }
+}

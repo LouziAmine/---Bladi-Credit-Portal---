@@ -4,16 +4,20 @@ import { provideHttpClient } from '@angular/common/http';
 import { CreditRateService } from './credit-rate.service';
 import { CreditRateResponse, PatchCreditRateRequest } from '../../models/credit-rate.model';
 import { CreditPage } from '../../models/page.model';
+import { DECIMAL_0_032, DECIMAL_0_045 } from '../../../testing/mocks/mock-amounts';
+import { CODE_SALARIE_PRIVE } from '../../../testing/mocks/mock-codes';
+import { PERSON_NO_CONTENT } from '../../../testing/mocks/mock-contacts';
 
 describe('CreditRateService', () => {
   let service: CreditRateService;
   let httpMock: HttpTestingController;
 
   const mockRecord: CreditRateResponse = {
-    id: 1,
-    cspCode: 'SALARIE_PRIVE',
-    rateMin: 0.032,
-    rateMax: 0.045,
+    id: '1',
+    cspCode: CODE_SALARIE_PRIVE,
+    rateMin: DECIMAL_0_032,
+    rateMax: DECIMAL_0_045,
+    rateFormula: null,
     minDurationMonths: 60,
     maxDurationMonths: 300,
     active: true,
@@ -66,7 +70,7 @@ describe('CreditRateService', () => {
 
   describe('getById', () => {
     it('should GET a single credit rate by id', () => {
-      service.getById(1).subscribe((record) => {
+      service.getById('1').subscribe((record) => {
         expect(record).toEqual(mockRecord);
       });
 
@@ -80,12 +84,12 @@ describe('CreditRateService', () => {
     it('should PATCH a credit rate by id', () => {
       const patchRequest: PatchCreditRateRequest = { active: false };
 
-      service.patch(1, patchRequest).subscribe();
+      service.patch('1', patchRequest).subscribe();
 
       const req = httpMock.expectOne('http://localhost:8080/api/v1/credit-rates/1');
       expect(req.request.method).toBe('PATCH');
       expect(req.request.body).toEqual(patchRequest);
-      req.flush(null, { status: 204, statusText: 'No Content' });
+      req.flush(null, { status: 204, statusText: PERSON_NO_CONTENT });
     });
   });
 });

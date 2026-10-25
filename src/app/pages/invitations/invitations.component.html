@@ -1,0 +1,118 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-envelope-paper-heart"></i> {{ 'invitations.eyebrow' | translate }}
+    </div>
+    <h1 class="cb-hero__title">{{ (isMortgage() ? 'invitations.titleMortgage' : 'invitations.title') | translate }}</h1>
+    <p class="cb-hero__subtitle">
+      {{ (isMortgage() ? 'invitations.subtitleMortgage' : 'invitations.subtitle') | translate }}
+    </p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+    <div class="cb-auth-form-wrap mx-auto">
+
+      <app-loading-spinner [loading]="loadingPreview()" [message]="'invitations.loadingPreview' | translate" />
+      <app-error-message [message]="previewErrorMessage()" />
+
+      @if (!loadingPreview() && preview()) {
+        <div class="cb-card mb-4">
+          <div class="cb-card__header cb-card__header--amber">
+            <div class="cb-card__header-icon cb-card__header-icon--amber">
+              <i class="bi" [class.bi-building]="preview()!.enterpriseName" [class.bi-house-door]="!preview()!.enterpriseName"></i>
+            </div>
+            <div>
+              <p class="cb-card__header-title">
+                @if (preview()!.enterpriseName; as enterpriseName) {
+                  {{ enterpriseName }}
+                } @else {
+                  {{ 'invitations.mortgageDossier' | translate }}
+                  <span class="text-nowrap">{{ preview()!.demandReference }}</span>
+                }
+              </p>
+              <p class="cb-card__header-sub">{{ 'invitations.invitedAs' | translate }} {{ preview()!.email }}</p>
+            </div>
+          </div>
+          <div class="cb-card__body">
+            <app-loading-spinner [loading]="submitting()" [message]="'invitations.submitting' | translate" />
+
+            @if (successMessage()) {
+              <div class="cb-alert cb-alert--success">
+                <i class="bi bi-check-circle-fill"></i>
+                <span>{{ successMessage() }}</span>
+              </div>
+            }
+            <app-error-message [message]="errorMessage()" />
+
+            @if (!successMessage()) {
+              <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+                <div class="mb-3">
+                  <label for="username" class="cb-label">
+                    <i class="bi bi-person"></i>{{ 'invitations.usernameLabel' | translate }}
+                  </label>
+                  <input
+                    id="username"
+                    type="text"
+                    class="form-control"
+                    [class.is-invalid]="form.controls.username.invalid && form.controls.username.touched"
+                    formControlName="username"
+                    autocomplete="username"
+                  />
+                  @if (form.controls.username.errors?.['required'] && form.controls.username.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'invitations.usernameRequired' | translate }}
+                    </div>
+                  } @else if (form.controls.username.errors?.['minlength'] && form.controls.username.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'invitations.usernameMinLength' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <div class="mb-4">
+                  <label for="password" class="cb-label">
+                    <i class="bi bi-lock"></i>{{ 'invitations.passwordLabel' | translate }}
+                  </label>
+                  <input
+                    id="password"
+                    type="password"
+                    class="form-control"
+                    [class.is-invalid]="form.controls.password.invalid && form.controls.password.touched"
+                    formControlName="password"
+                    autocomplete="new-password"
+                  />
+                  @if (form.controls.password.errors?.['required'] && form.controls.password.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'invitations.passwordRequired' | translate }}
+                    </div>
+                  } @else if (form.controls.password.errors?.['minlength'] && form.controls.password.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'invitations.passwordMinLength' | translate }}
+                    </div>
+                  } @else if (form.controls.password.errors?.['passwordComplexity'] && form.controls.password.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'invitations.passwordComplexity' | translate }}
+                    </div>
+                  } @else if (!form.controls.password.touched) {
+                    <div class="small mt-1 cb-muted-text">{{ 'invitations.passwordHint' | translate }}</div>
+                  }
+                </div>
+
+                <button type="submit" class="cb-btn cb-btn--amber w-100" [disabled]="submitting()">
+                  <i class="bi bi-check2-circle"></i>{{ 'invitations.submit' | translate }}
+                </button>
+              </form>
+            } @else {
+              <a class="cb-btn cb-btn--ghost w-100" routerLink="/login">
+                {{ 'invitations.loginLink' | translate }}
+              </a>
+            }
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

@@ -1,7 +1,17 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import { backendIsUp, AUTH_FILE, SEEDED_MANAGER } from './helpers';
+import { freeUsername, person } from './world';
 
 const SHOT = 'docs/screenshots/e2e/admin-users';
+
+async function goToLastPage(page: Page): Promise<void> {
+  const next = page.getByRole('button', { name: /suivant/i });
+  while (await next.isEnabled()) {
+    const pageLabel = await page.getByText(/Page \d+ \/ \d+/).textContent();
+    await next.click();
+    await expect(page.getByText(/Page \d+ \/ \d+/)).not.toHaveText(pageLabel ?? '');
+  }
+}
 
 test.describe('Admin - user management', () => {
   test.use({ storageState: AUTH_FILE });
@@ -12,15 +22,19 @@ test.describe('Admin - user management', () => {
   });
 
   test('creates a new CLIENT user, which then appears in the account list', async ({ page }) => {
-    const username = `e2e-client-${Date.now()}`;
+    const who = person();
+    const username = await freeUsername(who);
 
     await page.getByLabel(/nom d'utilisateur/i).fill(username);
+    await page.locator('#fullName').fill(who.fullName);
+    await page.locator('#email').fill(`${username}@bladi-credit.ma`);
     await page.getByLabel(/mot de passe/i).fill('TestPass1234');
     await page.getByLabel(/rôle/i).selectOption('CLIENT');
     await page.getByRole('button', { name: /créer l'utilisateur/i }).click();
 
     await expect(page.getByText(`Utilisateur "${username}" créé avec succès.`)).toBeVisible();
-    await expect(page.getByRole('cell', { name: username })).toBeVisible();
+    await goToLastPage(page);
+    await expect(page.getByRole('cell', { name: username, exact: true })).toBeVisible();
     await page.screenshot({ path: `${SHOT}/01-create-client-user.png`, fullPage: true, animations: 'disabled' });
   });
 
@@ -42,14 +56,17 @@ test.describe('Admin - user management', () => {
   });
 
   test('promoting then demoting a freshly created user round-trips its role badge', async ({ page }) => {
-    const username = `e2e-role-${Date.now()}`;
+    const who = person();
+    const username = await freeUsername(who);
     await page.getByLabel(/nom d'utilisateur/i).fill(username);
+    await page.locator('#fullName').fill(who.fullName);
     await page.getByLabel(/mot de passe/i).fill('TestPass1234');
     await page.getByLabel(/rôle/i).selectOption('CLIENT');
     await page.getByRole('button', { name: /créer l'utilisateur/i }).click();
     await expect(page.getByText(`Utilisateur "${username}" créé avec succès.`)).toBeVisible();
+    await goToLastPage(page);
 
-    const row = page.locator('tr', { has: page.getByRole('cell', { name: username }) });
+    const row = page.locator('tr', { has: page.getByRole('cell', { name: username, exact: true }) });
     await expect(row.getByText('CLIENT')).toBeVisible();
 
     await row.getByRole('button', { name: /promouvoir en manager/i }).click();
@@ -61,15 +78,19 @@ test.describe('Admin - user management', () => {
   });
 
   test('creates a new MANAGER user directly, which then appears with the MANAGER badge', async ({ page }) => {
-    const username = `e2e-newmgr-${Date.now()}`;
+    const who = person();
+    const username = await freeUsername(who);
 
     await page.getByLabel(/nom d'utilisateur/i).fill(username);
+    await page.locator('#fullName').fill(who.fullName);
+    await page.locator('#email').fill(`${username}@bladi-credit.ma`);
     await page.getByLabel(/mot de passe/i).fill('TestPass1234');
     await page.getByLabel(/rôle/i).selectOption('MANAGER');
     await page.getByRole('button', { name: /créer l'utilisateur/i }).click();
 
     await expect(page.getByText(`Utilisateur "${username}" créé avec succès.`)).toBeVisible();
-    const row = page.locator('tr', { has: page.getByRole('cell', { name: username }) });
+    await goToLastPage(page);
+    const row = page.locator('tr', { has: page.getByRole('cell', { name: username, exact: true }) });
     await expect(row.getByText('MANAGER', { exact: true })).toBeVisible();
     await page.screenshot({ path: `${SHOT}/05-create-manager-user.png`, fullPage: true, animations: 'disabled' });
   });
@@ -98,7 +119,7 @@ test.describe('Admin - user management', () => {
       return route.continue();
     });
 
-    await page.getByLabel(/nom d'utilisateur/i).fill(`e2e-shortpw-${Date.now()}`);
+    await page.getByLabel(/nom d'utilisateur/i).fill(await freeUsername());
     await page.getByLabel(/mot de passe/i).fill('Short1');
     await page.getByLabel(/mot de passe/i).blur();
     await page.getByRole('button', { name: /créer l'utilisateur/i }).click();
@@ -115,7 +136,7 @@ test.describe('Admin - user management', () => {
       return route.continue();
     });
 
-    await page.getByLabel(/nom d'utilisateur/i).fill(`e2e-weakpw-${Date.now()}`);
+    await page.getByLabel(/nom d'utilisateur/i).fill(await freeUsername());
     await page.getByLabel(/mot de passe/i).fill('alllowercase1234');
     await page.getByLabel(/mot de passe/i).blur();
     await page.getByRole('button', { name: /créer l'utilisateur/i }).click();

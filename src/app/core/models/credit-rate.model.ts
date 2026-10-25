@@ -1,8 +1,11 @@
+export type RateFormula = 'MIN';
+
 export interface CreditRateResponse {
-  id: number;
+  id: string;
   cspCode: string;
   rateMin: number;
   rateMax: number;
+  rateFormula: RateFormula | null;
   minDurationMonths: number;
   maxDurationMonths: number;
   active: boolean;
@@ -11,6 +14,7 @@ export interface CreditRateResponse {
 export interface PatchCreditRateRequest {
   rateMin?: number;
   rateMax?: number;
+  rateFormula?: RateFormula | null;
   minDurationMonths?: number;
   maxDurationMonths?: number;
   active?: boolean;

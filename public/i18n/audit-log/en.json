@@ -1,0 +1,17 @@
+{
+  "auditLog": {
+    "title": "Audit log",
+    "subtitle": "Full traceability: logins, simulations, BAM rejections, role changes.",
+    "loading": "Loading the log...",
+    "events": "Events",
+    "mostRecentFirst": "Most recent first",
+    "col": {
+      "date": "Date",
+      "user": "User",
+      "action": "Action",
+      "details": "Details"
+    },
+    "empty": "No event recorded",
+    "loadErrorFallback": "Unable to load the audit log."
+  }
+}

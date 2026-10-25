@@ -2,6 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { authGuard } from './auth.guard';
 import { TokenService } from '../services';
+import { CODE_CLIENT } from '../../testing/mocks/mock-codes';
+import { USER_JOHN_DOE } from '../../testing/mocks/mock-users';
 
 describe('authGuard', () => {
   let tokenService: TokenService;
@@ -20,7 +22,7 @@ describe('authGuard', () => {
   });
 
   it('should allow access when authenticated', () => {
-    tokenService.setAuthState('john.doe', 'CLIENT');
+    tokenService.setAuthState(USER_JOHN_DOE, CODE_CLIENT);
     expect(runGuard()).toBe(true);
   });
 

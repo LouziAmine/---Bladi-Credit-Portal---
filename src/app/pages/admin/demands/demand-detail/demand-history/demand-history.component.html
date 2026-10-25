@@ -1,0 +1,152 @@
+<div class="cb-card mb-4">
+  <div class="cb-card__header cb-card__header--indigo">
+    <div class="cb-card__header-icon cb-card__header-icon--indigo">
+      <i class="bi bi-clock-history"></i>
+    </div>
+    <div>
+      <p class="cb-card__header-title">{{ 'demandDetail.history.title' | translate }}</p>
+      <p class="cb-card__header-sub">
+        {{ history().length }} {{ 'demandDetail.history.stepsCount' | translate }}
+      </p>
+    </div>
+  </div>
+  <div class="cb-card__body cb-card__body--flush">
+    <div class="table-responsive">
+      <table class="cb-table">
+        <thead>
+          <tr>
+            <th>{{ 'demandDetail.history.col.process' | translate }}</th>
+            <th>{{ 'demandPipeline.step' | translate }}</th>
+            <th>{{ 'demandDetail.history.col.assignment' | translate }}</th>
+            <th>{{ 'demandDetail.history.col.simulation' | translate }}</th>
+            <th>{{ 'demandDetail.enteredOn' | translate }}</th>
+            <th>{{ 'demandDetail.history.col.exitedOn' | translate }}</th>
+            <th>{{ 'demandDetail.advance.decision' | translate }}</th>
+            <th>{{ 'demandDetail.history.col.rate' | translate }}</th>
+            <th>{{ 'investmentCredit.form.amount' | translate }}</th>
+            <th>{{ 'investmentCredit.form.duration' | translate }}</th>
+            <th>{{ 'demandDetail.note' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (entry of history(); track historyRowKey(entry)) {
+            <tr>
+              <td>{{ entry.processName }}</td>
+              <td>{{ entry.stepName }}</td>
+              <td class="small">
+                @if (entry.assignedUsername) {
+                  @if (entry.assignedBy) {
+                    <span class="cb-muted-text">{{ entry.assignedBy }}</span> →
+                  }
+                  {{ entry.assignedUsername }}
+                } @else {
+                  <span class="cb-muted-text">-</span>
+                }
+              </td>
+              <td class="small">
+                @if (canPreviewHistoryRow(entry)) {
+                  <button type="button" class="cb-btn cb-btn--ghost cb-btn--sm w-100"
+                          (click)="toggleHistoryRow(entry)">
+                    <i class="bi" [class.bi-chevron-down]="!isHistoryRowExpanded(entry)"
+                       [class.bi-chevron-up]="isHistoryRowExpanded(entry)"></i>
+                  </button>
+                } @else {
+                  <span class="cb-muted-text" [title]="'demandDetail.history.notAvailable' | translate">-</span>
+                }
+              </td>
+              <td class="text-nowrap">{{ entry.enteredAt | date:'dd/MM/yyyy' }}</td>
+              <td class="text-nowrap">{{ entry.exitedAt ? (entry.exitedAt | date:'dd/MM/yyyy') : '-' }}</td>
+              <td>
+                @if (entry.classificationOutcome === 'REAL') {
+                  <span class="cb-badge cb-badge--green">
+                    {{ 'demandDetail.choices.classificationOutcome.REAL.label' | translate }}
+                  </span>
+                } @else if (entry.classificationOutcome === 'FAKE') {
+                  <span class="cb-badge cb-badge--red">
+                    {{ 'demandDetail.choices.classificationOutcome.FAKE.label' | translate }}
+                  </span>
+                } @else if (entry.classificationOutcome === 'SIMULATION_ONLY') {
+                  <span class="cb-badge cb-badge--red">
+                    {{ 'demandDetail.choices.classificationOutcome.SIMULATION_ONLY.label' | translate }}
+                  </span>
+                } @else if (entry.decisionOutcome === 'APPROVED') {
+                  <span class="cb-badge cb-badge--green">
+                    {{ 'demandDetail.choices.decisionOutcome.APPROVED' | translate }}
+                  </span>
+                } @else if (entry.decisionOutcome === 'REJECTED') {
+                  <span class="cb-badge cb-badge--red">
+                    {{ 'demandDetail.choices.decisionOutcome.REJECTED' | translate }}
+                  </span>
+                } @else if (entry.decisionOutcome === 'DEFERRED') {
+                  <span class="cb-badge cb-badge--amber">
+                    {{ 'demandDetail.choices.decisionOutcome.DEFERRED' | translate }}
+                  </span>
+                } @else if (entry.returnReasonCode) {
+                  <span class="cb-badge cb-badge--red">
+                    <i class="bi bi-arrow-return-left"></i>{{ 'demandDetail.history.returned' | translate }}
+                  </span>
+                } @else {
+                  -
+                }
+                @if (entry.returnReasonCode) {
+                  <div class="small cb-muted-text mt-1">{{ entry.returnReasonCode }}</div>
+                }
+              </td>
+              <td class="small">
+                @if (entry.rateOption) {
+                  <span class="cb-badge cb-badge--indigo">{{ entry.rateOption }}</span>
+                  <div class="mt-1">
+                    {{ entry.previousRate !== null ? entry.previousRate + '%' : '-' }} →
+                    <strong>{{ entry.appliedRate }}%</strong>
+                  </div>
+                  <div class="small cb-muted-text">
+                    {{ 'demandDetail.history.by' | translate }} {{ entry.rateChangedBy }}
+                  </div>
+                } @else {
+                  <span class="cb-muted-text">-</span>
+                }
+              </td>
+              <td class="small">
+                @if (entry.amountOption) {
+                  <span class="cb-badge cb-badge--indigo">{{ entry.amountOption }}</span>
+                  <div class="mt-1">
+                    {{ entry.previousAmount !== null ? formatAmount(entry.previousAmount) : '-' }} →
+                    <strong>{{ formatAmount(entry.appliedAmount!) }}</strong>
+                  </div>
+                } @else {
+                  <span class="cb-muted-text">-</span>
+                }
+              </td>
+              <td class="small">
+                @if (entry.durationOption) {
+                  <span class="cb-badge cb-badge--indigo">{{ entry.durationOption }}</span>
+                  <div class="mt-1">
+                    {{ entry.previousDuration !== null
+                      ? entry.previousDuration + ' ' + ('mortgageCredit.form.months' | translate) : '-' }} →
+                    <strong>{{ entry.appliedDuration }} {{ 'mortgageCredit.form.months' | translate }}</strong>
+                  </div>
+                } @else {
+                  <span class="cb-muted-text">-</span>
+                }
+              </td>
+              <td class="small cb-details-cell">{{ entry.decisionNote ?? '-' }}</td>
+            </tr>
+            @if (isHistoryRowExpanded(entry)) {
+              <tr>
+                <td colspan="11" class="p-0">
+                  <div class="cb-card m-3">
+                    <app-simulation-details
+                      [compact]="true"
+                      [amortization]="historyRowAmortization(entry)"
+                      [loading]="historyRowLoading(entry)"
+                      [errorMessage]="historyRowError(entry)" />
+                  </div>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

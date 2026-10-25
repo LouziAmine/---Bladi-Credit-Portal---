@@ -1,0 +1,69 @@
+<div class="cb-pipeline">
+  @for (phase of phases(); track phase.processCode) {
+    <div class="cb-pipeline__phase">
+      <div class="cb-pipeline__phase-header">
+        <span
+          class="cb-pipeline__phase-number"
+          [class.cb-pipeline__phase-number--done]="phase.status === 'DONE'"
+          [class.cb-pipeline__phase-number--current]="phase.status === 'CURRENT'"
+        >{{ phase.phaseNumber }}</span>
+        <span class="cb-pipeline__phase-name">{{ phase.processName }}</span>
+        @if (phase.status === 'DONE') {
+          <span class="cb-badge cb-badge--green ms-auto">
+            <i class="bi bi-check-circle-fill"></i>{{ 'demandPipeline.status.done' | translate }}
+          </span>
+        } @else if (phase.status === 'CURRENT') {
+          <span class="cb-badge cb-badge--amber ms-auto">
+            <i class="bi bi-hourglass-split"></i>{{ 'demandPipeline.status.current' | translate }}
+          </span>
+        } @else {
+          <span class="cb-badge cb-badge--gray ms-auto">{{ 'demandPipeline.status.upcoming' | translate }}</span>
+        }
+      </div>
+
+      <ul class="cb-pipeline__steps">
+        @for (step of phase.steps; track step.stepCode) {
+          <li
+            class="cb-pipeline__step"
+            [class.cb-pipeline__step--done]="step.status === 'DONE'"
+            [class.cb-pipeline__step--current]="step.status === 'CURRENT'"
+          >
+            <span class="cb-pipeline__step-marker">
+              @if (step.status === 'DONE') {
+                <i class="bi bi-check-lg"></i>
+              } @else if (step.status === 'CURRENT') {
+                <i class="bi bi-record-fill"></i>
+              } @else {
+                <i class="bi bi-circle"></i>
+              }
+            </span>
+            <span class="cb-pipeline__step-body">
+              <span class="cb-pipeline__step-title">
+                {{ 'demandPipeline.step' | translate }} {{ step.stepNumber }} · {{ step.stepName }}
+              </span>
+              @if (step.requiredGradeName || step.requiredTeamName) {
+                <span class="cb-pipeline__step-role">
+                  {{ step.requiredGradeName ?? step.typicalRole }}
+                  @if (step.requiredTeamName) {
+                    · {{ step.requiredTeamName }}
+                  }
+                </span>
+              } @else if (step.typicalRole) {
+                <span class="cb-pipeline__step-role">{{ step.typicalRole }}</span>
+              }
+              @if (step.status === 'DONE' && step.exitedAt) {
+                <span class="cb-pipeline__step-date">
+                  {{ 'demandPipeline.completedOn' | translate }} {{ step.exitedAt | date: 'dd/MM/yyyy HH:mm' }}
+                </span>
+              } @else if (step.status === 'CURRENT' && step.enteredAt) {
+                <span class="cb-pipeline__step-date">
+                  {{ 'demandPipeline.inProgressSince' | translate }} {{ step.enteredAt | date: 'dd/MM/yyyy HH:mm' }}
+                </span>
+              }
+            </span>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>

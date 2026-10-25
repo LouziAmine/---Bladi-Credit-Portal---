@@ -1,0 +1,254 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-buildings-fill"></i> {{ 'investmentCredit.hero.eyebrow' | translate }}
+    </div>
+    <h1 class="cb-hero__title">{{ 'investmentCredit.hero.title' | translate }}</h1>
+    <p class="cb-hero__subtitle">{{ 'investmentCredit.hero.subtitle' | translate }}</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+    <div class="row g-4">
+
+      <div class="col-lg-6">
+        <div class="cb-card">
+          <div class="cb-card__header cb-card__header--green">
+            <div class="cb-card__header-icon cb-card__header-icon--green">
+              <i class="bi bi-briefcase"></i>
+            </div>
+            <div>
+              <p class="cb-card__header-title">{{ 'investmentCredit.form.title' | translate }}</p>
+              <p class="cb-card__header-sub">{{ 'investmentCredit.form.subtitle' | translate }}</p>
+            </div>
+          </div>
+          <div class="cb-card__body">
+            <app-error-message [message]="errorMessage()" />
+            <app-loading-spinner [loading]="loading()" [message]="'investmentCredit.form.calculating' | translate" />
+
+            <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+              <div class="row g-3">
+
+                <div class="col-md-6">
+                  <label for="companyName" class="cb-label">
+                    <i class="bi bi-building"></i>{{ 'investmentCredit.form.companyName' | translate }}
+                  </label>
+                  <input id="companyName" type="text" class="form-control"
+                    [class.is-invalid]="form.controls.companyName.invalid && form.controls.companyName.touched"
+                    formControlName="companyName" placeholder="Atlas Textile SARL"/>
+                  @if (form.controls.companyName.errors?.['required'] && form.controls.companyName.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'investmentCredit.form.companyNameRequired' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="enterpriseType" class="cb-label">
+                    <i class="bi bi-diagram-3"></i>{{ 'investmentCredit.form.enterpriseType' | translate }}
+                  </label>
+                  <select id="enterpriseType" class="form-select"
+                    [class.is-invalid]="form.controls.enterpriseType.invalid && form.controls.enterpriseType.touched"
+                    formControlName="enterpriseType">
+                    <option value="" disabled>{{ 'investmentCredit.form.selectPlaceholder' | translate }}</option>
+                    @for (opt of enterpriseTypeOptions; track opt) {
+                      <option [value]="opt">{{ 'investmentCredit.type.' + opt | translate }}</option>
+                    }
+                  </select>
+                  @if (form.controls.enterpriseType.errors?.['required'] && form.controls.enterpriseType.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'investmentCredit.form.enterpriseTypeRequired' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="sector" class="cb-label">
+                    <i class="bi bi-tags"></i>{{ 'investmentCredit.form.sector' | translate }}
+                  </label>
+                  <select id="sector" class="form-select" formControlName="sector">
+                    <option value="">{{ 'investmentCredit.form.sectorUnspecified' | translate }}</option>
+                    @for (activitySector of activitySectors(); track activitySector.id) {
+                      <option [value]="activitySector.name">{{ activitySector.name }}</option>
+                    }
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="email" class="cb-label">
+                    <i class="bi bi-envelope"></i>{{ 'investmentCredit.form.email' | translate }}
+                  </label>
+                  <input id="email" type="email" class="form-control"
+                    [class.is-invalid]="form.controls.email.invalid && form.controls.email.touched"
+                    formControlName="email" placeholder="contact@atlas-textile.ma"/>
+                  @if (form.controls.email.errors?.['required'] && form.controls.email.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'investmentCredit.form.emailRequired' | translate }}
+                    </div>
+                  } @else if (form.controls.email.errors?.['email'] && form.controls.email.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'investmentCredit.form.emailInvalid' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="phone" class="cb-label">
+                    <i class="bi bi-telephone"></i>{{ 'investmentCredit.form.phone' | translate }}
+                  </label>
+                  <input id="phone" type="tel" class="form-control"
+                    [class.is-invalid]="form.controls.phone.invalid && form.controls.phone.touched"
+                    formControlName="phone" placeholder="0612345678"/>
+                  @if (form.controls.phone.errors?.['required'] && form.controls.phone.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'investmentCredit.form.phoneRequired' | translate }}
+                    </div>
+                  } @else if (form.controls.phone.errors?.['pattern'] && form.controls.phone.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'investmentCredit.form.phoneInvalid' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="companyAgeYears" class="cb-label">
+                    <i class="bi bi-calendar-event"></i>{{ 'investmentCredit.form.companyAgeYears' | translate }}
+                  </label>
+                  <div class="input-group">
+                    <input id="companyAgeYears" type="number" class="form-control"
+                      [class.is-invalid]="form.controls.companyAgeYears.invalid && form.controls.companyAgeYears.touched"
+                      formControlName="companyAgeYears" [min]="limits.companyAgeYears.min"
+                      [max]="limits.companyAgeYears.max"/>
+                    <span class="input-group-text">{{ 'mortgageCredit.form.years' | translate }}</span>
+                  </div>
+                  @if (form.controls.companyAgeYears.errors?.['required'] && form.controls.companyAgeYears.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'investmentCredit.form.companyAgeYearsRequired' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="amount" class="cb-label">
+                    <i class="bi bi-cash-coin"></i>{{ 'investmentCredit.form.amount' | translate }}
+                  </label>
+                  <div class="input-group">
+                    <input id="amount" type="number" class="form-control"
+                      [class.is-invalid]="form.controls.amount.invalid && form.controls.amount.touched"
+                      formControlName="amount" [min]="limits.amount.min" [max]="limits.amount.max" step="10000"/>
+                    <span class="input-group-text">MAD</span>
+                  </div>
+                  @if (form.controls.amount.errors?.['required'] && form.controls.amount.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'investmentCredit.form.amountRequired' | translate }}
+                    </div>
+                  } @else if ((form.controls.amount.errors?.['min'] || form.controls.amount.errors?.['max']) && form.controls.amount.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'investmentCredit.form.amountRange' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="duration" class="cb-label">
+                    <i class="bi bi-calendar3"></i>{{ 'investmentCredit.form.duration' | translate }}
+                  </label>
+                  <div class="input-group">
+                    <input id="duration" type="number" class="form-control"
+                      [class.is-invalid]="form.controls.duration.invalid && form.controls.duration.touched"
+                      formControlName="duration" [min]="limits.duration.min" [max]="limits.duration.max"/>
+                    <span class="input-group-text">{{ 'mortgageCredit.form.months' | translate }}</span>
+                  </div>
+                  @if (form.controls.duration.value) {
+                    <p class="small mt-1 mb-0 cb-muted-text">{{ formatDuration(form.controls.duration.value) }}</p>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="annualRevenue" class="cb-label">
+                    <i class="bi bi-graph-up"></i>{{ 'investmentCredit.form.annualRevenue' | translate }}
+                  </label>
+                  <div class="input-group">
+                    <input id="annualRevenue" type="number" class="form-control"
+                      [class.is-invalid]="form.controls.annualRevenue.invalid && form.controls.annualRevenue.touched"
+                      formControlName="annualRevenue" min="1"/>
+                    <span class="input-group-text">MAD</span>
+                  </div>
+                  @if (form.controls.annualRevenue.errors?.['required'] && form.controls.annualRevenue.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'investmentCredit.form.annualRevenueRequired' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="netAnnualResult" class="cb-label">
+                    <i class="bi bi-wallet2"></i>{{ 'investmentCredit.form.netAnnualResult' | translate }}
+                  </label>
+                  <div class="input-group">
+                    <input id="netAnnualResult" type="number" class="form-control"
+                      [class.is-invalid]="form.controls.netAnnualResult.invalid && form.controls.netAnnualResult.touched"
+                      formControlName="netAnnualResult" min="1"/>
+                    <span class="input-group-text">MAD</span>
+                  </div>
+                  @if (form.controls.netAnnualResult.errors?.['required'] && form.controls.netAnnualResult.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'investmentCredit.form.netAnnualResultRequired' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="existingAnnualDebtService" class="cb-label">
+                    <i class="bi bi-credit-card"></i>{{ 'investmentCredit.form.existingAnnualDebtService' | translate }}
+                  </label>
+                  <div class="input-group">
+                    <input id="existingAnnualDebtService" type="number" class="form-control"
+                      formControlName="existingAnnualDebtService" min="0"/>
+                    <span class="input-group-text">{{ 'investmentCredit.form.madPerYear' | translate }}</span>
+                  </div>
+                  <p class="small mt-1 mb-0 cb-muted-text">{{ 'investmentCredit.form.existingDebtHint' | translate }}</p>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="guaranteesValue" class="cb-label">
+                    <i class="bi bi-shield-lock"></i>{{ 'investmentCredit.form.guaranteesValue' | translate }}
+                  </label>
+                  <div class="input-group">
+                    <input id="guaranteesValue" type="number" class="form-control"
+                      [class.is-invalid]="form.controls.guaranteesValue.invalid && form.controls.guaranteesValue.touched"
+                      formControlName="guaranteesValue" min="0"/>
+                    <span class="input-group-text">MAD</span>
+                  </div>
+                  @if (form.controls.guaranteesValue.errors?.['required'] && form.controls.guaranteesValue.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'investmentCredit.form.guaranteesValueRequired' | translate }}
+                    </div>
+                  }
+                </div>
+
+              </div>
+
+              <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="cb-btn cb-btn--primary flex-grow-1" [disabled]="loading()">
+                  <i class="bi bi-calculator"></i>{{ 'investmentCredit.form.submit' | translate }}
+                </button>
+                <button type="button" class="cb-btn cb-btn--ghost" (click)="reset()" [attr.aria-label]="'investmentCredit.form.resetAria' | translate">
+                  <i class="bi bi-arrow-counterclockwise"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <app-investment-simulation-result [result]="result()" />
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<app-product-highlights i18nPrefix="investmentCredit" [reasons]="reasons" [stepIcons]="stepIcons" />

@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { backendIsUp, login, AUTH_FILE, SEEDED_MANAGER } from './helpers';
+import { freeUsername } from './world';
 
 const SHOT = 'docs/screenshots/e2e/auth';
 
@@ -42,12 +43,12 @@ test.describe('Authentication flow', () => {
     await expect(page.locator('body')).not.toContainText('.java:');
   });
 
-  test('valid credentials log the user in and redirect to /simulation', async ({ page }) => {
+  test('valid credentials log the user in and redirect to /mortgage-credit', async ({ page }) => {
     test.skip(!(await backendIsUp(page)), 'Backend API not running on :8080 - start it first (see README).');
 
     await login(page, SEEDED_MANAGER.username, SEEDED_MANAGER.password);
 
-    await expect(page).toHaveURL(/\/simulation$/);
+    await expect(page).toHaveURL(/\/mortgage-credit$/);
     await page.screenshot({ path: `${SHOT}/04-login-success.png`, fullPage: true, animations: 'disabled' });
   });
 
@@ -57,9 +58,9 @@ test.describe('Authentication flow', () => {
     await page.screenshot({ path: `${SHOT}/05-guard-unauthenticated-redirect.png`, fullPage: true, animations: 'disabled' });
   });
 
-  test('unknown routes fall back to /simulation', async ({ page }) => {
+  test('unknown routes fall back to /mortgage-credit', async ({ page }) => {
     await page.goto('/this-route-does-not-exist');
-    await expect(page).toHaveURL(/\/simulation$/);
+    await expect(page).toHaveURL(/\/mortgage-credit$/);
     await page.screenshot({ path: `${SHOT}/06-unknown-route-fallback.png`, fullPage: true, animations: 'disabled' });
   });
 });
@@ -71,16 +72,16 @@ test.describe('Authenticated navigation', () => {
     test.skip(!(await backendIsUp(page)), 'Backend API not running on :8080 - start it first (see README).');
 
     await page.goto('/login');
-    await expect(page).toHaveURL(/\/simulation$/);
+    await expect(page).toHaveURL(/\/mortgage-credit$/);
     await page.screenshot({ path: `${SHOT}/07-guest-guard-redirect.png`, fullPage: true, animations: 'disabled' });
   });
 });
 
 test.describe('Manager guard - CLIENT role', () => {
-  test('a logged-in CLIENT is redirected away from /admin back to /simulation', async ({ page }) => {
+  test('a logged-in CLIENT is redirected away from /admin back to /mortgage-credit', async ({ page }) => {
     test.skip(!(await backendIsUp(page)), 'Backend API not running on :8080 - start it first (see README).');
 
-    const username = `e2e-client-guard-${Date.now()}`;
+    const username = await freeUsername();
     await page.goto('/register');
     await page.getByLabel(/nom d'utilisateur/i).fill(username);
     await page.getByLabel(/mot de passe/i).fill('ValidPass1234');
@@ -88,10 +89,10 @@ test.describe('Manager guard - CLIENT role', () => {
     await expect(page).toHaveURL(/\/login$/, { timeout: 5000 });
 
     await login(page, username, 'ValidPass1234');
-    await expect(page).toHaveURL(/\/simulation$/);
+    await expect(page).toHaveURL(/\/mortgage-credit$/);
 
     await page.goto('/admin/users');
-    await expect(page).toHaveURL(/\/simulation$/);
+    await expect(page).toHaveURL(/\/mortgage-credit$/);
     await page.screenshot({ path: `${SHOT}/08-client-guard-redirect.png`, fullPage: true, animations: 'disabled' });
   });
 });

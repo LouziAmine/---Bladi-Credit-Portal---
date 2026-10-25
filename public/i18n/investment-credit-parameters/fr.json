@@ -1,0 +1,30 @@
+{
+  "investmentCreditParameters": {
+    "title": "Paramètres crédit entreprise",
+    "subtitle": "Gérez les critères d'éligibilité et de tarification par catégorie d'entreprise.",
+    "loading": "Chargement des paramètres...",
+    "col": {
+      "category": "Catégorie",
+      "rateMin": "Taux min (%)",
+      "rateMax": "Taux max (%)",
+      "minAge": "Ancienneté min",
+      "financingRatio": "Ratio financement/CA",
+      "guaranteeCoverage": "Couverture garantie",
+      "debtServiceRatio": "Ratio service dette max",
+      "processingFees": "Frais dossier (%)",
+      "insurancePremium": "Assurance (%/mois)"
+    },
+    "editHint": "Les modifications s'appliquent aux nouvelles simulations",
+    "form": {
+      "rateMin": "Taux min",
+      "rateMax": "Taux max",
+      "minCompanyAgeYears": "Ancienneté min",
+      "maxFinancingToRevenueRatio": "Ratio financement/CA max",
+      "minGuaranteeCoverageRatio": "Couverture garantie min",
+      "maxDebtServiceRatio": "Ratio service dette max",
+      "processingFeesRatio": "Ratio frais dossier",
+      "insurancePremiumRatio": "Ratio assurance mensuelle (ADI/dommages)"
+    },
+    "loadErrorFallback": "Impossible de charger les paramètres. Serveur indisponible."
+  }
+}

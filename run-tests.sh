@@ -16,17 +16,17 @@ error()   { echo -e "${RED}[ERROR]${NC} $*"; }
 print_menu() {
     echo ""
     echo -e "${BOLD}╔══════════════════════════════════════════╗${NC}"
-    echo -e "${BOLD}║     Credit Bladi UI — Dev Launcher       ║${NC}"
+    echo -e "${BOLD}║     Credit Bladi UI - Dev Launcher       ║${NC}"
     echo -e "${BOLD}╚══════════════════════════════════════════╝${NC}"
     echo ""
-    echo -e "  ${CYAN}1)${NC} Unit tests    — Vitest                ${GREEN}(no app needed)${NC}"
-    echo -e "  ${CYAN}2)${NC} Playwright    — Integration/E2E tests ${YELLOW}(app starts automatically)${NC}"
-    echo -e "  ${CYAN}3)${NC} Lighthouse CI — Performance tests      ${YELLOW}(app auto-managed)${NC}"
-    echo -e "  ${CYAN}4)${NC} P + L         — Playwright then Lighthouse ${YELLOW}(app auto-managed)${NC}"
-    echo -e "  ${CYAN}5)${NC} ESLint        — Style & SAST           ${BLUE}(no app needed)${NC}"
-    echo -e "  ${CYAN}6)${NC} Start app     — DEV mode                ${GREEN}(ng serve on :${APP_PORT})${NC}"
-    echo -e "  ${CYAN}7)${NC} npm audit / audit-ci — SCA scan        ${BLUE}(no app needed)${NC}"
-    echo -e "  ${CYAN}8)${NC} ZAP           — OWASP DAST scan         ${RED}(requires preview server · Docker)${NC}"
+    echo -e "  ${CYAN}1)${NC} Unit tests    - Vitest                ${GREEN}(no app needed)${NC}"
+    echo -e "  ${CYAN}2)${NC} Playwright    - Integration/E2E tests ${YELLOW}(app starts automatically)${NC}"
+    echo -e "  ${CYAN}3)${NC} Lighthouse CI - Performance tests      ${YELLOW}(app auto-managed)${NC}"
+    echo -e "  ${CYAN}4)${NC} P + L         - Playwright then Lighthouse ${YELLOW}(app auto-managed)${NC}"
+    echo -e "  ${CYAN}5)${NC} ESLint        - Style & SAST           ${BLUE}(no app needed)${NC}"
+    echo -e "  ${CYAN}6)${NC} Start app     - DEV mode                ${GREEN}(ng serve on :${APP_PORT})${NC}"
+    echo -e "  ${CYAN}7)${NC} npm audit / audit-ci - SCA scan        ${BLUE}(no app needed)${NC}"
+    echo -e "  ${CYAN}8)${NC} ZAP           - OWASP DAST scan         ${RED}(requires preview server · Docker)${NC}"
     echo -e "  ${CYAN}q)${NC} Quit"
     echo ""
 }
@@ -45,7 +45,7 @@ backend_is_running() {
 
 start_app_background() {
     if app_is_running; then
-        success "App already running on :${APP_PORT} — skipping start."
+        success "App already running on :${APP_PORT} - skipping start."
         return 0
     fi
 
@@ -58,11 +58,11 @@ start_app_background() {
     local elapsed=0
     while ! app_is_running; do
         if ! kill -0 "$APP_PID" 2>/dev/null; then
-            error "App process died unexpectedly — check the logs."
+            error "App process died unexpectedly - check the logs."
             exit 1
         fi
         if [ $elapsed -ge $max_wait ]; then
-            error "App did not start within ${max_wait}s — aborting."
+            error "App did not start within ${max_wait}s - aborting."
             stop_app
             exit 1
         fi
@@ -86,7 +86,7 @@ stop_app() {
 
 warn_if_backend_down() {
     if ! backend_is_running; then
-        warn "Backend API (Credit-Bladi, :8080) is NOT running — auth-dependent specs will be skipped."
+        warn "Backend API (Credit-Bladi, :8080) is NOT running - auth-dependent specs will be skipped."
         warn "Start it from the backend repo:  ./run-tests.sh  →  option 6"
     fi
 }
@@ -108,7 +108,7 @@ run_unit_tests() {
         read -r open_answer
         if [[ "$open_answer" =~ ^[Yy]$ ]]; then
             xdg-open "$REPORT" 2>/dev/null || open "$REPORT" 2>/dev/null || \
-                warn "Cannot open browser — navigate to: file://${REPORT}"
+                warn "Cannot open browser - navigate to: file://${REPORT}"
         fi
     fi
 }
@@ -151,10 +151,10 @@ run_playwright_then_lighthouse() {
 
 run_lint() {
     echo ""
-    info "Running ESLint — Angular style rules + eslint-plugin-security (SAST)..."
+    info "Running ESLint - Angular style rules + eslint-plugin-security (SAST)..."
     echo ""
     npm run lint
-    success "Lint passed — style and SAST checks are clean."
+    success "Lint passed - style and SAST checks are clean."
 }
 
 start_app_dev() {
@@ -172,11 +172,11 @@ start_app_dev() {
 
 run_sca() {
     echo ""
-    info "Running npm audit / audit-ci — scanning production dependencies for known CVEs..."
-    echo -e "  ${YELLOW}(devDependency-only findings are excluded — they never reach the shipped bundle)${NC}"
+    info "Running npm audit / audit-ci - scanning production dependencies for known CVEs..."
+    echo -e "  ${YELLOW}(devDependency-only findings are excluded - they never reach the shipped bundle)${NC}"
     echo ""
     npm run test:security:sca
-    success "SCA scan passed — no high/critical CVEs in production dependencies."
+    success "SCA scan passed - no high/critical CVEs in production dependencies."
 }
 
 check_docker_permissions() {
@@ -198,7 +198,7 @@ check_docker_permissions() {
         error "Your user is not in the 'docker' group."
         echo -e "  ${CYAN}Fix:${NC} sudo usermod -aG docker \$USER   (then log out and back in)"
     else
-        error "Cannot connect to Docker daemon — is it installed and running?"
+        error "Cannot connect to Docker daemon - is it installed and running?"
         echo -e "  ${YELLOW}Try:${NC} sudo systemctl status docker"
     fi
     return 1
@@ -206,12 +206,12 @@ check_docker_permissions() {
 
 start_preview_for_zap() {
     if preview_is_running; then
-        success "Preview server already running on :${PREVIEW_PORT} — skipping start."
+        success "Preview server already running on :${PREVIEW_PORT} - skipping start."
         return 0
     fi
 
     info "Building production bundle and starting the preview server on :${PREVIEW_PORT} ..."
-    warn "Binding to 0.0.0.0 so the ZAP container can reach it — reachable from your"
+    warn "Binding to 0.0.0.0 so the ZAP container can reach it - reachable from your"
     warn "whole network while the scan runs."
 
     npm run build -q
@@ -222,11 +222,11 @@ start_preview_for_zap() {
     local elapsed=0
     while ! preview_is_running; do
         if ! kill -0 "$APP_PID" 2>/dev/null; then
-            error "Preview server died unexpectedly — check the logs."
+            error "Preview server died unexpectedly - check the logs."
             exit 1
         fi
         if [ $elapsed -ge $max_wait ]; then
-            error "Preview server did not start within ${max_wait}s — aborting."
+            error "Preview server did not start within ${max_wait}s - aborting."
             stop_app
             exit 1
         fi
@@ -244,7 +244,7 @@ run_zap() {
         return 1
     fi
     if preview_is_running; then
-        warn "Preview server is running on :${PREVIEW_PORT} — make sure it was started with"
+        warn "Preview server is running on :${PREVIEW_PORT} - make sure it was started with"
         warn "HOST=0.0.0.0, or the ZAP container won't be able to reach it."
     else
         warn "Preview server is NOT running on :${PREVIEW_PORT}"
@@ -260,7 +260,7 @@ run_zap() {
         fi
     fi
     info "Running OWASP ZAP DAST scan (config: security/zap-automation.yaml)..."
-    echo -e "  ${YELLOW}(active scan is intrusive — only run against this local/dev instance)${NC}"
+    echo -e "  ${YELLOW}(active scan is intrusive - only run against this local/dev instance)${NC}"
     echo ""
     local zap_status=0
     ./security/run-zap-scan.sh || zap_status=$?

@@ -1,0 +1,27 @@
+{
+  "login": {
+    "hero": {
+      "titleLine1": "قرضك",
+      "titleAccent": "العقاري",
+      "titleLine3": "بأفضل معدل.",
+      "subtitle": "احسب محاكاتك في ثوانٍ، وفق معايير بنك المغرب التي تضبطها المؤسسة.",
+      "secureTitle": "آمن بنسبة 100%",
+      "secureSubtitle": "بيانات مشفرة SSL",
+      "instantTitle": "نتيجة فورية",
+      "instantSubtitle": "محاكاة بنقرة واحدة"
+    },
+    "heading": "مرحبًا بعودتك!",
+    "subheading": "سجّل الدخول إلى مساحتك الشخصية.",
+    "loggingIn": "جارٍ تسجيل الدخول...",
+    "usernameLabel": "اسم المستخدم",
+    "usernameRequired": "اسم المستخدم مطلوب.",
+    "usernameMinLength": "3 أحرف كحد أدنى.",
+    "passwordLabel": "كلمة المرور",
+    "passwordRequired": "كلمة المرور مطلوبة.",
+    "passwordMinLength": "6 أحرف كحد أدنى.",
+    "submit": "تسجيل الدخول",
+    "noAccount": "ليس لديك حساب بعد؟",
+    "registerLink": "إنشاء حساب مجاني",
+    "invalidCredentialsFallback": "بيانات الاعتماد غير صحيحة."
+  }
+}

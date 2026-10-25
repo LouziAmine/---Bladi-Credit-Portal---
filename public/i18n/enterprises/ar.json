@@ -1,0 +1,37 @@
+{
+  "enterprises": {
+    "title": "الشركات",
+    "subtitle": "عملاء الشركات ومحفظة ملفات القروض الخاصة بهم.",
+    "form": {
+      "title": "شركة جديدة",
+      "subtitle": "سجّل عميل شركة لربط ملفات به",
+      "creating": "جارٍ الإنشاء...",
+      "name": "اسم الشركة",
+      "sector": "قطاع النشاط",
+      "noSector": "لا يوجد أي قطاع مسجل, ",
+      "addOne": "أضف واحدًا",
+      "first": "أولاً.",
+      "submit": "إنشاء",
+      "registrationNumber": "رقم السجل التجاري / ICE",
+      "registrationNumberPlaceholder": "RC-45210-CASABLANCA",
+      "registrationNumberHint": "يتيح للعميل طلب الوصول إلى هذه المحفظة من فضائه."
+    },
+    "loading": "جارٍ تحميل الشركات...",
+    "list": {
+      "title": "الشركات",
+      "subtitle": "اطّلع على محفظة الملفات لكل شركة"
+    },
+    "col": {
+      "name": "الاسم",
+      "sector": "القطاع",
+      "createdOn": "أُنشئت في",
+      "registrationNumber": "السجل التجاري / ICE"
+    },
+    "portfolio": "المحفظة",
+    "access": "الوصول إلى المحفظة",
+    "empty": "لا توجد أي شركة مسجلة",
+    "createSuccess": "تم إنشاء الشركة بنجاح.",
+    "loadErrorFallback": "تعذر تحميل الشركات. الخادم غير متاح.",
+    "createErrorFallback": "خطأ أثناء الإنشاء."
+  }
+}

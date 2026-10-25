@@ -1,0 +1,63 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi" [class]="heroIcon()"></i> {{ 'nav.administration' | translate }}
+    </div>
+    <h1 class="cb-hero__title">{{ i18nPrefix() + '.title' | translate }}</h1>
+    <p class="cb-hero__subtitle">{{ i18nPrefix() + '.subtitle' | translate }}</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+
+    <app-loading-spinner [loading]="loadingList()" [message]="i18nPrefix() + '.loading' | translate" />
+    <app-error-message [message]="errorMessage()" />
+
+    @if (!loadingList() && hasRecords()) {
+      <div class="cb-card mb-4">
+        <div class="cb-card__header cb-card__header--indigo">
+          <div class="cb-card__header-icon cb-card__header-icon--indigo">
+            <i class="bi bi-table"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">{{ listTitleKey() | translate }}</p>
+            <p class="cb-card__header-sub">{{ 'adminCommon.selectToEdit' | translate }}</p>
+          </div>
+        </div>
+        <div class="cb-card__body cb-card__body--flush">
+          <div class="table-responsive">
+            <ng-content select="[parametersTable]" />
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (selectedId() !== null) {
+      <div class="cb-card cb-animate">
+        <div class="cb-card__header cb-card__header--amber">
+          <div class="cb-card__header-icon cb-card__header-icon--amber">
+            <i class="bi bi-pencil-square"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">{{ 'adminCommon.editRecord' | translate }} #{{ selectedId() }}</p>
+            <p class="cb-card__header-sub">{{ i18nPrefix() + '.editHint' | translate }}</p>
+          </div>
+        </div>
+        <div class="cb-card__body">
+          <app-loading-spinner [loading]="loading()" [message]="'adminCommon.updating' | translate" />
+
+          @if (successMessage()) {
+            <div class="cb-alert cb-alert--success">
+              <i class="bi bi-check-circle-fill"></i>
+              <span>{{ successMessage() }}</span>
+            </div>
+          }
+
+          <ng-content select="[parametersEditor]" />
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

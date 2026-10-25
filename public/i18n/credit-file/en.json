@@ -1,0 +1,94 @@
+{
+  "creditFile": {
+    "client": {
+      "title": "Credit file",
+      "subtitle": "Disbursement and repayment schedule for your credit",
+      "loading": "Loading credit file...",
+      "reference": "File reference",
+      "disbursedAmount": "Disbursed amount",
+      "disbursedAt": "Disbursement date",
+      "status": "File status",
+      "fileStatus": {
+        "ACTIVE": "Active",
+        "CLOSED": "Closed"
+      },
+      "beneficiary": "Account to pay into",
+      "beneficiaryHint": "Make your transfer to this RIB, then declare it below for each installment.",
+      "col": {
+        "sequenceNumber": "#",
+        "dueDate": "Due date",
+        "amount": "Amount",
+        "status": "Status",
+        "action": "Action"
+      },
+      "installmentStatus": {
+        "PENDING": "Upcoming",
+        "DECLARED": "Declared",
+        "PAID": "Paid",
+        "LATE": "Late",
+        "REPAID_EARLY": "Repaid early"
+      },
+      "paidOn": "Paid on",
+      "declaredOn": "Declared on",
+      "declaredWaiting": "Awaiting validation by our gestionnaire",
+      "payAction": "I've paid",
+      "paying": "Recording...",
+      "sourceRibLabel": "RIB used for the transfer",
+      "sourceRibPlaceholder": "e.g. 230 780 0123456789012345 67",
+      "sourceRibRequired": "RIB is required (at least 10 characters).",
+      "confirmDeclare": "Confirm",
+      "cancelDeclare": "Cancel",
+      "latePenaltyIncluded": "incl. late penalty",
+      "repaidEarly": "Settled by early repayment",
+      "loadErrorFallback": "Unable to load the credit file.",
+      "payErrorFallback": "Error while recording the payment.",
+      "showAllInstallments": "Show the full schedule ({{count}} installments)",
+      "showNextInstallments": "Show only the next installments"
+    },
+    "admin": {
+      "title": "Credit file",
+      "subtitle": "Disbursement and repayment schedule",
+      "loading": "Loading credit file...",
+      "reference": "File reference",
+      "disbursedAmount": "Disbursed amount",
+      "disbursedAt": "Disbursement date",
+      "status": "File status",
+      "fileStatus": {
+        "ACTIVE": "Active",
+        "CLOSED": "Closed"
+      },
+      "beneficiary": "Account to pay into",
+      "clientRib": "Client's RIB (declared at classification)",
+      "col": {
+        "sequenceNumber": "#",
+        "dueDate": "Due date",
+        "amount": "Amount",
+        "status": "Status",
+        "paidAt": "Paid on"
+      },
+      "installmentStatus": {
+        "PENDING": "Upcoming",
+        "DECLARED": "Declared",
+        "PAID": "Paid",
+        "LATE": "Late",
+        "REPAID_EARLY": "Repaid early"
+      },
+      "declaredOn": "Declared on",
+      "declaredBy": "Declared by",
+      "declaredSourceRib": "RIB declared by the client",
+      "validateAction": "Validate",
+      "validating": "Validating...",
+      "rejectAction": "Reject",
+      "rejecting": "Rejecting...",
+      "rejectReasonPlaceholder": "Rejection reason",
+      "confirmReject": "Confirm rejection",
+      "cancelReject": "Cancel",
+      "validateErrorFallback": "Error while validating the payment.",
+      "rejectErrorFallback": "Error while rejecting the payment.",
+      "empty": "No credit file has been opened for this demand yet.",
+      "latePenaltyIncluded": "incl. late penalty",
+      "loadErrorFallback": "Unable to load the credit file.",
+      "scheduleLabel": "Repayment schedule"
+    }
+  }
+}

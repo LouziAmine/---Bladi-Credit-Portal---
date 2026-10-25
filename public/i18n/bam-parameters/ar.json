@@ -1,0 +1,31 @@
+{
+  "bamParameters": {
+    "title": "معايير بنك المغرب",
+    "subtitle": "أدر النسب والرسوم المطبقة على محاكاة القروض.",
+    "loading": "جارٍ تحميل المعايير...",
+    "col": {
+      "processingFees": "رسوم الملف (%)",
+      "registration": "التسجيل (%)",
+      "conservation": "المحافظة العقارية (%)",
+      "notary": "التوثيق (%)",
+      "ltvMax": "الحد الأقصى لنسبة التمويل (%)",
+      "debtMax": "الحد الأقصى للمديونية (%)",
+      "maxAge": "الحد الأقصى للسن عند الاستحقاق",
+      "adi": "تأمين ADI الشهري (%)"
+    },
+    "editHint": "تُطبَّق التعديلات على المحاكاة الجديدة",
+    "form": {
+      "processingFeesRatio": "نسبة رسوم الملف",
+      "minProcessingFees": "الحد الأدنى لرسوم الملف",
+      "maxProcessingFees": "الحد الأقصى لرسوم الملف",
+      "registrationFeeRatio": "نسبة رسوم التسجيل",
+      "landConservationRatio": "نسبة المحافظة العقارية",
+      "notaryFeeRatio": "نسبة أتعاب التوثيق",
+      "ltvRatio": "الحد الأقصى لنسبة التمويل (دفعة أولى 10% كحد أدنى)",
+      "maxDebtRatio": "الحد الأقصى لنسبة المديونية",
+      "maxAgeAtMaturity": "الحد الأقصى للسن عند الاستحقاق",
+      "adiMonthlyRate": "معدل تأمين ADI الشهري"
+    },
+    "loadErrorFallback": "تعذر تحميل المعايير. الخادم غير متاح."
+  }
+}

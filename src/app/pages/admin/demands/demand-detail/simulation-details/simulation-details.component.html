@@ -1,0 +1,119 @@
+<div class="cb-card__header cb-card__header--indigo">
+  <div class="cb-card__header-icon cb-card__header-icon--indigo"><i class="bi" [class]="icon()"></i></div>
+  <div>
+    <p class="cb-card__header-title">{{ title() | translate }}</p>
+    <p class="cb-card__header-sub">{{ subtitle() | translate }}</p>
+  </div>
+  <span class="ms-auto d-flex align-items-center gap-2">
+    @if (!compact()) {
+      <span class="cb-badge cb-badge--green">
+        <i class="bi bi-shield-check"></i>{{ 'mortgageCredit.results.bamCompliant' | translate }}
+      </span>
+    }
+    @if (amortization()) {
+      <button type="button" class="cb-btn cb-btn--ghost cb-btn--sm" (click)="downloadPdf()"
+              [title]="'simulationDetails.downloadPdfTitle' | translate">
+        <i class="bi bi-file-earmark-pdf"></i>
+      </button>
+    }
+  </span>
+</div>
+<div class="cb-card__body">
+  <app-loading-spinner [loading]="loading() && !amortization()" [message]="'simulationDetails.calculating' | translate" />
+  <app-error-message [message]="errorMessage()" />
+  @if (amortization(); as amortization) {
+    @let figures = summary();
+    <div class="row g-3">
+      <div class="col-md-4 col-lg-2">
+        <p class="cb-label mb-1">{{ 'simulationDetails.amount' | translate }}</p>
+        <p class="fw-semibold mb-0">{{ formatAmount(amortization.amount) }}</p>
+      </div>
+      <div class="col-md-4 col-lg-2">
+        <p class="cb-label mb-1">{{ 'simulationDetails.duration' | translate }}</p>
+        <p class="fw-semibold mb-0">{{ amortization.duration }} {{ 'mortgageCredit.form.months' | translate }}</p>
+      </div>
+      <div class="col-md-4 col-lg-2">
+        <p class="cb-label mb-1">{{ 'simulationDetails.applicableRate' | translate }}</p>
+        <span class="cb-badge cb-badge--indigo">{{ formatPercent(amortization.applicableRate) }}</span>
+      </div>
+      <div class="col-md-4 col-lg-2">
+        <p class="cb-label mb-1">{{ 'simulationDetails.monthlyPayment' | translate }}</p>
+        <p class="fw-semibold mb-0">{{ figures ? formatAmount(figures.monthlyPayment) : '-' }}</p>
+      </div>
+      <div class="col-md-4 col-lg-2">
+        <p class="cb-label mb-1">{{ 'simulationDetails.insurancePremium' | translate }}</p>
+        <p class="fw-semibold mb-0">{{ formatAmount(amortization.insurancePremium) }}</p>
+      </div>
+      <div class="col-md-4 col-lg-2">
+        <p class="cb-label mb-1">{{ 'simulationDetails.allInMonthlyPayment' | translate }}</p>
+        <p class="fw-semibold mb-0">{{ formatAmount(amortization.allInMonthlyPayment) }}</p>
+      </div>
+      <div class="col-md-4 col-lg-2">
+        <p class="cb-label mb-1">{{ 'simulationDetails.totalInterest' | translate }}</p>
+        <p class="fw-semibold mb-0">{{ figures ? formatAmount(figures.totalInterest) : '-' }}</p>
+      </div>
+      <div class="col-md-4 col-lg-2">
+        <p class="cb-label mb-1">{{ 'simulationDetails.totalCost' | translate }}</p>
+        <p class="fw-semibold mb-0">{{ figures ? formatAmount(figures.totalCost) : '-' }}</p>
+      </div>
+      <div class="col-md-4 col-lg-2">
+        <p class="cb-label mb-1">{{ 'simulationDetails.taeg' | translate }}</p>
+        <p class="fw-semibold mb-0">{{ formatPercent(amortization.taeg) }}</p>
+      </div>
+      <div class="col-md-4 col-lg-2">
+        <p class="cb-label mb-1">{{ 'simulationDetails.processingFees' | translate }}</p>
+        <p class="fw-semibold mb-0">{{ formatAmount(amortization.processingFees) }}</p>
+      </div>
+      @if (figures && figures.annualDebtService !== null) {
+        <div class="col-md-4 col-lg-2">
+          <p class="cb-label mb-1">{{ 'simulationDetails.annualDebtService' | translate }}</p>
+          <p class="fw-semibold mb-0">{{ formatAmount(figures.annualDebtService) }}</p>
+        </div>
+      }
+      <div class="col-md-4 col-lg-2">
+        <p class="cb-label mb-1">{{ 'simulationDetails.totalInsuranceCost' | translate }}</p>
+        <p class="fw-semibold mb-0">{{ formatAmount(amortization.totalInsuranceCost) }}</p>
+      </div>
+    </div>
+
+    <hr class="my-3"/>
+
+    <button type="button" class="cb-btn cb-btn--ghost cb-btn--sm" (click)="toggleSchedule()">
+      <i class="bi" [class.bi-chevron-down]="!showSchedule()" [class.bi-chevron-up]="showSchedule()"></i>
+      {{ 'simulationDetails.schedule' | translate }}
+      ({{ amortization.amortizationSchedule.length }} {{ 'mortgageCredit.schedule.installments' | translate }}) -
+      {{ (showSchedule() ? 'mortgageCredit.schedule.hide' : 'mortgageCredit.schedule.show') | translate }}
+    </button>
+
+    @if (showSchedule()) {
+      <div class="table-responsive cb-schedule-table-wrap mt-3">
+        <table class="cb-table">
+          <thead>
+            <tr>
+              <th>{{ 'mortgageCredit.schedule.col.num' | translate }}</th>
+              <th>{{ 'mortgageCredit.schedule.col.beginningBalance' | translate }}</th>
+              <th>{{ 'mortgageCredit.schedule.col.interest' | translate }}</th>
+              <th>{{ 'mortgageCredit.schedule.col.principal' | translate }}</th>
+              <th>{{ 'mortgageCredit.schedule.col.insurance' | translate }}</th>
+              <th>{{ 'mortgageCredit.schedule.col.installment' | translate }}</th>
+              <th>{{ 'mortgageCredit.schedule.col.endingBalance' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of amortization.amortizationSchedule; track row.installmentNumber) {
+              <tr>
+                <td>{{ row.installmentNumber }}</td>
+                <td>{{ formatAmount(row.beginningBalance) }}</td>
+                <td>{{ formatAmount(row.interest!) }}</td>
+                <td>{{ formatAmount(row.principal) }}</td>
+                <td>{{ formatAmount(amortization.insurancePremium) }}</td>
+                <td class="fw-semibold">{{ formatAmount(row.payment + amortization.insurancePremium) }}</td>
+                <td>{{ formatAmount(row.endingBalance) }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>

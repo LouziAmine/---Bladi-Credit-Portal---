@@ -1,0 +1,18 @@
+{
+  "mourabahaParameters": {
+    "title": "Mourabaha parameters",
+    "subtitle": "Manage the profit rate, VAT and Takaful contribution applied to participative financing.",
+    "loading": "Loading parameters...",
+    "col": {
+      "profitRate": "Profit rate (%)",
+      "vatRate": "VAT on margin",
+      "takafulMonthlyRate": "Monthly Takaful rate"
+    },
+    "editHint": "Changes apply to new Mourabaha simulations",
+    "form": {
+      "profitRate": "Annual profit rate (%)",
+      "takafulMonthlyRate": "Monthly Takaful contribution rate"
+    },
+    "loadErrorFallback": "Unable to load parameters. Server unavailable."
+  }
+}

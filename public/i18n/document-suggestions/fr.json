@@ -1,0 +1,33 @@
+{
+  "documentSuggestions": {
+    "title": "Suggestions de documents",
+    "subtitle": "Gérez les documents suggérés en un clic lors d'une demande de document, par type d'entreprise ou par CSP (crédit immobilier).",
+    "form": {
+      "title": "Ajouter une suggestion",
+      "subtitle": "Visible comme tag rapide pour le type d'entreprise choisi (ou pour tous si aucun n'est choisi).",
+      "adding": "Ajout en cours...",
+      "scope": "Portée",
+      "enterpriseType": "Type d'entreprise",
+      "cspCode": "Catégorie socio-professionnelle (immobilier)",
+      "common": "Commun à tous les types",
+      "label": "Nom du document",
+      "labelPlaceholder": "ex : Extrait du Registre de Commerce"
+    },
+    "loading": "Chargement des suggestions...",
+    "loadErrorFallback": "Impossible de charger les suggestions de documents.",
+    "addSuccess": "Suggestion ajoutée avec succès.",
+    "addErrorFallback": "Erreur lors de l'ajout de la suggestion.",
+    "deleteErrorFallback": "Erreur lors de la suppression de la suggestion.",
+    "list": {
+      "title": "Suggestions enregistrées",
+      "subtitle": "Utilisées comme tags rapides dans le formulaire de demande de document."
+    },
+    "col": {
+      "scope": "Portée",
+      "enterpriseType": "Type d'entreprise",
+      "label": "Document",
+      "addedOn": "Ajouté le"
+    },
+    "empty": "Aucune suggestion de document enregistrée."
+  }
+}

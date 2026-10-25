@@ -1,12 +1,14 @@
 export interface MourabahaParametersResponse {
-  id: number;
+  id: string;
   profitRate: number;
   vatRate: number;
+  takafulMonthlyRate: number;
   active: boolean;
 }
 
 export interface PatchMourabahaParametersRequest {
   profitRate?: number;
   vatRate?: number;
+  takafulMonthlyRate?: number;
   active?: boolean;
 }

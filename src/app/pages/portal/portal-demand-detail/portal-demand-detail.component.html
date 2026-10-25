@@ -1,0 +1,255 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-person-badge"></i> {{ 'portal.eyebrow' | translate }}
+    </div>
+    <h1 class="cb-hero__title">{{ 'portal.dossier.title' | translate }}</h1>
+    <p class="cb-hero__subtitle">{{ 'portal.dossier.subtitle' | translate }}</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+
+    <a class="cb-btn cb-btn--ghost cb-btn--sm mb-3" [routerLink]="backLink">
+      <i class="bi bi-chevron-left"></i>{{ (enterpriseId ? 'documentRequests.client.backToDemands' : 'documentRequests.client.backToPortfolio') | translate }}
+    </a>
+
+    @if (summary(); as s) {
+      <div class="cb-card mb-4">
+        <div class="cb-card__body d-flex flex-wrap align-items-center gap-3">
+          <span class="cb-label mb-0">{{ 'portal.demands.col.reference' | translate }}</span>
+          <strong>{{ s.reference }}</strong>
+          @if (s.amount !== null) {
+            <span class="cb-muted-text">{{ formatAmount(s.amount) }}</span>
+          }
+          @if (s.rejected) {
+            <span class="cb-badge cb-badge--red"><i class="bi bi-x-circle-fill"></i>{{ 'portal.demands.status.rejected' | translate }}</span>
+          } @else if (s.completed) {
+            <span class="cb-badge cb-badge--green"><i class="bi bi-check-circle-fill"></i>{{ 'portal.demands.status.completed' | translate }}</span>
+          } @else {
+            <span class="cb-badge cb-badge--amber"><i class="bi bi-hourglass-split"></i>{{ 'portal.demands.status.inProgress' | translate }}</span>
+          }
+        </div>
+      </div>
+    }
+
+    @if (demandCompleted()) {
+      <div class="cb-card mb-4">
+        <div class="cb-card__header cb-card__header--indigo">
+          <div class="cb-card__header-icon cb-card__header-icon--indigo"><i class="bi bi-wallet2"></i></div>
+          <div>
+            <p class="cb-card__header-title">{{ 'creditFile.client.title' | translate }}</p>
+            <p class="cb-card__header-sub">{{ 'creditFile.client.subtitle' | translate }}</p>
+          </div>
+        </div>
+        <div class="cb-card__body">
+          <app-loading-spinner [loading]="creditFileLoading() && !creditFile()"
+                                [message]="'creditFile.client.loading' | translate" />
+          <app-error-message [message]="creditFileErrorMessage()" />
+
+          @if (creditFile(); as file) {
+            <div class="row g-3 mb-3">
+              <div class="col-md-4 col-lg-3">
+                <p class="cb-label mb-1">{{ 'creditFile.client.reference' | translate }}</p>
+                <p class="fw-semibold mb-0">{{ file.reference }}</p>
+              </div>
+              <div class="col-md-4 col-lg-3">
+                <p class="cb-label mb-1">{{ 'creditFile.client.disbursedAmount' | translate }}</p>
+                <p class="fw-semibold mb-0">{{ formatAmount(file.disbursedAmount) }}</p>
+              </div>
+              <div class="col-md-4 col-lg-3">
+                <p class="cb-label mb-1">{{ 'creditFile.client.disbursedAt' | translate }}</p>
+                <p class="fw-semibold mb-0">{{ file.disbursedAt | date: 'dd/MM/yyyy' }}</p>
+              </div>
+              <div class="col-md-4 col-lg-3">
+                <p class="cb-label mb-1">{{ 'creditFile.client.status' | translate }}</p>
+                <span class="cb-badge" [class.cb-badge--green]="file.status === 'ACTIVE'"
+                      [class.cb-badge--gray]="file.status === 'CLOSED'">
+                  {{ ('creditFile.client.fileStatus.' + file.status) | translate }}
+                </span>
+              </div>
+            </div>
+
+            <div class="cb-alert cb-alert--indigo mb-3">
+              <p class="cb-label mb-1">{{ 'creditFile.client.beneficiary' | translate }}</p>
+              <p class="fw-semibold mb-1">{{ file.beneficiaryName }} · {{ file.beneficiaryRib }}</p>
+              <p class="small cb-muted-text mb-0">{{ 'creditFile.client.beneficiaryHint' | translate }}</p>
+            </div>
+
+            <div class="table-responsive">
+              <table class="cb-table">
+                <thead>
+                  <tr>
+                    <th>{{ 'creditFile.client.col.sequenceNumber' | translate }}</th>
+                    <th>{{ 'creditFile.client.col.dueDate' | translate }}</th>
+                    <th>{{ 'creditFile.client.col.amount' | translate }}</th>
+                    <th>{{ 'creditFile.client.col.status' | translate }}</th>
+                    <th>{{ 'creditFile.client.col.action' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (installment of visibleInstallments(); track installment.id) {
+                    <tr>
+                      <td>{{ installment.sequenceNumber }}</td>
+                      <td>{{ installment.dueDate | date: 'dd/MM/yyyy' }}</td>
+                      <td class="fw-semibold">
+                        {{ formatAmount(installment.totalDue) }}
+                        @if (installment.latePenalty > 0) {
+                          <span class="d-block small text-danger">
+                            {{ 'creditFile.client.latePenaltyIncluded' | translate }} {{ formatAmount(installment.latePenalty) }}
+                          </span>
+                        }
+                      </td>
+                      <td>
+                        <span class="cb-badge" [class.cb-badge--green]="installment.status === 'PAID'"
+                              [class.cb-badge--indigo]="installment.status === 'DECLARED'"
+                              [class.cb-badge--amber]="installment.status === 'PENDING'"
+                              [class.cb-badge--red]="installment.status === 'LATE'"
+                              [class.cb-badge--green]="installment.status === 'REPAID_EARLY'">
+                          {{ ('creditFile.client.installmentStatus.' + installment.status) | translate }}
+                        </span>
+                      </td>
+                      <td>
+                        @if (installment.status === 'REPAID_EARLY') {
+                          <span class="small cb-muted-text">{{ 'creditFile.client.repaidEarly' | translate }}</span>
+                        } @else if (installment.status === 'PAID') {
+                          <span class="small cb-muted-text">
+                            {{ 'creditFile.client.paidOn' | translate }} {{ installment.paidAt | date: 'dd/MM/yyyy' }}
+                          </span>
+                        } @else if (installment.status === 'DECLARED') {
+                          <span class="small cb-muted-text">
+                            {{ 'creditFile.client.declaredWaiting' | translate }}
+                            ({{ 'creditFile.client.declaredOn' | translate }}
+                            {{ installment.declaredAt | date: 'dd/MM/yyyy' }})
+                          </span>
+                        } @else if (declaringInstallmentId() === installment.id) {
+                          <div class="d-flex flex-column gap-2" style="min-width: 240px;">
+                            <input type="text" class="form-control form-control-sm"
+                              [formControl]="sourceRibControl"
+                              [placeholder]="'creditFile.client.sourceRibPlaceholder' | translate" />
+                            @if (sourceRibControl.invalid && sourceRibControl.touched) {
+                              <span class="small text-danger">
+                                {{ 'creditFile.client.sourceRibRequired' | translate }}
+                              </span>
+                            }
+                            <div class="d-flex gap-2">
+                              <button type="button" class="cb-btn cb-btn--indigo cb-btn--sm"
+                                      [disabled]="payingInstallmentId() === installment.id"
+                                      (click)="confirmDeclare(installment.id)">
+                                <i class="bi bi-check2-circle"></i>
+                                {{ (payingInstallmentId() === installment.id
+                                  ? 'creditFile.client.paying' : 'creditFile.client.confirmDeclare') | translate }}
+                              </button>
+                              <button type="button" class="cb-btn cb-btn--ghost cb-btn--sm" (click)="cancelDeclare()">
+                                {{ 'creditFile.client.cancelDeclare' | translate }}
+                              </button>
+                            </div>
+                          </div>
+                        } @else {
+                          <button type="button" class="cb-btn cb-btn--indigo cb-btn--sm"
+                                  (click)="startDeclare(installment.id)">
+                            <i class="bi bi-check2-circle"></i>
+                            {{ 'creditFile.client.payAction' | translate }}
+                          </button>
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+            @if (file.installments.length > visibleInstallments().length || showAllInstallments()) {
+              <div class="p-3 text-center">
+                <button type="button" class="cb-btn cb-btn--ghost cb-btn--sm" data-testid="toggle-schedule"
+                        (click)="showAllInstallments.set(!showAllInstallments())">
+                  @if (showAllInstallments()) {
+                    <i class="bi bi-chevron-up"></i>{{ 'creditFile.client.showNextInstallments' | translate }}
+                  } @else {
+                    <i class="bi bi-chevron-down"></i>
+                    {{ 'creditFile.client.showAllInstallments' | translate: { count: file.installments.length } }}
+                  }
+                </button>
+              </div>
+            }
+          }
+        </div>
+      </div>
+
+      @if (creditFile()?.status === 'ACTIVE') {
+        <app-early-repayment-panel [demandId]="demandId" mode="CLIENT" />
+      }
+    }
+
+    <app-loading-spinner [loading]="loading()" [message]="'documentRequests.client.loading' | translate" />
+    <app-error-message [message]="errorMessage()" />
+
+    @if (!loading() && requests().length === 0 && !errorMessage()) {
+      <div class="cb-card cb-empty-card">
+        <div class="cb-empty">
+          <div class="cb-empty__icon"><i class="bi bi-tag"></i></div>
+          <p class="cb-empty__title">{{ 'documentRequests.client.empty' | translate }}</p>
+        </div>
+      </div>
+    }
+
+    @if (requests().length > 0) {
+      <div class="cb-card">
+        <div class="cb-card__body--flush">
+          <div class="table-responsive">
+            <table class="cb-table">
+              <tbody>
+                @for (request of requests(); track request.id) {
+                  <tr>
+                    <td class="fw-semibold">
+                      <i class="bi bi-file-earmark-text"></i> {{ request.documentType }}
+                    </td>
+                    <td>
+                      @if (request.status === 'FULFILLED') {
+                        <span class="cb-badge cb-badge--green">
+                          <i class="bi bi-check-circle-fill"></i>{{ 'documentRequests.client.status.fulfilled' | translate }}
+                        </span>
+                      } @else {
+                        <span class="cb-badge cb-badge--amber">
+                          <i class="bi bi-hourglass-split"></i>{{ 'documentRequests.client.status.pending' | translate }}
+                        </span>
+                      }
+                    </td>
+                    <td>
+                      @if (request.status === 'FULFILLED') {
+                        <button type="button" class="cb-btn cb-btn--ghost cb-btn--sm me-2"
+                                [disabled]="viewingId() === request.id"
+                                (click)="view(request.id)"
+                                [attr.aria-label]="('documentRequests.client.viewAria' | translate) + ' ' + request.documentType">
+                          <i class="bi bi-eye"></i>{{ 'documentRequests.client.view' | translate }}
+                        </button>
+                      }
+                      <label class="cb-btn cb-btn--sm"
+                             [class.cb-btn--indigo]="request.status !== 'FULFILLED'"
+                             [class.cb-btn--ghost]="request.status === 'FULFILLED'"
+                             [class.disabled]="uploadingId() === request.id">
+                        <i class="bi bi-upload"></i>{{ 'documentRequests.client.upload' | translate }}
+                        <input type="file" class="d-none" accept=".pdf,.jpg,.jpeg,.png,.docx,.xlsx"
+                               [disabled]="uploadingId() === request.id"
+                               (change)="onFileSelected($event, request.id)" />
+                      </label>
+                      @if (uploadingId() === request.id) {
+                        <span class="small cb-muted-text ms-2">{{ 'documentRequests.client.uploading' | translate }}</span>
+                      }
+                      @if (uploadErrorByRequestId()[request.id]) {
+                        <div class="small text-danger mt-1">{{ uploadErrorByRequestId()[request.id] }}</div>
+                      } @else {
+                        <div class="small mt-1 cb-muted-text">{{ 'documentRequests.client.fileHint' | translate }}</div>
+                      }
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

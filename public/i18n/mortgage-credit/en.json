@@ -1,0 +1,151 @@
+{
+  "mortgageCredit": {
+    "hero": {
+      "eyebrow": "Mortgage Loan",
+      "title": "Mortgage loan simulator",
+      "subtitle": "Estimate your monthly payment in real time, using the configured BAM parameters."
+    },
+    "form": {
+      "title": "Loan parameters",
+      "subtitle": "Fill in the fields below",
+      "calculating": "Calculating...",
+      "applicantName": "Full name",
+      "applicantNameRequired": "Name is required.",
+      "email": "Contact email",
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Invalid email.",
+      "phone": "Contact phone",
+      "phoneRequired": "Phone is required.",
+      "phoneInvalid": "Invalid Moroccan phone number.",
+      "productType": "Financing type",
+      "productConventional": "Conventional",
+      "productMourabaha": "Mourabaha",
+      "productMourabahaHint": "Participative financing (Murabaha) - profit margin + VAT, no interest.",
+      "productConventionalHint": "Classic interest-rate loan.",
+      "amount": "Loan amount",
+      "amountMin": "MAD 70,000",
+      "amountMax": "MAD 30,000,000",
+      "duration": "Repayment duration",
+      "months": "months",
+      "durationMin": "12 months (1 year)",
+      "durationMax": "300 months (25 years)",
+      "cspCode": "Socio-professional category",
+      "selectPlaceholder": "Select...",
+      "cspRequired": "The socio-professional category is required.",
+      "age": "Borrower's age",
+      "years": "years",
+      "ageRequired": "Age is required.",
+      "ageRange": "Must be between 18 and 74 years.",
+      "propertyValue": "Property value",
+      "propertyValueRequired": "Property value is required.",
+      "propertyValueRange": "Between MAD 80,000 and MAD 50,000,000.",
+      "monthlyIncome": "Net monthly income",
+      "monthlyIncomeRequired": "Monthly income is required.",
+      "monthlyIncomeRange": "Between MAD 1,000 and MAD 5,000,000.",
+      "nationalityCode": "Nationality (ISO code)",
+      "moroccanResident": "Moroccan resident",
+      "coBorrower": "Loan with co-borrower",
+      "coBorrowerMonthlyIncome": "Co-borrower's monthly income",
+      "coBorrowerHint": "Added to your income to compute the debt ratio (doubles the mandatory ADI insurance).",
+      "submit": "Simulate",
+      "resetAria": "Reset the form"
+    },
+    "csp": {
+      "SALA": "Employee (SALA)",
+      "FONC": "Civil servant (FONC)",
+      "RETR": "Retired (RETR)",
+      "PROF": "Self-employed professional (PROF)",
+      "INDE": "Independent (INDE)"
+    },
+    "results": {
+      "title": "Results",
+      "bamCompliant": "BAM parameters applied",
+      "caseCreated": "Case created: reference",
+      "caseCreatedSuffix": "tracked through the processing pipeline.",
+      "taeg": "Estimated APR (annual percentage rate):",
+      "to": "to",
+      "annualRate": "Annual rate",
+      "allInMonthlyPayment": "All-in monthly payment",
+      "totalInterest": "Total interest",
+      "totalCost": "Total cost",
+      "adiInsurance": "ADI insurance (monthly, death/disability)",
+      "mourabahaRate": "Profit rate (Mourabaha)",
+      "installmentTtc": "Installment (incl. tax)",
+      "marginTtc": "Margin (incl. tax)",
+      "includingVat": "including VAT",
+      "takafulInsurance": "Takaful contribution (monthly, Islamic cooperative insurance)"
+    },
+    "fees": {
+      "title": "Fees breakdown",
+      "subtitle": "Fees related to your file",
+      "registration": "Registration fees",
+      "landConservation": "Land registry fees",
+      "notary": "Notary fees",
+      "processing": "Processing fees",
+      "total": "Total fees"
+    },
+    "schedule": {
+      "title": "Amortization schedule",
+      "installments": "installments",
+      "clickToToggle": "click to",
+      "hide": "hide",
+      "show": "show",
+      "col": {
+        "num": "No.",
+        "beginningBalance": "Beginning balance",
+        "interest": "Interest",
+        "marginHt": "Margin (excl. tax)",
+        "vat": "VAT",
+        "principal": "Principal",
+        "insurance": "Insurance",
+        "installment": "Installment",
+        "endingBalance": "Ending balance"
+      }
+    },
+    "empty": {
+      "title": "Your simulation will appear here",
+      "subtitle": "Fill in the form and click \"Simulate\"."
+    },
+    "why": {
+      "label": "Our strengths",
+      "title": "Why choose us?",
+      "digital": {
+        "title": "Simplified, 100 % digital journey",
+        "text": "Apply for your loan online and get your financing without visiting a branch."
+      },
+      "expertise": {
+        "title": "Real estate expertise",
+        "text": "Our team has deep market knowledge thanks to close collaboration with industry players."
+      },
+      "conventions": {
+        "title": "Multiple agreements",
+        "text": "Numerous agreements signed with major public and private institutions to ease your access to homeownership."
+      }
+    },
+    "process": {
+      "label": "The process",
+      "title": "Finance your property in 5 steps",
+      "step1": {
+        "num": "Step 1",
+        "label": "I simulate<br>my loan"
+      },
+      "step2": {
+        "num": "Step 2",
+        "label": "I access<br>my member area"
+      },
+      "step3": {
+        "num": "Step 3",
+        "label": "I apply<br>for my loan online"
+      },
+      "step4": {
+        "num": "Step 4",
+        "label": "I track and complete<br>my credit file"
+      },
+      "step5": {
+        "num": "Step 5",
+        "label": "I get<br>my loan"
+      }
+    },
+    "errorFallback": "Error during simulation."
+  }
+}

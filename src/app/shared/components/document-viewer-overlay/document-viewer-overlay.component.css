@@ -1,0 +1,35 @@
+.cb-doc-viewer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.cb-doc-viewer-panel {
+  position: relative;
+  background: #fff;
+  border-radius: var(--cb-radius, 14px);
+  width: 100%;
+  max-width: 900px;
+  height: 90vh;
+  box-shadow: var(--cb-shadow-lg, 0 8px 40px rgba(0, 0, 0, 0.3));
+  overflow: hidden;
+}
+
+.cb-doc-viewer-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 1;
+  background: #fff;
+}
+
+.cb-doc-viewer-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}

@@ -1,0 +1,34 @@
+{
+  "earlyRepayment": {
+    "title": "السداد المسبق",
+    "subtitleClient": "قم بمحاكاة سداد مسبق لقرضك بتاريخ اليوم",
+    "subtitleManager": "قم بمحاكاة ثم تسجيل سداد مسبق استلمه البنك",
+    "amount": "رأس المال المراد سداده (درهم)",
+    "amountPlaceholder": "اتركه فارغاً للسداد الكلي",
+    "amountInvalid": "يجب أن يكون المبلغ أكبر من 0.",
+    "quoteAction": "محاكاة",
+    "quoting": "جارٍ الحساب...",
+    "kind": "النوع",
+    "full": "كلي",
+    "partial": "جزئي",
+    "outstandingBefore": "رأس المال المتبقي قبل",
+    "repaidPrincipal": "رأس المال المسدد",
+    "accruedInterest": "الفوائد المستحقة",
+    "indemnity": "التعويض (القانون 31-08)",
+    "totalToPay": "المجموع الواجب أداؤه",
+    "outstandingAfter": "رأس المال المتبقي بعد",
+    "newMonthlyPayment": "القسط الشهري الجديد",
+    "valueDate": "تاريخ القيمة",
+    "recordAction": "تسجيل السداد المستلم",
+    "recording": "جارٍ التسجيل...",
+    "clientHint": "لإجراء هذا السداد، يرجى التواصل مع مسيّر حسابك: سيتم تسجيله عند استلام الأموال.",
+    "history": "عمليات السداد المسبق المسجلة",
+    "col": {
+      "performedAt": "التاريخ",
+      "totalPaid": "المجموع المدفوع",
+      "performedBy": "سجّله"
+    },
+    "quoteErrorFallback": "تعذر محاكاة السداد المسبق.",
+    "recordErrorFallback": "خطأ أثناء تسجيل السداد المسبق."
+  }
+}

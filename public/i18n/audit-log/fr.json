@@ -1,0 +1,17 @@
+{
+  "auditLog": {
+    "title": "Journal d'audit",
+    "subtitle": "Traçabilité complète : connexions, simulations, rejets BAM, changements de rôle.",
+    "loading": "Chargement du journal...",
+    "events": "Événements",
+    "mostRecentFirst": "Les plus récents en premier",
+    "col": {
+      "date": "Date",
+      "user": "Utilisateur",
+      "action": "Action",
+      "details": "Détails"
+    },
+    "empty": "Aucun événement enregistré",
+    "loadErrorFallback": "Impossible de charger le journal d'audit."
+  }
+}

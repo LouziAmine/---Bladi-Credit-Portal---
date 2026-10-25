@@ -1,0 +1,26 @@
+{
+  "adminCommon": {
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "active": "Active",
+    "inactive": "Inactive",
+    "actions": "Actions",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "add": "Add",
+    "yes": "Yes",
+    "no": "No",
+    "existingConfigs": "Existing configurations",
+    "selectToEdit": "Select a record to edit it",
+    "editRecord": "Edit record",
+    "updating": "Updating...",
+    "update": "Update",
+    "setActive": "Set as active configuration",
+    "status": "Status",
+    "updateSuccess": "Update completed successfully.",
+    "updateErrorFallback": "Error while updating."
+  }
+}

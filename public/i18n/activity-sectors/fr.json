@@ -1,0 +1,25 @@
+{
+  "activitySectors": {
+    "title": "Secteurs d'activité",
+    "subtitle": "Liste des secteurs proposés sur les formulaires de simulation et de création d'entreprise.",
+    "form": {
+      "title": "Nouveau secteur",
+      "subtitle": "Ajoutez un secteur d'activité à la liste partagée",
+      "adding": "Ajout en cours...",
+      "name": "Nom du secteur"
+    },
+    "loading": "Chargement des secteurs...",
+    "list": {
+      "title": "Secteurs",
+      "subtitle": "Disponibles sur les formulaires de simulation entreprise et de création d'entreprise"
+    },
+    "col": {
+      "name": "Nom",
+      "addedOn": "Ajouté le"
+    },
+    "empty": "Aucun secteur enregistré",
+    "addSuccess": "Secteur ajouté avec succès.",
+    "loadErrorFallback": "Impossible de charger les secteurs. Serveur indisponible.",
+    "addErrorFallback": "Erreur lors de l'ajout du secteur."
+  }
+}

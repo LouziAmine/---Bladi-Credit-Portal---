@@ -1,0 +1,55 @@
+{
+  "documentRequests": {
+    "admin": {
+      "title": "المستندات المطلوبة من العميل",
+      "subtitle": "اطلب مستندًا محددًا: يراه العميل كعلامة يجب استيفاؤها",
+      "loading": "جارٍ تحميل الطلبات...",
+      "empty": "لا يوجد مستند مطلوب لهذا الملف.",
+      "col": {
+        "documentType": "المستند",
+        "status": "الحالة",
+        "requestedBy": "طلب من طرف",
+        "createdAt": "تاريخ الطلب",
+        "fulfilledAt": "تاريخ التوفير"
+      },
+      "status": {
+        "pending": "قيد الانتظار",
+        "fulfilled": "تم التوفير"
+      },
+      "suggestions": {
+        "title": "اقتراحات"
+      },
+      "documentType": "اسم المستند",
+      "documentTypePlaceholder": "مثال: بطاقة الهوية",
+      "submit": "طلب",
+      "submitting": "جارٍ إرسال الطلب...",
+      "view": "عرض",
+      "viewAria": "عرض المستند",
+      "loadErrorFallback": "تعذر تحميل طلبات المستندات.",
+      "createErrorFallback": "خطأ أثناء إنشاء الطلب.",
+      "viewErrorFallback": "تعذر فتح هذا المستند."
+    },
+    "client": {
+      "title": "المستندات المطلوبة",
+      "subtitle": "قم بتوفير المستندات التي طلبها مستشارك",
+      "loading": "جارٍ تحميل الطلبات...",
+      "empty": "لا يوجد مستند مطلوب لهذا الملف.",
+      "status": {
+        "pending": "قيد الانتظار",
+        "fulfilled": "تم التوفير"
+      },
+      "upload": "توفير هذا المستند",
+      "uploading": "جارٍ الإرسال...",
+      "view": "عرض",
+      "viewAria": "عرض المستند المقدم",
+      "fileHint": "PDF، JPEG، PNG، DOCX، XLSX: 15 ميغابايت كحد أقصى.",
+      "fileTooLarge": "يتجاوز هذا الملف الحجم الأقصى المسموح به (15 ميغابايت).",
+      "fileTypeNotAllowed": "نوع الملف غير مسموح به (PDF، JPEG، PNG، DOCX، XLSX فقط).",
+      "loadErrorFallback": "تعذر تحميل طلبات المستندات.",
+      "uploadErrorFallback": "خطأ أثناء إرسال المستند.",
+      "viewErrorFallback": "تعذر فتح هذا المستند.",
+      "backToDemands": "العودة إلى الملفات",
+      "backToPortfolio": "العودة إلى محفظتي"
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "enterpriseLinks": {
+    "title": "الوصول إلى محافظ الشركات",
+    "subtitle": "إدارة الروابط بين حسابات العملاء ومحافظ الشركات.",
+    "invite": {
+      "title": "دعوة عميل",
+      "subtitle": "امنح الوصول إلى المحفظة مباشرة لعميل مسجل بالفعل",
+      "submitting": "جارٍ الدعوة...",
+      "enterpriseId": "معرّف الشركة",
+      "username": "اسم مستخدم العميل",
+      "role": "الدور",
+      "submit": "دعوة",
+      "success": "تمت دعوة {{username}} بنجاح.",
+      "errorFallback": "خطأ أثناء الدعوة."
+    },
+    "role": {
+      "RESPONSABLE": "المسؤول",
+      "DELEGUE": "المفوَّض"
+    },
+    "pending": {
+      "title": "الطلبات قيد الانتظار",
+      "subtitle": "طلبات المحفظة المقدمة من العملاء، عبر جميع الشركات",
+      "loading": "جارٍ تحميل الطلبات قيد الانتظار...",
+      "loadErrorFallback": "تعذر تحميل الطلبات قيد الانتظار.",
+      "approveErrorFallback": "خطأ أثناء الموافقة.",
+      "rejectErrorFallback": "خطأ أثناء الرفض.",
+      "reasonPlaceholder": "سبب الرفض (اختياري)",
+      "confirmReject": "تأكيد",
+      "cancel": "إلغاء",
+      "approve": "موافقة",
+      "reject": "رفض",
+      "empty": "لا توجد طلبات قيد الانتظار"
+    },
+    "col": {
+      "enterpriseId": "الشركة",
+      "requestedBy": "طلب من طرف",
+      "role": "الدور",
+      "createdOn": "أُنشئ في",
+      "userId": "العميل",
+      "origin": "المصدر"
+    },
+    "forEnterprise": {
+      "title": "روابط هذه الشركة",
+      "subtitle": "جميع حسابات العملاء المرتبطة بهذه الشركة، بغض النظر عن حالتها",
+      "loading": "جارٍ تحميل الروابط...",
+      "loadErrorFallback": "تعذر تحميل روابط هذه الشركة.",
+      "revokeErrorFallback": "خطأ أثناء الإلغاء.",
+      "revoke": "إلغاء",
+      "empty": "لا توجد روابط لهذه الشركة"
+    },
+    "status": {
+      "APPROVED": "موافَق عليه",
+      "PENDING": "قيد الانتظار",
+      "REJECTED": "مرفوض",
+      "REVOKED": "ملغى"
+    },
+    "origin": {
+      "MANAGER_INVITE": "دعوة من المدير",
+      "CLIENT_CLAIM": "طلب من العميل",
+      "AUTO_MATCHED_ON_CLASSIFICATION": "ربط تلقائي عند التصنيف",
+      "EMAIL_INVITATION": "دعوة عبر البريد الإلكتروني"
+    }
+  }
+}

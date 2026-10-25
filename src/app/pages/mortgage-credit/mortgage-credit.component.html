@@ -1,0 +1,306 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-house-heart-fill"></i> {{ 'mortgageCredit.hero.eyebrow' | translate }}
+    </div>
+    <h1 class="cb-hero__title">{{ 'mortgageCredit.hero.title' | translate }}</h1>
+    <p class="cb-hero__subtitle">{{ 'mortgageCredit.hero.subtitle' | translate }}</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+    <div class="row g-4">
+
+      <div class="col-lg-6">
+        <div class="cb-card">
+          <div class="cb-card__header cb-card__header--green">
+            <div class="cb-card__header-icon cb-card__header-icon--green">
+              <i class="bi bi-sliders2"></i>
+            </div>
+            <div>
+              <p class="cb-card__header-title">{{ 'mortgageCredit.form.title' | translate }}</p>
+              <p class="cb-card__header-sub">{{ 'mortgageCredit.form.subtitle' | translate }}</p>
+            </div>
+          </div>
+          <div class="cb-card__body">
+            <app-error-message [message]="errorMessage()" />
+            <app-loading-spinner [loading]="loading()" [message]="'mortgageCredit.form.calculating' | translate" />
+
+            <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+              <div class="row g-3">
+
+                <div class="col-md-6">
+                  <label for="applicantName" class="cb-label">
+                    <i class="bi bi-person"></i>{{ 'mortgageCredit.form.applicantName' | translate }}
+                  </label>
+                  <input id="applicantName" type="text" class="form-control"
+                    [class.is-invalid]="form.controls.applicantName.invalid && form.controls.applicantName.touched"
+                    formControlName="applicantName" placeholder="Karim Benali"/>
+                  @if (form.controls.applicantName.errors?.['required'] && form.controls.applicantName.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'mortgageCredit.form.applicantNameRequired' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="email" class="cb-label">
+                    <i class="bi bi-envelope"></i>{{ 'mortgageCredit.form.email' | translate }}
+                  </label>
+                  <input id="email" type="email" class="form-control"
+                    [class.is-invalid]="form.controls.email.invalid && form.controls.email.touched"
+                    formControlName="email" placeholder="karim.benali@example.ma"/>
+                  @if (form.controls.email.errors?.['required'] && form.controls.email.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'mortgageCredit.form.emailRequired' | translate }}
+                    </div>
+                  } @else if (form.controls.email.errors?.['email'] && form.controls.email.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'mortgageCredit.form.emailInvalid' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="phone" class="cb-label">
+                    <i class="bi bi-telephone"></i>{{ 'mortgageCredit.form.phone' | translate }}
+                  </label>
+                  <input id="phone" type="tel" class="form-control"
+                    [class.is-invalid]="form.controls.phone.invalid && form.controls.phone.touched"
+                    formControlName="phone" placeholder="0612345678"/>
+                  @if (form.controls.phone.errors?.['required'] && form.controls.phone.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'mortgageCredit.form.phoneRequired' | translate }}
+                    </div>
+                  } @else if (form.controls.phone.errors?.['pattern'] && form.controls.phone.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'mortgageCredit.form.phoneInvalid' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <fieldset class="col-12 border-0 p-0 m-0">
+                  <legend class="cb-label h6">
+                    <i class="bi bi-bank2"></i>{{ 'mortgageCredit.form.productType' | translate }}
+                  </legend>
+                  <div class="btn-group w-100" role="group">
+                    <input type="radio" class="btn-check" id="productConventional" formControlName="productType" value="CONVENTIONAL"/>
+                    <label class="btn btn-outline-success" for="productConventional">
+                      <i class="bi bi-percent me-1"></i>{{ 'mortgageCredit.form.productConventional' | translate }}
+                    </label>
+                    <input type="radio" class="btn-check" id="productMourabaha" formControlName="productType" value="MOURABAHA"/>
+                    <label class="btn btn-outline-success" for="productMourabaha">
+                      <i class="bi bi-moon-stars me-1"></i>{{ 'mortgageCredit.form.productMourabaha' | translate }}
+                    </label>
+                  </div>
+                  <p class="small mt-1 mb-0 cb-muted-text">
+                    @if (form.controls.productType.value === 'MOURABAHA') {
+                      {{ 'mortgageCredit.form.productMourabahaHint' | translate }}
+                    } @else {
+                      {{ 'mortgageCredit.form.productConventionalHint' | translate }}
+                    }
+                  </p>
+                </fieldset>
+
+                <div class="col-12">
+                  <label class="cb-label" for="amount">
+                    <i class="bi bi-cash-coin"></i>{{ 'mortgageCredit.form.amount' | translate }}
+                  </label>
+                  <div class="cb-slider-wrap">
+                    <div class="cb-slider-display">
+                      <span class="cb-slider-val">{{ formatAmount(form.controls.amount.value) }}</span>
+                    </div>
+                    <input id="amount" type="range" class="cb-slider"
+                      [value]="form.controls.amount.value"
+                      (input)="onAmountChange($event)"
+                      [style.--fill]="amountFill()"
+                      [min]="limits.amount.min" [max]="limits.amount.max" step="10000" />
+                    <div class="cb-slider-labels">
+                      <span>{{ 'mortgageCredit.form.amountMin' | translate }}</span>
+                      <span>{{ 'mortgageCredit.form.amountMax' | translate }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label class="cb-label" for="duration">
+                    <i class="bi bi-calendar3"></i>{{ 'mortgageCredit.form.duration' | translate }}
+                  </label>
+                  <div class="cb-slider-wrap">
+                    <div class="cb-slider-display">
+                      <span class="cb-slider-val">
+                        {{ form.controls.duration.value }} {{ 'mortgageCredit.form.months' | translate }}
+                      </span>
+                      <span class="cb-slider-sub">{{ formatDuration(form.controls.duration.value) }}</span>
+                    </div>
+                    <input id="duration" type="range" class="cb-slider"
+                      [value]="form.controls.duration.value"
+                      (input)="onDurationChange($event)"
+                      [style.--fill]="durationFill()"
+                      [min]="limits.duration.min" [max]="limits.duration.max" step="1" />
+                    <div class="cb-slider-labels">
+                      <span>{{ 'mortgageCredit.form.durationMin' | translate }}</span>
+                      <span>{{ 'mortgageCredit.form.durationMax' | translate }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="cspCode" class="cb-label">
+                    <i class="bi bi-briefcase"></i>{{ 'mortgageCredit.form.cspCode' | translate }}
+                  </label>
+                  <select id="cspCode" class="form-select"
+                    [class.is-invalid]="form.controls.cspCode.invalid && form.controls.cspCode.touched"
+                    formControlName="cspCode">
+                    <option value="" disabled>{{ 'mortgageCredit.form.selectPlaceholder' | translate }}</option>
+                    @for (opt of cspOptions; track opt) {
+                      <option [value]="opt">{{ 'mortgageCredit.csp.' + opt | translate }}</option>
+                    }
+                  </select>
+                  @if (form.controls.cspCode.errors?.['required'] && form.controls.cspCode.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'mortgageCredit.form.cspRequired' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="age" class="cb-label">
+                    <i class="bi bi-person-badge"></i>{{ 'mortgageCredit.form.age' | translate }}
+                  </label>
+                  <div class="input-group">
+                    <input id="age" type="number" class="form-control"
+                      [class.is-invalid]="form.controls.age.invalid && form.controls.age.touched"
+                      formControlName="age" [min]="limits.age.min" [max]="limits.age.max"/>
+                    <span class="input-group-text">{{ 'mortgageCredit.form.years' | translate }}</span>
+                  </div>
+                  @if (form.controls.age.errors?.['required'] && form.controls.age.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'mortgageCredit.form.ageRequired' | translate }}
+                    </div>
+                  } @else if ((form.controls.age.errors?.['min'] || form.controls.age.errors?.['max']) && form.controls.age.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'mortgageCredit.form.ageRange' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="propertyValue" class="cb-label">
+                    <i class="bi bi-house-door"></i>{{ 'mortgageCredit.form.propertyValue' | translate }}
+                  </label>
+                  <div class="input-group">
+                    <input id="propertyValue" type="number" class="form-control"
+                      [class.is-invalid]="form.controls.propertyValue.invalid && form.controls.propertyValue.touched"
+                      formControlName="propertyValue" [min]="limits.propertyValue.min" [max]="limits.propertyValue.max" step="10000"/>
+                    <span class="input-group-text">MAD</span>
+                  </div>
+                  @if (form.controls.propertyValue.errors?.['required'] && form.controls.propertyValue.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'mortgageCredit.form.propertyValueRequired' | translate }}
+                    </div>
+                  } @else if ((form.controls.propertyValue.errors?.['min'] || form.controls.propertyValue.errors?.['max']) && form.controls.propertyValue.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'mortgageCredit.form.propertyValueRange' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="monthlyIncome" class="cb-label">
+                    <i class="bi bi-wallet2"></i>{{ 'mortgageCredit.form.monthlyIncome' | translate }}
+                  </label>
+                  <div class="input-group">
+                    <input id="monthlyIncome" type="number" class="form-control"
+                      [class.is-invalid]="form.controls.monthlyIncome.invalid && form.controls.monthlyIncome.touched"
+                      formControlName="monthlyIncome" [min]="limits.monthlyIncome.min" [max]="limits.monthlyIncome.max" step="500"/>
+                    <span class="input-group-text">MAD</span>
+                  </div>
+                  @if (form.controls.monthlyIncome.errors?.['required'] && form.controls.monthlyIncome.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'mortgageCredit.form.monthlyIncomeRequired' | translate }}
+                    </div>
+                  } @else if ((form.controls.monthlyIncome.errors?.['min'] || form.controls.monthlyIncome.errors?.['max']) && form.controls.monthlyIncome.touched) {
+                    <div class="cb-field-error">
+                      <i class="bi bi-exclamation-circle"></i>{{ 'mortgageCredit.form.monthlyIncomeRange' | translate }}
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label for="nationalityCode" class="cb-label">
+                    <i class="bi bi-globe2"></i>{{ 'mortgageCredit.form.nationalityCode' | translate }}
+                  </label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-flag"></i></span>
+                    <input id="nationalityCode" type="text" class="form-control text-uppercase"
+                      formControlName="nationalityCode" placeholder="MA" maxlength="2"/>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="cb-toggle-row">
+                    <div class="form-check form-switch mb-0">
+                      <input id="moroccanResident" type="checkbox" class="form-check-input cb-toggle-switch" role="switch"
+                        formControlName="moroccanResident"/>
+                    </div>
+                    <label for="moroccanResident" class="mb-0">
+                      <i class="bi bi-geo-alt-fill me-1"></i>{{ 'mortgageCredit.form.moroccanResident' | translate }}
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="cb-toggle-row">
+                    <div class="form-check form-switch mb-0">
+                      <input id="coBorrower" type="checkbox" class="form-check-input cb-toggle-switch" role="switch"
+                        formControlName="coBorrower"/>
+                    </div>
+                    <label for="coBorrower" class="mb-0">
+                      <i class="bi bi-people-fill me-1"></i>{{ 'mortgageCredit.form.coBorrower' | translate }}
+                    </label>
+                  </div>
+                </div>
+
+                @if (form.controls.coBorrower.value) {
+                  <div class="col-12 cb-animate">
+                    <label for="coBorrowerMonthlyIncome" class="cb-label">
+                      <i class="bi bi-wallet2"></i>{{ 'mortgageCredit.form.coBorrowerMonthlyIncome' | translate }}
+                    </label>
+                    <div class="input-group">
+                      <input id="coBorrowerMonthlyIncome" type="number" class="form-control"
+                        formControlName="coBorrowerMonthlyIncome" [min]="limits.monthlyIncome.min"
+                        [max]="limits.monthlyIncome.max" step="500"/>
+                      <span class="input-group-text">MAD</span>
+                    </div>
+                    <p class="small mt-1 mb-0 cb-muted-text">
+                      {{ 'mortgageCredit.form.coBorrowerHint' | translate }}
+                    </p>
+                  </div>
+                }
+
+              </div>
+
+              <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="cb-btn cb-btn--primary flex-grow-1" [disabled]="loading()">
+                  <i class="bi bi-calculator"></i>{{ 'mortgageCredit.form.submit' | translate }}
+                </button>
+                <button type="button" class="cb-btn cb-btn--ghost" (click)="reset()" [attr.aria-label]="'mortgageCredit.form.resetAria' | translate">
+                  <i class="bi bi-arrow-counterclockwise"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <app-mortgage-simulation-result [result]="result()" />
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<app-product-highlights i18nPrefix="mortgageCredit" [reasons]="reasons" [stepIcons]="stepIcons" />

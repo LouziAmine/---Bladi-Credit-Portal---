@@ -1,0 +1,40 @@
+{
+  "demands": {
+    "title": "Suivi des dossiers",
+    "subtitle": "Dossiers de crédit immobilier et entreprise suivis à travers le pipeline de traitement.",
+    "portfolioOf": "Portefeuille de",
+    "enterpriseHash": "entreprise #",
+    "removeFilter": "Retirer le filtre",
+    "import": "Importer des demandes",
+    "loading": "Chargement des dossiers...",
+    "search": {
+      "companyNameLabel": "Client ou entreprise",
+      "companyNamePlaceholder": "Rechercher par nom...",
+      "statusAll": "Tous les statuts",
+      "minAmountLabel": "Montant min (MAD)",
+      "maxAmountLabel": "Montant max (MAD)",
+      "reset": "Réinitialiser"
+    },
+    "list": {
+      "title": "Dossiers",
+      "subtitle": "Cliquez sur un dossier pour voir son détail"
+    },
+    "col": {
+      "reference": "Référence",
+      "enterprise": "Client",
+      "category": "Catégorie",
+      "amount": "Montant",
+      "duration": "Durée",
+      "createdOn": "Créé le"
+    },
+    "status": {
+      "rejected": "Rejeté",
+      "completed": "Terminé",
+      "inProgress": "En cours"
+    },
+    "currentStepTitle": "Étape actuelle du pipeline de traitement",
+    "view": "Voir",
+    "empty": "Aucun dossier enregistré",
+    "loadErrorFallback": "Impossible de charger les dossiers."
+  }
+}

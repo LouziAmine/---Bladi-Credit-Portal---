@@ -1,0 +1,53 @@
+{
+  "demandImport": {
+    "title": "Import de demandes",
+    "subtitle": "Créez plusieurs demandes en masse à partir d'un fichier Excel de dossiers existants.",
+    "backToDemands": "Retour aux dossiers",
+    "upload": {
+      "title": "Fichier Excel",
+      "subtitle": "Une ligne par demande, colonnes dans l'ordre du modèle standard."
+    },
+    "file": "Fichier (.xlsx)",
+    "fileHint": "Taille maximale 15 Mo. Une seule feuille, la première ligne est l'en-tête.",
+    "dropzone": {
+      "idle": "Glissez votre fichier ici",
+      "drop": "Déposez le fichier ici",
+      "browse": "ou cliquez pour parcourir"
+    },
+    "removeFile": "Retirer le fichier sélectionné",
+    "unit": {
+      "bytes": "o",
+      "kilobytes": "Ko",
+      "megabytes": "Mo"
+    },
+    "submit": "Importer",
+    "uploading": "Envoi du fichier...",
+    "fileEmpty": "Le fichier sélectionné est vide.",
+    "fileTooLarge": "Ce fichier dépasse la taille maximale autorisée (15 Mo).",
+    "fileTypeNotAllowed": "Seuls les fichiers .xlsx sont acceptés.",
+    "startErrorFallback": "Impossible de démarrer l'import.",
+    "pollErrorFallback": "Impossible de récupérer le statut de l'import.",
+    "status": {
+      "completed": "Terminé",
+      "failed": "Échec",
+      "stopped": "Arrêté",
+      "abandoned": "Abandonné",
+      "running": "En cours"
+    },
+    "report": {
+      "title": "Import",
+      "subtitle": "Le statut se met à jour automatiquement.",
+      "polling": "Actualisation en cours...",
+      "read": "Lignes lues",
+      "created": "Demandes créées",
+      "skipped": "Lignes ignorées",
+      "errorsTitle": "Lignes ignorées et leur raison",
+      "col": {
+        "row": "Ligne",
+        "company": "Entreprise",
+        "reason": "Raison"
+      },
+      "startOver": "Nouvel import"
+    }
+  }
+}

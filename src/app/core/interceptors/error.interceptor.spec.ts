@@ -4,6 +4,9 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { provideRouter, Router } from '@angular/router';
 import { errorInterceptor } from './error.interceptor';
 import { TokenService } from '../services';
+import { CODE_CLIENT } from '../../testing/mocks/mock-codes';
+import { PERSON_INTERNAL_SERVER_ERROR } from '../../testing/mocks/mock-contacts';
+import { USER_JOHN_DOE } from '../../testing/mocks/mock-users';
 
 describe('errorInterceptor', () => {
   let http: HttpClient;
@@ -29,7 +32,7 @@ describe('errorInterceptor', () => {
   afterEach(() => httpMock.verify());
 
   it('should attempt a silent refresh on 401 and retry the original request', () => {
-    tokenService.setAuthState('john.doe', 'CLIENT');
+    tokenService.setAuthState(USER_JOHN_DOE, CODE_CLIENT);
     let result: unknown;
 
     http.get('/api/test').subscribe({ next: (data) => (result = data) });
@@ -39,7 +42,7 @@ describe('errorInterceptor', () => {
 
     const refreshReq = httpMock.expectOne('http://localhost:8080/api/v1/auth/refresh');
     expect(refreshReq.request.method).toBe('POST');
-    refreshReq.flush({ username: 'john.doe', role: 'CLIENT' });
+    refreshReq.flush({ username: USER_JOHN_DOE, role: CODE_CLIENT });
 
     const retryReq = httpMock.expectOne('/api/test');
     retryReq.flush({ ok: true });
@@ -50,7 +53,7 @@ describe('errorInterceptor', () => {
 
   it('should clear auth state and redirect to login when the refresh itself fails', () => {
     const navigateSpy = vi.spyOn(router, 'navigate');
-    tokenService.setAuthState('john.doe', 'CLIENT');
+    tokenService.setAuthState(USER_JOHN_DOE, CODE_CLIENT);
 
     http.get('/api/test').subscribe({ error: () => undefined });
 
@@ -66,7 +69,7 @@ describe('errorInterceptor', () => {
 
   it('should not attempt a second refresh when the retried request also gets a 401', () => {
     const navigateSpy = vi.spyOn(router, 'navigate');
-    tokenService.setAuthState('john.doe', 'CLIENT');
+    tokenService.setAuthState(USER_JOHN_DOE, CODE_CLIENT);
 
     http.get('/api/test').subscribe({ error: () => undefined });
 
@@ -74,7 +77,7 @@ describe('errorInterceptor', () => {
     firstReq.flush({ errorCode: 'CB-401' }, { status: 401, statusText: 'Unauthorized' });
 
     const refreshReq = httpMock.expectOne('http://localhost:8080/api/v1/auth/refresh');
-    refreshReq.flush({ username: 'john.doe', role: 'CLIENT' });
+    refreshReq.flush({ username: USER_JOHN_DOE, role: CODE_CLIENT });
 
     const retryReq = httpMock.expectOne('/api/test');
     retryReq.flush({ errorCode: 'CB-401' }, { status: 401, statusText: 'Unauthorized' });
@@ -85,7 +88,7 @@ describe('errorInterceptor', () => {
 
   it('should not attempt a refresh for exempt auth URLs and redirect immediately on 401', () => {
     const navigateSpy = vi.spyOn(router, 'navigate');
-    tokenService.setAuthState('john.doe', 'CLIENT');
+    tokenService.setAuthState(USER_JOHN_DOE, CODE_CLIENT);
 
     http.post('/api/v1/auth/login', { username: 'x', password: 'y' }).subscribe({ error: () => undefined });
 
@@ -116,7 +119,7 @@ describe('errorInterceptor', () => {
 
     http.get('/api/test').subscribe({ error: (e: { status: number }) => (errorStatus = e.status) });
     const req = httpMock.expectOne('/api/test');
-    req.flush({ errorCode: 'CB-500' }, { status: 500, statusText: 'Internal Server Error' });
+    req.flush({ errorCode: 'CB-500' }, { status: 500, statusText: PERSON_INTERNAL_SERVER_ERROR });
 
     expect(errorStatus).toBe(500);
     expect(navigateSpy).not.toHaveBeenCalled();

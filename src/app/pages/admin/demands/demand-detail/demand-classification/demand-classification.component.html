@@ -1,0 +1,121 @@
+<app-loading-spinner [loading]="classifying()" [message]="'demandDetail.classifying' | translate" />
+<app-error-message [message]="classifyErrorMessage()" />
+
+<form [formGroup]="classifyForm" (ngSubmit)="classify()" novalidate>
+  <div class="row g-3">
+    <div class="col-12">
+      <fieldset class="border-0 p-0 m-0">
+        <legend class="cb-label h6">
+          <i class="bi bi-patch-question"></i>{{ 'demandDetail.classify.legend' | translate }}
+          <i class="bi bi-info-circle cb-muted-text ms-1"
+             [title]="'demandDetail.classify.legendHint' | translate"></i>
+        </legend>
+        <div class="btn-group w-100" role="group">
+          @for (choice of classificationOutcomeChoices; track choice) {
+            <input type="radio" class="btn-check" [id]="'classificationOutcome' + choice"
+                   formControlName="classificationOutcome" [value]="choice"/>
+            <label class="btn btn-outline-success" [for]="'classificationOutcome' + choice">
+              {{ 'demandDetail.choices.classificationOutcome.' + choice + '.label' | translate }}
+            </label>
+          }
+        </div>
+        @if (selectedClassificationOutcomeDescription()) {
+          <p class="small mt-1 mb-0 cb-muted-text">{{ selectedClassificationOutcomeDescription() }}</p>
+        }
+      </fieldset>
+    </div>
+    @if (classifyForm.value.classificationOutcome === 'REAL') {
+      @if (isEnterpriseDemand()) {
+        <div class="col-12">
+          @if (checkingClassifyMatch()) {
+            <div class="cb-alert cb-alert--amber d-flex align-items-center gap-2">
+              <i class="bi bi-hourglass-split"></i>
+              <span>
+                {{ 'demandDetail.classify.searchingMatch' | translate }} « {{ demand().contactName }} »...
+              </span>
+            </div>
+          } @else if (classifyMatch()?.matched) {
+            <div class="cb-alert cb-alert--success d-flex align-items-center justify-content-between flex-wrap gap-2">
+              <span>
+                <i class="bi bi-building-check me-1"></i>
+                {{ 'demandDetail.classify.alreadyExists' | translate }}
+                <strong>{{ classifyMatch()!.enterprise!.name }}</strong>
+              </span>
+              <button type="button" class="cb-btn cb-btn--sm cb-btn--indigo"
+                      [disabled]="classifyForm.value.enterpriseId === classifyMatch()!.enterprise!.id"
+                      (click)="useMatchedEnterprise()">
+                <i class="bi bi-check2"></i>{{ 'demandDetail.classify.useThisEnterprise' | translate }}
+              </button>
+            </div>
+          } @else if (classifyMatch() && !classifyMatch()!.matched) {
+            <div class="cb-alert cb-alert--amber d-flex align-items-center justify-content-between flex-wrap gap-2">
+              <span>
+                <i class="bi bi-building-add me-1"></i>
+                {{ 'demandDetail.classify.noMatch' | translate }} « {{ demand().contactName }} ».
+              </span>
+              <button type="button" class="cb-btn cb-btn--sm cb-btn--amber"
+                      [disabled]="creatingEnterpriseFromMatch()"
+                      (click)="createAndAttachEnterprise()">
+                <i class="bi bi-plus-lg"></i>
+                {{ 'demandDetail.classify.createAndAttach' | translate }} « {{ demand().contactName }} »
+              </button>
+            </div>
+          }
+          <app-error-message [message]="classifyMatchErrorMessage()" />
+          <label for="classifyEnterpriseId" class="cb-label">
+            <i class="bi bi-building"></i>{{ 'demandDetail.classify.clientEnterprise' | translate }}
+          </label>
+          <select id="classifyEnterpriseId" class="form-select" formControlName="enterpriseId">
+            <option [ngValue]="null">{{ 'demandDetail.classify.selectEnterprise' | translate }}</option>
+            @for (enterprise of enterprises(); track enterprise.id) {
+              <option [ngValue]="enterprise.id">{{ enterprise.name }}</option>
+            }
+          </select>
+          @if (enterprises().length === 0) {
+            <div class="small mt-1 cb-muted-text">
+              {{ 'enterprises.form.noSector' | translate }}
+              <a routerLink="/admin/enterprises">{{ 'demandDetail.classify.createOne' | translate }}</a>
+              {{ 'enterprises.form.first' | translate }}
+            </div>
+          }
+        </div>
+      }
+      <div class="col-12">
+        <label for="classifyAssigneeUsername" class="cb-label">
+          <i class="bi bi-person-check"></i>{{ 'demandDetail.classify.initiationOwner' | translate }}
+        </label>
+        <select id="classifyAssigneeUsername" class="form-select" formControlName="assigneeUsername">
+          <option value="">{{ 'demandDetail.selectEligibleUser' | translate }}</option>
+          @for (eligible of nextEligibleAssignees(); track eligible.id) {
+            <option [value]="eligible.username">{{ eligible.fullName ?? eligible.username }} · {{ eligible.gradeName }}</option>
+          }
+        </select>
+        @if (nextEligibleAssignees().length === 0) {
+          <div class="small mt-1 cb-muted-text">{{ 'demandDetail.noEligibleUser' | translate }}</div>
+        }
+      </div>
+      @if (isEnterpriseDemand()) {
+        <div class="col-12">
+          <label for="classifyClientRib" class="cb-label">
+            <i class="bi bi-bank"></i>{{ 'demandDetail.classify.clientRib' | translate }}
+          </label>
+          <input id="classifyClientRib" type="text" class="form-control" formControlName="clientRib"
+                 [placeholder]="'demandDetail.classify.clientRibPlaceholder' | translate" />
+          <div class="small mt-1 cb-muted-text">{{ 'demandDetail.classify.clientRibHint' | translate }}</div>
+        </div>
+      }
+    }
+    <div class="col-12">
+      <label for="classifyNote" class="cb-label">
+        <i class="bi bi-chat-left-text"></i>{{ 'demandDetail.note' | translate }}
+      </label>
+      <textarea id="classifyNote" class="form-control" formControlName="note" rows="2"></textarea>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2 mt-4">
+    <button type="submit" class="cb-btn cb-btn--amber" [disabled]="isClassifyDisabled()">
+      <i class="bi bi-patch-question"></i>{{ 'demandDetail.classifyCase' | translate }}
+    </button>
+  </div>
+</form>

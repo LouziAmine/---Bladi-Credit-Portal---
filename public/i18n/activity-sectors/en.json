@@ -1,0 +1,25 @@
+{
+  "activitySectors": {
+    "title": "Activity sectors",
+    "subtitle": "List of sectors offered in the simulation and company creation forms.",
+    "form": {
+      "title": "New sector",
+      "subtitle": "Add an activity sector to the shared list",
+      "adding": "Adding...",
+      "name": "Sector name"
+    },
+    "loading": "Loading sectors...",
+    "list": {
+      "title": "Sectors",
+      "subtitle": "Available in the enterprise simulation and company creation forms"
+    },
+    "col": {
+      "name": "Name",
+      "addedOn": "Added on"
+    },
+    "empty": "No sector registered",
+    "addSuccess": "Sector added successfully.",
+    "loadErrorFallback": "Unable to load sectors. Server unavailable.",
+    "addErrorFallback": "Error while adding the sector."
+  }
+}

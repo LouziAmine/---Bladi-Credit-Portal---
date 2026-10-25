@@ -1,0 +1,12 @@
+{
+  "demandPipeline": {
+    "status": {
+      "done": "Done",
+      "current": "In progress",
+      "upcoming": "Upcoming"
+    },
+    "step": "Step",
+    "completedOn": "Completed on",
+    "inProgressSince": "In progress since"
+  }
+}

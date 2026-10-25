@@ -1,0 +1,117 @@
+<div class="cb-card mb-4">
+  <div class="cb-card__header cb-card__header--green">
+    <div class="cb-card__header-icon cb-card__header-icon--green">
+      <i class="bi bi-file-earmark-text"></i>
+    </div>
+    <div>
+      <p class="cb-card__header-title">{{ 'demandDetail.case' | translate }} {{ demand().reference }}</p>
+      <p class="cb-card__header-sub">{{ demand().contactName }}</p>
+    </div>
+    <span class="ms-auto d-flex align-items-center gap-2">
+      @if (currentStep()) {
+        <span class="cb-badge cb-badge--indigo" [title]="'demands.currentStepTitle' | translate">
+          <i class="bi bi-signpost-split"></i>{{ currentStep()!.stepName }}
+        </span>
+      }
+      @if (demand().rejected) {
+        <span class="cb-badge cb-badge--red">
+          <i class="bi bi-x-circle-fill"></i>{{ 'demands.status.rejected' | translate }}
+        </span>
+      } @else if (demand().completed) {
+        <span class="cb-badge cb-badge--green">
+          <i class="bi bi-check-circle-fill"></i>{{ 'demands.status.completed' | translate }}
+        </span>
+      } @else {
+        <span class="cb-badge cb-badge--amber">
+          <i class="bi bi-hourglass-split"></i>{{ 'demands.status.inProgress' | translate }}
+        </span>
+      }
+    </span>
+  </div>
+  <div class="cb-card__body">
+    <div class="row g-3">
+      @if (demand().enterprise; as enterprise) {
+        <div class="col-md-3">
+          <p class="cb-label mb-1">{{ 'demandDetail.enterpriseCategory' | translate }}</p>
+          <span class="cb-badge cb-badge--indigo">{{ enterprise.enterpriseType }}</span>
+        </div>
+        <div class="col-md-3">
+          <p class="cb-label mb-1">{{ 'investmentCredit.form.sector' | translate }}</p>
+          <p class="fw-semibold mb-0">{{ enterprise.sector ?? '-' }}</p>
+        </div>
+      }
+      @if (demand().contactEmail || demand().contactPhone) {
+        <div class="col-md-3">
+          <p class="cb-label mb-1">{{ 'demandDetail.contact' | translate }}</p>
+          <p class="fw-semibold mb-0">{{ demand().contactEmail ?? '-' }}</p>
+          <p class="small mb-0 cb-muted-text">{{ demand().contactPhone ?? '-' }}</p>
+        </div>
+      }
+      @if (demand().enterprise; as enterprise) {
+        <div class="col-md-3">
+          <p class="cb-label mb-1">{{ 'investmentCredit.form.companyAgeYears' | translate }}</p>
+          <p class="fw-semibold mb-0">
+            {{ enterprise.companyAgeYears !== null
+              ? enterprise.companyAgeYears + ' ' + ('mortgageCredit.form.years' | translate) : '-' }}
+          </p>
+        </div>
+        <div class="col-md-3">
+          <p class="cb-label mb-1">{{ 'investmentCredit.form.annualRevenue' | translate }}</p>
+          <p class="fw-semibold mb-0">
+            {{ enterprise.annualRevenue !== null ? formatAmount(enterprise.annualRevenue) : '-' }}
+          </p>
+        </div>
+        <div class="col-md-3">
+          <p class="cb-label mb-1">{{ 'investmentCredit.form.netAnnualResult' | translate }}</p>
+          <p class="fw-semibold mb-0">
+            {{ enterprise.netAnnualResult !== null ? formatAmount(enterprise.netAnnualResult) : '-' }}
+          </p>
+        </div>
+        <div class="col-md-3">
+          <p class="cb-label mb-1">{{ 'investmentCredit.form.existingAnnualDebtService' | translate }}</p>
+          <p class="fw-semibold mb-0">
+            {{ enterprise.existingAnnualDebtService !== null
+              ? formatAmount(enterprise.existingAnnualDebtService) : '-' }}
+          </p>
+        </div>
+        <div class="col-md-3">
+          <p class="cb-label mb-1">{{ 'investmentCredit.form.guaranteesValue' | translate }}</p>
+          <p class="fw-semibold mb-0">
+            {{ enterprise.guaranteesValue !== null ? formatAmount(enterprise.guaranteesValue) : '-' }}
+          </p>
+        </div>
+      }
+      @if (demand().mortgage; as mortgage) {
+        <div class="col-md-3">
+          <p class="cb-label mb-1">{{ 'mortgageCredit.form.productType' | translate }}</p>
+          <span class="cb-badge cb-badge--indigo">
+            {{ (mortgage.productType === 'MOURABAHA'
+              ? 'mortgageCredit.form.productMourabaha' : 'mortgageCredit.form.productConventional') | translate }}
+          </span>
+        </div>
+        <div class="col-md-3">
+          <p class="cb-label mb-1">{{ 'mortgageCredit.form.cspCode' | translate }}</p>
+          <p class="fw-semibold mb-0">
+            {{ mortgage.cspCode ? ('mortgageCredit.csp.' + mortgage.cspCode | translate) : '-' }}
+          </p>
+        </div>
+        <div class="col-md-3">
+          <p class="cb-label mb-1">{{ 'mortgageCredit.form.propertyValue' | translate }}</p>
+          <p class="fw-semibold mb-0">
+            {{ mortgage.propertyValue !== null ? formatAmount(mortgage.propertyValue) : '-' }}
+          </p>
+        </div>
+        <div class="col-md-3">
+          <p class="cb-label mb-1">{{ 'mortgageCredit.form.monthlyIncome' | translate }}</p>
+          <p class="fw-semibold mb-0">
+            {{ mortgage.monthlyIncome !== null ? formatAmount(mortgage.monthlyIncome) : '-' }}
+          </p>
+        </div>
+      }
+      <div class="col-md-3">
+        <p class="cb-label mb-1">{{ 'demands.col.createdOn' | translate }}</p>
+        <p class="fw-semibold mb-0">{{ demand().createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+      </div>
+    </div>
+  </div>
+</div>

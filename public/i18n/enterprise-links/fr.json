@@ -1,0 +1,64 @@
+{
+  "enterpriseLinks": {
+    "title": "Accès portefeuilles entreprise",
+    "subtitle": "Gérez les liens entre comptes clients et portefeuilles d'entreprise.",
+    "invite": {
+      "title": "Inviter un client",
+      "subtitle": "Accordez directement l'accès au portefeuille à un client déjà inscrit",
+      "submitting": "Invitation en cours...",
+      "enterpriseId": "ID entreprise",
+      "username": "Nom d'utilisateur du client",
+      "role": "Rôle",
+      "submit": "Inviter",
+      "success": "{{username}} a été invité avec succès.",
+      "errorFallback": "Erreur lors de l'invitation."
+    },
+    "role": {
+      "RESPONSABLE": "Responsable",
+      "DELEGUE": "Délégué"
+    },
+    "pending": {
+      "title": "Demandes en attente",
+      "subtitle": "Revendications de portefeuille soumises par des clients, toutes entreprises confondues",
+      "loading": "Chargement des demandes en attente...",
+      "loadErrorFallback": "Impossible de charger les demandes en attente.",
+      "approveErrorFallback": "Erreur lors de l'approbation.",
+      "rejectErrorFallback": "Erreur lors du rejet.",
+      "reasonPlaceholder": "Motif du rejet (optionnel)",
+      "confirmReject": "Confirmer",
+      "cancel": "Annuler",
+      "approve": "Approuver",
+      "reject": "Rejeter",
+      "empty": "Aucune demande en attente"
+    },
+    "col": {
+      "enterpriseId": "Entreprise",
+      "requestedBy": "Demandé par",
+      "role": "Rôle",
+      "createdOn": "Créé le",
+      "userId": "Client",
+      "origin": "Origine"
+    },
+    "forEnterprise": {
+      "title": "Liens de cette entreprise",
+      "subtitle": "Tous les comptes clients liés à cette entreprise, quel que soit leur statut",
+      "loading": "Chargement des liens...",
+      "loadErrorFallback": "Impossible de charger les liens de cette entreprise.",
+      "revokeErrorFallback": "Erreur lors de la révocation.",
+      "revoke": "Révoquer",
+      "empty": "Aucun lien pour cette entreprise"
+    },
+    "status": {
+      "APPROVED": "Approuvé",
+      "PENDING": "En attente",
+      "REJECTED": "Rejeté",
+      "REVOKED": "Révoqué"
+    },
+    "origin": {
+      "MANAGER_INVITE": "Invitation manager",
+      "CLIENT_CLAIM": "Revendication client",
+      "AUTO_MATCHED_ON_CLASSIFICATION": "Rattachement auto. à la classification",
+      "EMAIL_INVITATION": "Invitation par e-mail"
+    }
+  }
+}

@@ -1,0 +1,152 @@
+<div class="cb-hero">
+  <div class="container">
+    <div class="cb-hero__eyebrow">
+      <i class="bi bi-gear-fill"></i> {{ 'nav.administration' | translate }}
+    </div>
+    <h1 class="cb-hero__title">{{ 'documentSuggestions.title' | translate }}</h1>
+    <p class="cb-hero__subtitle">{{ 'documentSuggestions.subtitle' | translate }}</p>
+  </div>
+</div>
+
+<div class="cb-page">
+  <div class="container">
+
+    <div class="cb-card mb-4">
+      <div class="cb-card__header cb-card__header--amber">
+        <div class="cb-card__header-icon cb-card__header-icon--amber">
+          <i class="bi bi-tag"></i>
+        </div>
+        <div>
+          <p class="cb-card__header-title">{{ 'documentSuggestions.form.title' | translate }}</p>
+          <p class="cb-card__header-sub">{{ 'documentSuggestions.form.subtitle' | translate }}</p>
+        </div>
+      </div>
+      <div class="cb-card__body">
+        <app-loading-spinner [loading]="loading()" [message]="'documentSuggestions.form.adding' | translate" />
+
+        @if (successMessage()) {
+          <div class="cb-alert cb-alert--success">
+            <i class="bi bi-check-circle-fill"></i>
+            <span>{{ successMessage() }}</span>
+          </div>
+        }
+        <app-error-message [message]="errorMessage()" />
+
+        <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="cb-label" for="scope">
+                <i class="bi bi-diagram-3"></i>{{ 'documentSuggestions.form.scope' | translate }}
+              </label>
+              <select id="scope" class="form-select" formControlName="scope">
+                <option value="">{{ 'documentSuggestions.form.common' | translate }}</option>
+                <optgroup [label]="'documentSuggestions.form.enterpriseType' | translate">
+                  @for (opt of enterpriseTypeOptions; track opt) {
+                    <option [value]="'ENTERPRISE:' + opt">{{ 'investmentCredit.type.' + opt | translate }}</option>
+                  }
+                </optgroup>
+                <optgroup [label]="'documentSuggestions.form.cspCode' | translate">
+                  @for (opt of cspOptions; track opt) {
+                    <option [value]="'CSP:' + opt">{{ 'mortgageCredit.csp.' + opt | translate }}</option>
+                  }
+                </optgroup>
+              </select>
+            </div>
+            <div class="col-md-8">
+              <label class="cb-label" for="label">
+                <i class="bi bi-tag"></i>{{ 'documentSuggestions.form.label' | translate }}
+              </label>
+              <input
+                id="label"
+                type="text"
+                class="form-control"
+                formControlName="label"
+                [placeholder]="'documentSuggestions.form.labelPlaceholder' | translate"
+              />
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="cb-btn cb-btn--amber" [disabled]="loading() || form.invalid">
+              <i class="bi bi-plus-lg"></i>{{ 'adminCommon.add' | translate }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <app-loading-spinner [loading]="loadingList()" [message]="'documentSuggestions.loading' | translate" />
+
+    @if (!loadingList() && suggestions().length > 0) {
+      <div class="cb-card">
+        <div class="cb-card__header cb-card__header--indigo">
+          <div class="cb-card__header-icon cb-card__header-icon--indigo">
+            <i class="bi bi-tags"></i>
+          </div>
+          <div>
+            <p class="cb-card__header-title">
+              {{ 'documentSuggestions.list.title' | translate }} ({{ suggestions().length }})
+            </p>
+            <p class="cb-card__header-sub">{{ 'documentSuggestions.list.subtitle' | translate }}</p>
+          </div>
+        </div>
+        <div class="cb-card__body cb-card__body--flush">
+          <div class="table-responsive">
+            <table class="cb-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>{{ 'documentSuggestions.col.scope' | translate }}</th>
+                  <th>{{ 'documentSuggestions.col.label' | translate }}</th>
+                  <th>{{ 'documentSuggestions.col.addedOn' | translate }}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (suggestion of suggestions(); track suggestion.id) {
+                  <tr>
+                    <td><span class="fw-semibold">#{{ suggestion.id }}</span></td>
+                    <td>
+                      @if (suggestion.cspCode) {
+                        <span class="cb-badge cb-badge--amber">
+                          {{ 'mortgageCredit.csp.' + suggestion.cspCode | translate }}
+                        </span>
+                      } @else if (suggestion.enterpriseType) {
+                        <span class="cb-badge cb-badge--indigo">
+                          {{ 'investmentCredit.type.' + suggestion.enterpriseType | translate }}
+                        </span>
+                      } @else {
+                        <span class="cb-badge cb-badge--green">{{ 'documentSuggestions.form.common' | translate }}</span>
+                      }
+                    </td>
+                    <td>{{ suggestion.label }}</td>
+                    <td class="text-nowrap">{{ suggestion.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+                    <td class="text-end">
+                      <button
+                        type="button"
+                        class="cb-btn cb-btn--ghost cb-btn--sm"
+                        [disabled]="deletingId() === suggestion.id"
+                        (click)="delete(suggestion.id)"
+                        [attr.aria-label]="('adminCommon.delete' | translate) + ' ' + suggestion.label"
+                      >
+                        <i class="bi bi-trash"></i>{{ 'adminCommon.delete' | translate }}
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    } @else if (!loadingList() && suggestions().length === 0) {
+      <div class="cb-card cb-empty-card">
+        <div class="cb-empty">
+          <div class="cb-empty__icon"><i class="bi bi-tags"></i></div>
+          <p class="cb-empty__title">{{ 'documentSuggestions.empty' | translate }}</p>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { TokenService } from './token.service';
+import { CODE_CLIENT, CODE_MANAGER } from '../../../testing/mocks/mock-codes';
+import { USER_ADMIN, USER_JOHN_DOE } from '../../../testing/mocks/mock-users';
 
 describe('TokenService', () => {
   let service: TokenService;
@@ -15,15 +17,15 @@ describe('TokenService', () => {
 
   describe('setAuthState / getUsername / getUserRole', () => {
     it('should store username and role in memory', () => {
-      service.setAuthState('john.doe', 'MANAGER');
-      expect(service.getUsername()).toBe('john.doe');
-      expect(service.getUserRole()).toBe('MANAGER');
+      service.setAuthState(USER_JOHN_DOE, CODE_MANAGER);
+      expect(service.getUsername()).toBe(USER_JOHN_DOE);
+      expect(service.getUserRole()).toBe(CODE_MANAGER);
     });
   });
 
   describe('clearAuthState', () => {
     it('should reset username and role to null', () => {
-      service.setAuthState('john.doe', 'CLIENT');
+      service.setAuthState(USER_JOHN_DOE, CODE_CLIENT);
       service.clearAuthState();
       expect(service.getUsername()).toBeNull();
       expect(service.getUserRole()).toBeNull();
@@ -36,12 +38,12 @@ describe('TokenService', () => {
     });
 
     it('should return true after setAuthState', () => {
-      service.setAuthState('john.doe', 'CLIENT');
+      service.setAuthState(USER_JOHN_DOE, CODE_CLIENT);
       expect(service.isAuthenticated()).toBe(true);
     });
 
     it('should return false after clearAuthState', () => {
-      service.setAuthState('john.doe', 'CLIENT');
+      service.setAuthState(USER_JOHN_DOE, CODE_CLIENT);
       service.clearAuthState();
       expect(service.isAuthenticated()).toBe(false);
     });
@@ -53,13 +55,13 @@ describe('TokenService', () => {
     });
 
     it('should return MANAGER role', () => {
-      service.setAuthState('admin', 'MANAGER');
-      expect(service.getUserRole()).toBe('MANAGER');
+      service.setAuthState(USER_ADMIN, CODE_MANAGER);
+      expect(service.getUserRole()).toBe(CODE_MANAGER);
     });
 
     it('should return CLIENT role', () => {
-      service.setAuthState('user', 'CLIENT');
-      expect(service.getUserRole()).toBe('CLIENT');
+      service.setAuthState('user', CODE_CLIENT);
+      expect(service.getUserRole()).toBe(CODE_CLIENT);
     });
   });
 });

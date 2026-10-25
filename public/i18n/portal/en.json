@@ -1,0 +1,82 @@
+{
+  "portal": {
+    "eyebrow": "Client portal",
+    "role": {
+      "RESPONSABLE": "Responsable",
+      "DELEGUE": "Delegate"
+    },
+    "status": {
+      "APPROVED": "Approved",
+      "PENDING": "Pending",
+      "REJECTED": "Rejected",
+      "REVOKED": "Revoked"
+    },
+    "col": {
+      "enterpriseId": "Enterprise",
+      "role": "Role",
+      "requestedOn": "Requested on",
+      "name": "Name",
+      "sector": "Sector"
+    },
+    "claim": {
+      "title": "Claim an enterprise",
+      "subtitle": "Request access to your enterprise's portfolio using its registration number (RC/ICE)",
+      "submitting": "Sending...",
+      "registrationNumber": "Registration number (RC/ICE)",
+      "role": "Your role",
+      "submit": "Send request",
+      "success": "Your request was sent. It is pending Manager review.",
+      "errorFallback": "Error while sending the request."
+    },
+    "myLinks": {
+      "title": "My requests",
+      "subtitle": "History of your link requests, regardless of status",
+      "loading": "Loading your requests...",
+      "loadErrorFallback": "Unable to load your requests.",
+      "empty": "You have not made any request yet"
+    },
+    "myPortfolio": {
+      "title": "My Portfolio",
+      "subtitle": "Your mortgages and the enterprises whose credit progress you're following.",
+      "cardSubtitle": "Enterprises you have approved access to",
+      "loading": "Loading your portfolio...",
+      "loadErrorFallback": "Unable to load your portfolio.",
+      "empty": "No approved enterprise yet",
+      "viewDemands": "View cases"
+    },
+    "demands": {
+      "title": "Enterprise cases",
+      "subtitle": "Credit case tracking for this enterprise.",
+      "back": "Back to my portfolio",
+      "loading": "Loading cases...",
+      "loadErrorFallback": "Unable to load this enterprise's cases.",
+      "listTitle": "Cases",
+      "col": {
+        "reference": "Reference",
+        "type": "Type",
+        "amount": "Amount",
+        "duration": "Duration (months)",
+        "rate": "Rate",
+        "createdOn": "Created on"
+      },
+      "status": {
+        "rejected": "Rejected",
+        "completed": "Completed",
+        "inProgress": "In progress"
+      },
+      "documents": "Documents",
+      "empty": "No case for this enterprise"
+    },
+    "mortgage": {
+      "title": "My mortgages",
+      "subtitle": "Your mortgage dossiers: progress, repayment schedule and payment declarations.",
+      "loading": "Loading your mortgages...",
+      "loadErrorFallback": "Your mortgages could not be loaded.",
+      "open": "Open the dossier"
+    },
+    "dossier": {
+      "title": "My dossier",
+      "subtitle": "Follow your dossier, provide the requested documents and declare your payments."
+    }
+  }
+}

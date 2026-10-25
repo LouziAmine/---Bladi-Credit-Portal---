@@ -1,0 +1,48 @@
+{
+  "bamVerification": {
+    "title": "Vérification BAM (simulation)",
+    "subtitle": "SCIP (chèques impayés) + Centrale des Risques (encours de crédit): données simulées, uniquement pour ce MVP",
+    "identifiant": "Identifiant (ICE ou CIN)",
+    "identifiantPlaceholder": "ex : 001234567000089",
+    "scenario": "Scénario de démo (optionnel)",
+    "scenarioAuto": "Automatique (tirage pondéré)",
+    "scenarios": {
+      "CLEAR": "RAS",
+      "MINOR_INCIDENT": "Incident léger régularisé",
+      "ACTIVE_INCIDENT": "Incident actif",
+      "PERSONAL_EXPOSURE_DETECTED": "Encours personnel détecté",
+      "MULTIPLE_EXPOSURES": "Encours multiples",
+      "CONSOLIDATED_GROUP_EXPOSURE": "Encours groupe consolidé",
+      "REQUIRES_MANUAL_REVIEW": "Nécessite une analyse manuelle"
+    },
+    "submit": "Vérifier",
+    "loading": "Vérification en cours...",
+    "errorFallback": "La vérification a échoué.",
+    "mockBadge": "SIMULATION",
+    "recommandation": "Recommandation simulée",
+    "recommandations": {
+      "FAVORABLE": "Favorable",
+      "TO_REVIEW": "À analyser",
+      "UNFAVORABLE": "Défavorable"
+    },
+    "identifiantVerifie": "Identifiant vérifié",
+    "timestamp": "Vérifié le",
+    "scip": {
+      "title": "SCIP: incidents de paiement chèques",
+      "ras": "RAS",
+      "incidentDetecte": "Incident détecté",
+      "regularise": "Régularisé",
+      "nonRegularise": "Non régularisé"
+    },
+    "centraleRisques": {
+      "title": "Centrale des Risques: encours de crédit",
+      "ras": "RAS",
+      "encoursDetecte": "Encours détecté"
+    },
+    "repaymentStatus": {
+      "CURRENT": "À jour",
+      "OVERDUE": "En retard",
+      "IN_LITIGATION": "En contentieux"
+    }
+  }
+}

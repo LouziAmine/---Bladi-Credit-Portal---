@@ -1,0 +1,48 @@
+{
+  "bamVerification": {
+    "title": "التحقق من بنك المغرب (محاكاة)",
+    "subtitle": "SCIP (شيكات بدون رصيد) + مركزية المخاطر (التزامات القروض): بيانات محاكاة، لهذا النموذج الأولي فقط",
+    "identifiant": "المعرّف (ICE أو CIN)",
+    "identifiantPlaceholder": "مثال: 001234567000089",
+    "scenario": "سيناريو تجريبي (اختياري)",
+    "scenarioAuto": "تلقائي (سحب عشوائي مرجّح)",
+    "scenarios": {
+      "CLEAR": "لا ملاحظات",
+      "MINOR_INCIDENT": "حادثة طفيفة مسوّاة",
+      "ACTIVE_INCIDENT": "حادثة نشطة",
+      "PERSONAL_EXPOSURE_DETECTED": "التزام شخصي مكتشف",
+      "MULTIPLE_EXPOSURES": "التزامات متعددة",
+      "CONSOLIDATED_GROUP_EXPOSURE": "التزام مجموعة موحّد",
+      "REQUIRES_MANUAL_REVIEW": "يتطلب مراجعة يدوية"
+    },
+    "submit": "تحقق",
+    "loading": "جارٍ التحقق...",
+    "errorFallback": "فشل التحقق.",
+    "mockBadge": "محاكاة",
+    "recommandation": "التوصية المحاكاة",
+    "recommandations": {
+      "FAVORABLE": "مواتية",
+      "TO_REVIEW": "تحتاج إلى مراجعة",
+      "UNFAVORABLE": "غير مواتية"
+    },
+    "identifiantVerifie": "المعرّف الذي تم التحقق منه",
+    "timestamp": "تم التحقق في",
+    "scip": {
+      "title": "SCIP: حوادث الشيكات بدون رصيد",
+      "ras": "لا ملاحظات",
+      "incidentDetecte": "تم اكتشاف حادثة",
+      "regularise": "تمت التسوية",
+      "nonRegularise": "لم تتم التسوية"
+    },
+    "centraleRisques": {
+      "title": "مركزية المخاطر: التزامات القروض",
+      "ras": "لا ملاحظات",
+      "encoursDetecte": "تم اكتشاف التزام"
+    },
+    "repaymentStatus": {
+      "CURRENT": "منتظم",
+      "OVERDUE": "متأخر",
+      "IN_LITIGATION": "في نزاع قضائي"
+    }
+  }
+}

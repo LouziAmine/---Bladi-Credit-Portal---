@@ -1,0 +1,26 @@
+{
+  "adminCommon": {
+    "previous": "السابق",
+    "next": "التالي",
+    "page": "صفحة",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "actions": "إجراءات",
+    "edit": "تعديل",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "add": "إضافة",
+    "yes": "نعم",
+    "no": "لا",
+    "existingConfigs": "الإعدادات الحالية",
+    "selectToEdit": "اختر سجلاً لتعديله",
+    "editRecord": "تعديل السجل",
+    "updating": "جارٍ التحديث...",
+    "update": "تحديث",
+    "setActive": "تعيين كإعداد نشط",
+    "status": "الحالة",
+    "updateSuccess": "تم التحديث بنجاح.",
+    "updateErrorFallback": "خطأ أثناء التحديث."
+  }
+}

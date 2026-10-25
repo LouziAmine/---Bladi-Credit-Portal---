@@ -1,0 +1,31 @@
+{
+  "bamParameters": {
+    "title": "BAM parameters",
+    "subtitle": "Manage the ratios and fees applied to credit simulations.",
+    "loading": "Loading parameters...",
+    "col": {
+      "processingFees": "Processing fees (%)",
+      "registration": "Registration (%)",
+      "conservation": "Land registry (%)",
+      "notary": "Notary (%)",
+      "ltvMax": "Max LTV (%)",
+      "debtMax": "Max debt ratio (%)",
+      "maxAge": "Max age at maturity",
+      "adi": "Monthly ADI (%)"
+    },
+    "editHint": "Changes apply to new simulations",
+    "form": {
+      "processingFeesRatio": "Processing fees ratio",
+      "minProcessingFees": "Min processing fees",
+      "maxProcessingFees": "Max processing fees",
+      "registrationFeeRatio": "Registration fee ratio",
+      "landConservationRatio": "Land registry ratio",
+      "notaryFeeRatio": "Notary fee ratio",
+      "ltvRatio": "Max LTV ratio (min. 10% deposit)",
+      "maxDebtRatio": "Max debt ratio",
+      "maxAgeAtMaturity": "Max age at maturity",
+      "adiMonthlyRate": "Monthly ADI rate (insurance)"
+    },
+    "loadErrorFallback": "Unable to load parameters. Server unavailable."
+  }
+}
